@@ -53,10 +53,10 @@
             <div class="social-network">
               <ul class="soial-icons" id="social">
                 <li>
-                  <a href="https://www.linkedin.com/in/exarchou/"><i class="fa fa-linkedin"></i></a>
+                  <a href="https://www.linkedin.com/in/konstantinosdiamantis/"><i class="fa fa-linkedin"></i></a>
                 </li>
                 <li>
-                  <a href="https://github.com/exarchou"><i class="fa fa-github"></i></a>
+                  <a href="https://github.com/konstantd"><i class="fa fa-github"></i></a>
                 </li>
               </ul>
             </div>
@@ -76,7 +76,7 @@
         </div>
       </div>
 
-
+ 
       <!-- About me -->
       <section class="section about-me" data-section="section1">
         <div class="container">
@@ -192,7 +192,7 @@
             <h2>What I’m good at?</h2>
             <div class="line-dec"></div>
                 </br>
-                <p><span class="skillprogress python">Python</span></p>
+                 <p>Python</p>
                 <div class="skillcontainer">
                     <div class="skillprogress python"></div>
                 </div>
@@ -837,6 +837,7 @@
             '[data-section="' + direction + '"]'
           ),
           reqSectionPos = reqSection.offset().top - 0;
+          reqSection.addClass('slide-in'); // slide in
 
         if (isAnimate) {
           $("body, html").animate(
@@ -849,7 +850,6 @@
           $("body, html").scrollTop(reqSectionPos);
         }
       };
-
       var checkSection = function checkSection() {
         $(".section").each(function() {
           var $this = $(this),
@@ -864,6 +864,7 @@
               .addClass("active")
               .siblings()
               .removeClass("active");
+              $this.addClass('slide-in'); // slide in
           }
         });
       };
@@ -875,6 +876,12 @@
 
       $(window).scroll(function() {
         checkSection();
+      });
+
+
+      // Scroll a bit when the page loads, to triggger the animation of the 1st section
+      document.addEventListener('DOMContentLoaded', function() {
+      window.scrollBy(0, 2); // Adjust the value as needed
       });
     </script>
 
