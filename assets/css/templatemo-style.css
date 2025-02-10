@@ -117,8 +117,10 @@ html {
     text-align: center;
 }
 
+/* LAST */
 .main-nav li:last-child a {
-    border-bottom: 2px solid #fff;
+    /* border-bottom: 2px solid #ec1010;  */
+    border-bottom: 2px solid #a43f49;
 }
 
 .main-nav li {
@@ -126,21 +128,23 @@ html {
 }
 
 .main-nav li a {
-    height: 60px;
-    line-height: 60px;
+    height: 50px;
+    line-height: 40px;
     display: inline-block;
     font-size: 16px;
     font-weight: 700;
     color: #fff;
     width: 100%;
     transition: all 0.5s;
-    border-top: 2px solid #fff;
+    /* border-top: 2px solid #e00707; */
+    /* border-bottom: 2px solid #e00707; */
+    border-bottom: 2px solid #a43f49;
 }
 
 .main-nav li:hover a,
 .main-nav li.active a {
-    background: #fff;
-    color: #8c363e;
+    background: #5c5c5c;
+    color: #368c61;
 }
 
 
@@ -350,9 +354,10 @@ html {
 
 .section {
     color: #fff;
-    width: 55%;
-    right: 14%;
-    left: 32%;
+    width: 60%;
+    margin-left: 20%;
+    /* display: flex;
+    justify-content: center; */
     position: relative;
     min-height: 1vh;
     padding-bottom: 30px;
@@ -372,8 +377,8 @@ html {
     font-size: 32px;
     font-weight: 700;
     color: #fff;
+    
 }
-
 .section-heading .line-dec {
     width: 80px;
     height: 3px;
@@ -1069,3 +1074,83 @@ section.contact-me {
         margin-bottom: 20px;
     }
 }
+
+/* Top Navigation Bar Styles */
+.top-nav {
+    width: 100%;
+    background-color: #333;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .top-nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+  }
+  
+  .top-nav .image img {
+    height: 50px;
+    border-radius: 50%;
+  }
+  
+  .top-nav .author-content {
+    color: #fff;
+    text-align: left;
+  }
+  
+  .top-nav .main-nav {
+    flex-grow: 1;
+    text-align: center;
+  }
+  
+  .top-nav .main-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .top-nav .main-menu li {
+    margin: 0 15px;
+  }
+  
+  .top-nav .main-menu li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+  }
+  
+  .top-nav .main-menu li a:hover {
+    background-color: #575757;
+    border-radius: 5px;
+  }
+  
+  .top-nav .social-network {
+    display: flex;
+    align-items: center;
+  }
+  
+  .top-nav .social-icons {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  .top-nav .social-icons li {
+    margin: 0 10px;
+  }
+  
+  .top-nav .social-icons li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+  }
+
+
