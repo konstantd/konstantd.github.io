@@ -1154,3 +1154,32 @@ section.contact-me {
   }
 
 
+
+/* Tech label */
+.tech-label {
+    display: inline-block;
+    background: #4CAF50;  /* Default green background */
+    color: white;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 20px;  /* Rounded edges */
+    font-size: 14px;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.tech-label:hover {
+    transform: scale(1.1);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Different colors for each technology */
+.python { background: #3572A5; }   /* Python Blue */
+.matlab { background: #E37323; }   /* MATLAB Orange */
+.cpp { background: #00599C; }      /* C++ Blue */
+.linux { background: #FCC624; color: #333; } /* Linux Yellow */
+.verilog { background: #A6120D; }  /* Verilog Red */
+.java { background: #EA2D2E; }      /* Java Red */
+.r { background: #276DC3; }        /* R Blue */
+.webdev { background: #F16529; }    /* HTML Orange */
