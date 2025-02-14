@@ -948,9 +948,10 @@ section.contact-me {
 
     .section {
         color: #fff;
-        width: 65%;
-        right: 5%;
-        left: 30%;
+        width: 67%;
+        /* right: 5%; */
+        /* left: 30%; */
+        margin: 0 auto;/*  Centering the section */ */
     }
 }
 
