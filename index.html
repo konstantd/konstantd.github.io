@@ -949,5 +949,43 @@
         }
     </script>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    let experienceCounterElement = document.getElementById('experienceCounter');
+    let projectsCounterElement = document.getElementById('projectsCounter');
+    let experienceCount = 0;
+    let projectsCount = 0;
+    let targetExperience = 5;
+    let targetProjects = 25;
+    let speed = 2000; // Adjust the speed as needed
+
+    function updateExperienceCounter() {
+      if (experienceCount < targetExperience) {
+        experienceCount++;
+        experienceCounterElement.innerText = experienceCount;
+        setTimeout(updateExperienceCounter, speed / targetExperience);
+      }
+    }
+
+    function updateProjectsCounter() {
+      if (projectsCount < targetProjects) {
+        projectsCount++;
+        projectsCounterElement.innerText = projectsCount;
+        setTimeout(updateProjectsCounter, speed / targetProjects);
+      }
+    }
+
+    let observer = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) {
+        updateExperienceCounter();
+        updateProjectsCounter();
+        observer.disconnect(); // Stop observing after the counters start
+      }
+    }, { threshold: 1 }); // Adjust the threshold as needed
+
+    observer.observe(document.querySelector('.counters-container'));
+  });
+    </script>
+
   </body>
 </html>
