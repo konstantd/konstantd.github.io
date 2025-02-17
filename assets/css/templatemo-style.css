@@ -439,14 +439,23 @@ button:hover {
 
 /* Left & Right Post */
 
-.right-image-post {
+.left-image-first-post {
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+
+
+.right-image-post,
+.left-image-post {
     margin-top: 40px;
     padding-top: 40px;
     border-top: 2px solid rgba(250, 250, 250, 0.1);
 }
 
 .left-image img,
-.right-image img {
+.right-image img,
+.left-image-first-post img {
     border-radius: 5px;
     width: 90%;
     margin-top: 30px;
@@ -454,20 +463,65 @@ button:hover {
 }
 
 .right-image-post h4,
-.left-image-post h4 {
+.left-image-post h4
+.left-image-first-post h4 {
     margin-top: 60px;
 }
 
 .right-image-post p,
-.left-image-post p {
+.left-image-post p,
+.left-image-first-post p {
     margin-top: 10px;
 }
 
 .right-image-post .white-button,
-.left-image-post .white-button {
+.left-image-post .white-button,
+.left-image-first-post .white-button {
     margin-top: 30px;
 }
 
+
+/* Counter */
+
+
+.counters-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .experience-counter, .projects-counter {
+    text-align: center;
+  }
+  
+  .counter {
+    font-size: 48px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .label {
+    font-size: 24px;
+    color: #666;
+  }
+
+
+/* .experience-counter {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .counter {
+    font-size: 48px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .label {
+    font-size: 24px;
+    color: #666;
+  }
+ */
 
 
 /* Services */
