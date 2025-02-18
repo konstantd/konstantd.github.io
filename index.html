@@ -53,13 +53,6 @@
             </div>
 
 
-      <!-- Music -->
-      <div class="content">
-        <div class="right-col">     
-            <p align="center">Click me  &#x266b;</p>
-            <img src="assets/audio/play.png" id="icon">
-        </div>
-      </div>
 
  
       <!-- About me -->
@@ -912,21 +905,6 @@
       });
     </script>
 
-    <!-- Play Music -->
-    <script>
-        var mySong = document.getElementById("mySong");
-        var icon = document.getElementById("icon");
-
-        icon.onclick = function(){
-            if(mySong.paused){
-                mySong.play();
-                icon.src = "assets/audio/pause.png";
-            }else{
-                mySong.pause();
-                icon.src = "assets/audio/play.png";
-            }
-        }
-    </script>
 
 <!-- Counters animation -->
 <script>
