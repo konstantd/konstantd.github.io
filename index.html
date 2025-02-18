@@ -981,6 +981,10 @@
         projectsCounterElement.innerText = projectsCount;
         setTimeout(updateProjectsCounter, speed / targetProjects);
       }
+
+      if (projectsCount === targetProjects) {
+        projectsCounterElement.innerText = projectsCount + '+';
+      }
     }
 
     let observer = new IntersectionObserver(function(entries) {
