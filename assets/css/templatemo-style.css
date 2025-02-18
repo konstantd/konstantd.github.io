@@ -1208,7 +1208,22 @@ section.contact-me {
     font-size: 20px;
   }
 
+/* Image */
+.fixed-img {
+    width: 400px;
+    height: 350px;
+    border-radius: 50%;
+    margin-right: 10px;
+    flex-shrink: 0;  /* Prevent shrinking in a flex container */
+}
 
+.flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ensure content stays aligned to the left */
+    flex-wrap: wrap; /* Prevents squeezing on smaller screens */
+    /* flex-wrap: wrap; Ensures responsiveness without resizing the image */
+}
 
 /* Tech label */
 .tech-label {
@@ -1227,6 +1242,14 @@ section.contact-me {
 .tech-label:hover {
     transform: scale(1.1);
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.rocket-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 5px black); /* Adds an outline */
+    background-color: transparent;
 }
 
 
