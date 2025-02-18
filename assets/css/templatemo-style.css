@@ -354,18 +354,27 @@ html {
 
 .section {
     color: #fff;
-    width: 60%;
-    margin-left: 20%;
     /* display: flex;
     justify-content: center; */
     position: relative;
     min-height: 1vh;
-    padding-bottom: 30px;
-    border-bottom: 5px solid rgba(250, 250, 250, 0.25);
+    /* padding-bottom: 30px; */
+    /* border-bottom: 5px solid rgba(250, 250, 250, 0.25); */
     opacity: 0;
     /* These 2 in order to hide them in the beginning */
     /* opacity: 0; */
     /* transform: translateX(100%); */
+}
+
+/* This is for the line after the section */
+.section::after {
+    content: "";
+    display: block;
+    width: 75%; /* Adjust the width as needed */
+    height: 5px; /* Adjust the height as needed */
+    background-color: rgba(250, 250, 250, 0.25); /* Adjust the color as needed */
+    margin: 0 auto; /* Center the line */
+    margin-top: 30px; /* Add some space above the line */
 }
 
 .section-heading {
