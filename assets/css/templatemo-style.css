@@ -1229,6 +1229,28 @@ section.contact-me {
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
+
+/* Counter label */
+.counter-label {
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    /* background: rgb(116, 5, 5); Default green background */
+    /* background: #a43f49; */
+    background: #a5202d;
+    color: white;
+    font-weight: bold;
+    border-radius: 10%; /* Rounded edges */
+    font-size: 15px;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+
+
 /* Different colors for each technology */
 .python { background: #3572A5; }   /* Python Blue */
 .matlab { background: #E37323; }   /* MATLAB Orange */
