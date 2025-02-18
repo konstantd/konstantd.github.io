@@ -485,13 +485,40 @@ button:hover {
 
 
 .counters-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  align-items: center;
+}
+  /* added this to align the counters */
+  /* align-items: flex-start; */
+
+.experience-counter, .projects-counter {
     display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-  }
-  
-  .experience-counter, .projects-counter {
+    flex-direction: column;
+    align-items: center;
+}
+
+.counter {
+  font-size: 48px;
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0; /* Ensure no additional margin */
+}
+
+.label {
+  font-size: 24px;
+  color: #666;
+  margin: 0;
+}
+
+
+.experience-counter {
     text-align: center;
+    margin-top: 20px;
   }
   
   .counter {
@@ -506,22 +533,23 @@ button:hover {
   }
 
 
-/* .experience-counter {
+/* Counter label */
+.counter-label {
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
     text-align: center;
-    margin-top: 20px;
-  }
-  
-  .counter {
-    font-size: 48px;
+    background: rgb(116, 5, 5);
+    color: white;
     font-weight: bold;
-    color: #333;
-  }
-  
-  .label {
-    font-size: 24px;
-    color: #666;
-  }
- */
+    border-radius: 10%; /* Rounded edges */
+    font-size: 15px;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
 
 
 /* Services */
@@ -1252,25 +1280,6 @@ section.contact-me {
     background-color: transparent;
 }
 
-
-/* Counter label */
-.counter-label {
-    display: inline-block;
-    width: 45px;
-    height: 45px;
-    line-height: 45px;
-    text-align: center;
-    /* background: rgb(116, 5, 5); Default green background */
-    /* background: #a43f49; */
-    background: #a5202d;
-    color: white;
-    font-weight: bold;
-    border-radius: 10%; /* Rounded edges */
-    font-size: 15px;
-    text-transform: uppercase;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
 
 
 
