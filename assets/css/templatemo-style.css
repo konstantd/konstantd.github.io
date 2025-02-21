@@ -1301,3 +1301,20 @@ section.contact-me {
 .java { background: #EA2D2E; }      /* Java Red */
 .r { background: #276DC3; }        /* R Blue */
 .webdev { background: #F16529; }    /* HTML Orange */
+
+.rocket-container {
+    font-size: 60px; /* Adjust size */
+    position: absolute;
+    left: 85%;  /* Start position */
+    bottom: 20px; /* Adjust for visibility */
+  }
+  
+  .rocket-container.launch {
+    animation: launchRocket 3s linear forwards; /* Ensure the rocket stays at the end position */
+  }
+  
+  @keyframes launchRocket {
+    0% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-100px) translateX(50px); }
+    100% { transform: translateY(-200px) translateX(100px); opacity: 0; }
+}

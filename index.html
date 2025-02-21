@@ -346,7 +346,9 @@
                       One area of interest for me is Artificial Intelligence and Signal Processing. I have experience 
                       in various areas of Machine Learning such as Computer Vision or Natural Language Processing. 
                       In particular, I am very interested in the applications of Artificial Iintelligence in Biomedical 
-                      Engineering and Neuroscience. 
+                      Engineering and Neuroscience.
+                      <div class="rocket-container"> 🚀 </div>
+ 
                     </p>
                     <div class="white-button">
                       <a href="https://en.wikipedia.org/wiki/Artificial_intelligence">Read More</a>
@@ -953,6 +955,19 @@
     }, { threshold: 1 }); // Adjust the threshold as needed
 
     observer.observe(document.querySelector('.counters-container'));
+// Rocket animation observer
+let rocketObserver = new IntersectionObserver(function(entries) {
+  if (entries[0].isIntersecting) {
+    document.querySelectorAll('.rocket-container').forEach(function(rocket) {
+      rocket.classList.add('launch');
+    });
+    rocketObserver.disconnect(); // Stop observing after the animation starts
+  }
+}, { threshold: 0.5 }); // Adjust the threshold as needed
+
+rocketObserver.observe(document.querySelector('.rocket-container'));
+
+
   });
     </script>
 
