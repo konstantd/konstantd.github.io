@@ -533,15 +533,6 @@ button:hover {
     align-items: center;
 }
 
-.counter {
-  font-size: 48px;
-  font-weight: bold;
-  color: #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0; /* Ensure no additional margin */
-}
 
 .label {
   font-size: 24px;
