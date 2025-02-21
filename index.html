@@ -327,10 +327,15 @@
         
         <div class="container">
 
+
+
+
             <div class="section-heading">
                 <h2>Experience</h2>
                 <div class="line-dec"></div>
             </div>
+
+
 
             <div class="left-image-first-post">
               <div class="row">
@@ -350,6 +355,7 @@
                       <div class="rocket-container"> 🚀 </div>
  
                     </p>
+
                     <div class="white-button">
                       <a href="https://en.wikipedia.org/wiki/Artificial_intelligence">Read More</a>
                     </div>
@@ -357,7 +363,7 @@
                 </div>
               </div>
             </div>
-  
+
             <div class="right-image-post">
               <div class="row">
                 <div class="col-md-6">
@@ -931,7 +937,10 @@
         experienceCount++;
         experienceCounterElement.innerText = experienceCount;
         setTimeout(updateExperienceCounter, speed / targetExperience);
-      }
+      } else {
+        // Remove animation when the count reaches targetProjects
+        experienceCounterElement.style.animation = "none";
+  }
     }
 
     function updateProjectsCounter() {
@@ -939,6 +948,9 @@
         projectsCount++;
         projectsCounterElement.innerText = projectsCount;
         setTimeout(updateProjectsCounter, speed / targetProjects);
+      } else {
+        // Remove animation when the count reaches targetProjects
+        projectsCounterElement.style.animation = "none";
       }
 
       if (projectsCount === targetProjects) {
@@ -956,6 +968,7 @@
     }, { threshold: 1 }); // Adjust the threshold as needed
 
     observer.observe(document.querySelector('.counters-container'));
+
 // Rocket animation observer
 let rocketObserver = new IntersectionObserver(function(entries) {
   if (entries[0].isIntersecting) {
@@ -969,6 +982,7 @@ let rocketObserver = new IntersectionObserver(function(entries) {
 rocketObserver.observe(document.querySelector('.rocket-container'));
 
 
+  
   });
     </script>
 
