@@ -943,30 +943,30 @@
       </section>
 
 
-                    <!-- Footer Section -->
-                    <footer class="footer">
-                      <div class="container">
-                        <div class="footer-content">
-                          <div class="footer-section contact">
-                            <h4>Contact Me</h4>
-                            <p>Email: <a href="mailto:your-email@example.com">knstantinos.diamantis@gmail.com</a></p>
-                            <p>Phone: <a href="tel:+41762132935">+41 76 2132 935</a></p>
-                          </div>
-                          <div class="footer-section social">
-                            <h4>Follow Me</h4>
-                            <ul class="social-icons">
-                              <li><a href="https://www.facebook.com/yourprofile" target="_blank"><i class="fa fa-facebook"></i></a></li>
-                              <li><a href="https://www.twitter.com/yourprofile" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                              <li><a href="https://www.linkedin.com/in/yourprofile" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-                              <li><a href="https://www.github.com/yourprofile" target="_blank"><i class="fa fa-github"></i></a></li>
-                            </ul>
-                          </div>
-                        </div>
-                        <div class="footer-bottom">
-                          <p>&copy; 2025 Konstantinos Diamantis. All Rights Reserved.</p>
-                        </div>
-                      </div>
-                    </footer>
+      <!-- Footer Section -->
+      <footer class="footer">
+        <div class="container">
+          <div class="footer-content">
+            <div class="footer-section contact">
+              <h4 style="color: #a43f49;">Contact Me</h4>
+              <p>Email: <a href="mailto:your-email@example.com">knstantinos.diamantis@gmail.com</a></p>
+              <p>Phone: <a href="tel:+41762132935">+41 76 2132 935</a></p>
+            </div>
+            <div class="footer-section social">
+              <h4 style="color: #a43f49;">Follow Me</h4>
+              <ul class="social-icons">
+                <li><a href="https://www.facebook.com/yourprofile" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="https://www.twitter.com/yourprofile" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="https://www.linkedin.com/in/yourprofile" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                <li><a href="https://www.github.com/yourprofile" target="_blank"><i class="fa fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <p>&copy; 2025 Konstantinos Diamantis. All Rights Reserved.</p>
+          </div>
+        </div>
+      </footer>
       
         <!-- </br>
         </br>
@@ -1002,6 +1002,11 @@
       //according to loftblog tut
       $(".main-menu li:first").addClass("active");
 
+/**
+ * Shows a section of the page
+ * @param {string} section - id of the section to show
+ * @param {boolean} isAnimate - whether to animate the scroll or not
+ */
       var showSection = function showSection(section, isAnimate) {
         var direction = section.replace(/#/, ""),
           reqSection = $(".section").filter(
