@@ -513,24 +513,50 @@ button:hover {
     animation:  rotateUp 0.3s ease-in-out infinite; /* Apply the rotation animation */
   }
 
+  .counter:hover {
+    transform: scale(1.1);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+  }
 
 
-/* Counter */
 
 
 .counters-container {
   display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
+  justify-content: center;
+  gap: 33px; 
+  /* margin-top: 20px;
   align-items: center;
+  margin-top: 20px;
+  */
+  /* align-items:  flex-start; */
+  /* flex: 1; */
 }
+
+
   /* added this to align the counters */
   /* align-items: flex-start; */
 
-.experience-counter, .projects-counter {
+.experience-counter {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    align-items: center;
+    justify-content: center;
+    /* width: 100px; Fixed width
+    height: 60px; Fixed height */
+    /* text-align: center; */
+}
+
+.projects-counter {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    transform: translateY(10px);
+    /* width: 100px; Fixed width
+    height: 60px; Fixed height */
+    /* text-align: center; */
 }
 
 
