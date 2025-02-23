@@ -46,6 +46,7 @@
                 <li><a href="#section4">Experience</a></li>
                 <li><a href="#section5">Publications</a></li>
                 <li><a href="#section6">My Work</a></li>
+                <li><a href="blog.html">Blog</a></li> 
               </ul>
             </nav>
 
@@ -1045,8 +1046,11 @@
       };
 
       $(".main-menu").on("click", "a", function(e) {
-        e.preventDefault();
-        showSection($(this).attr("href"), true);
+        var href = $(this).attr("href");
+        if (href.startsWith("#")) {
+          e.preventDefault();
+          showSection(href, true);
+        }
       });
 
       $(window).scroll(function() {
