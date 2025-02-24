@@ -58,6 +58,57 @@
             <span>This is my technical blog, where I will share my thoughts and experiences on the technical projects I have worked on, as well as the latest developments in the field of computer science and technology.</span>
           </div>
 
+
+          <!-- modify this form HTML and place wherever you want your form -->
+          <form action="https://formspree.io/f/xyzkqwlj" method="POST" enctype="multipart/form-data">
+            <label>
+              Your email:
+              <input type="email" name="email">
+            </label>
+            <label>
+              Your file:
+              <input type="file" name="upload">
+            </label>
+            <button type="submit">Send</button>
+          </form>
+
+
+<!-- modify this form HTML and place wherever you want your form -->
+<form action="https://formspree.io/f/xyzkqwlj" method="POST" enctype="multipart/form-data">
+  <label>
+    Your email:
+    <input type="email" name="email">
+  </label>
+  <label>
+    Your file:
+    <input type="file" name="upload">
+  </label>
+  <button type="submit">Send</button>
+</form>
+
+
+
+<!-- modify this form HTML and place wherever you want your form -->
+      <!-- <form action="https://formspree.io/f/xyzkqwlj" method="POST">
+        <label>
+          Your email:
+          <input type="email" name="email">
+        </label>
+        <label>
+          Your message:
+          <textarea name="message"></textarea>
+        </label>
+        <!-- our other form fields go here --> -->
+        <!-- <button type="submit">Send</button>
+      </form>  -->
+          
+<!-- <form action="https://formspree.io/f/yourFormID" method="POST">
+  <label for="email">Enter your email:</label>
+  <input type="email" id="email" name="email" required>
+  <button type="submit">Subscribe</button>
+</form> -->
+
+
           <div class="subscribe-button" style="text-align: center;">
             <p>📢 
               Subscribe to my email list to receive updates on my latest blog posts and projects.
@@ -209,6 +260,51 @@
 
     
     <!-- Scripts -->
+
+    <script src="https://formspree.io/js/formbutton-v1.min.js" defer></script>
+
+<script>
+  /* paste this in verbatim */
+  window.formbutton=window.formbutton||function(){(formbutton.q=formbutton.q||[]).push(arguments);};
+
+  /* customize formbutton here*/     
+  formbutton("create", {
+    action: "https://formspree.io/YOUR_FORM_ID",
+    title: "How can we help?",
+    fields: [
+      { 
+        type: "email", 
+        label: "Email:", 
+        name: "email",
+        required: true,
+      },
+      {
+        type: "textarea",
+        label: "Message:",
+        name: "message",
+      },
+      { type: "submit" }
+    ],
+    styles: {
+      modal: {
+        background: "#EEE"
+      },
+      formStatus: {
+        background: "#EEE"
+      },
+      input: {
+        border: "1px solid #CCC",
+        padding: "5px",
+        lineHeight: "1.25"
+      },
+      submitInput: {padding: "0.75em 1em"}
+    },
+    initiallyVisible: true
+  });
+</script>
+
+
+
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
