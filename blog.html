@@ -41,7 +41,7 @@
       </div>
 
       <!-- My Work Section -->
-      <section class="section blog" data-section="section7">
+      <section class="section blog" id="box1" data-section="section7">
 
 
         <div class="container">
@@ -58,66 +58,31 @@
             <span>This is my technical blog, where I will share my thoughts and experiences on the technical projects I have worked on, as well as the latest developments in the field of computer science and technology.</span>
           </div>
 
-
-          <!-- modify this form HTML and place wherever you want your form -->
-          <form action="https://formspree.io/f/xyzkqwlj" method="POST" enctype="multipart/form-data">
-            <label>
-              Your email:
-              <input type="email" name="email">
-            </label>
-            <label>
-              Your file:
-              <input type="file" name="upload">
-            </label>
-            <button type="submit">Send</button>
-          </form>
-
-
-<!-- modify this form HTML and place wherever you want your form -->
-<form action="https://formspree.io/f/xyzkqwlj" method="POST" enctype="multipart/form-data">
-  <label>
-    Your email:
-    <input type="email" name="email">
-  </label>
-  <label>
-    Your file:
-    <input type="file" name="upload">
-  </label>
-  <button type="submit">Send</button>
-</form>
-
-
-
-<!-- modify this form HTML and place wherever you want your form -->
-      <!-- <form action="https://formspree.io/f/xyzkqwlj" method="POST">
-        <label>
-          Your email:
-          <input type="email" name="email">
-        </label>
-        <label>
-          Your message:
-          <textarea name="message"></textarea>
-        </label>
-        <!-- our other form fields go here --> -->
-        <!-- <button type="submit">Send</button>
-      </form>  -->
-          
-<!-- <form action="https://formspree.io/f/yourFormID" method="POST">
-  <label for="email">Enter your email:</label>
-  <input type="email" id="email" name="email" required>
-  <button type="submit">Subscribe</button>
-</form> -->
-
-
-          <div class="subscribe-button" style="text-align: center;">
             <p>📢 
               Subscribe to my email list to receive updates on my latest blog posts and projects.
             </p>
-            
-            <form action="your-subscribe-url" method="post">
-              <button onclick="window.location.href='https://your-booking-form-link.com'" class="cta-button">Subscribe to Email List</button>
-            </form>
-          </div>
+            <br>
+            <br>
+            <br>
+
+          <div class="subscribe-button" id="box1" style="text-align: center;">
+              <button onclick="toggleButton(this)" class="cta-button">Subscribe to Email List</button>
+          <br>
+        </div>
+
+
+          <form id="subscribe-form" action="https://formspree.io/f/asxsas" method="POST">
+            <label>
+              Your email:
+              <input type="email" name="email" required>
+            </label>
+            <button type="submit">Send me</button>
+          </form>
+
+
+          <!-- xyzkqwlj -->
+
+
 
           <br /><br /><br /><br />
           <div class="row">
@@ -270,7 +235,7 @@
   /* customize formbutton here*/     
   formbutton("create", {
     action: "https://formspree.io/YOUR_FORM_ID",
-    title: "How can we help?",
+    title: "Do you have a topic preference?",
     fields: [
       { 
         type: "email", 
@@ -287,7 +252,7 @@
     ],
     styles: {
       modal: {
-        background: "#EEE"
+        background: "#EEE",
       },
       formStatus: {
         background: "#EEE"
@@ -317,22 +282,96 @@
       $(".main-menu li:first").addClass("active");
 
 
-// Ensure the "Blog" menu item is always active
-$(".main-menu li").removeClass("active");
-$(".main-menu li a[href='blog.html']").closest("li").addClass("active");
-$(".main-menu li a[href='blog.html']").closest("li").addClass("active");
+      // Ensure the "Blog" menu item is always active
+      $(".main-menu li").removeClass("active");
+      $(".main-menu li a[href='blog.html']").closest("li").addClass("active");
+      $(".main-menu li a[href='blog.html']").closest("li").addClass("active");
 
 
-// Ensure the "Blog" menu item is active on page load
-document.addEventListener('DOMContentLoaded', function() {
-  $(".main-menu li").removeClass("active");
-  $(".main-menu li a[href='blog.html']").closest("li").addClass("active");
-  $(".section.blog").addClass("slide-in");
-});
+      // Ensure the "Blog" menu item is active on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        $(".main-menu li").removeClass("active");
+        $(".main-menu li a[href='blog.html']").closest("li").addClass("active");
+        $(".section.blog").addClass("slide-in");
+      });
 
 
 
     </script>
+
+
+  <script>
+    // Open Modal
+    function openModal() {
+      document.getElementById("subscribeModal").style.display = "block";
+    }
+
+    // Close Modal
+    function closeModal() {
+      document.getElementById("subscribeModal").style.display = "none";
+    }
+
+    // Close modal if clicking outside content
+    window.onclick = function(event) {
+      let modal = document.getElementById("subscribeModal");
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+
+  <script>
+  function moveButton(button) {
+    // Get the current margin-top and increase it by 50px
+    let currentMargin = parseInt(window.getComputedStyle(button).marginTop) || 0;
+    button.style.marginTop = (currentMargin + 50) + "px";
+  }
+</script>
+
+
+
+
+
+<script>
+  function toggleButton(button) {
+    let currentMargin = parseInt(window.getComputedStyle(button).marginTop) || 0;
+    let form = document.getElementById("subscribe-form");
+    //let button = document.querySelector(".cta-button");
+    // // Get button position
+    let rect = button.getBoundingClientRect();
+    
+    // Position form at the button's position
+    // form.style.position = "absolute";
+    // form.style.left = rect.left + "px";
+    // form.style.top = rect.top + window.scrollY + "px"; // Adjust for scrolling
+    form.style.display = form.style.display === "none" ? "block" : "none";
+
+
+
+
+
+    if (form.style.display === "none" || form.style.display === "") {
+      form.style.display = "block";
+    } else {
+      form.style.display = "none";
+    }
+
+
+
+    if (button.dataset.clicked === "true") {
+      // Second click: Move back up and reset text
+      button.style.marginTop = (currentMargin - 80) + "px";
+      button.innerText = "Subscribe to Email List";
+      button.dataset.clicked = "false";
+    } else {
+      // First click: Move down and change text to "YES"
+      button.style.marginTop = (currentMargin + 80) + "px";
+      button.innerText = "YES";
+      button.dataset.clicked = "true";
+    }
+  }
+</script>
+
 
   </body>
 </html>

@@ -1433,3 +1433,84 @@ section.contact-me {
     padding-top: 10px;
     font-size: 14px;
   }
+
+
+
+  #subscribe-form {
+    display: none; 
+    /* position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); */ */
+
+    
+    /* position: relative; */
+   /* top: 100%;   Places form right below the button */
+    /* left: 50%; */
+    /* transform: translateX(-50%); */ */
+    /* transform: translateX(50%); */
+    z-index: 2; /* Lower Layer */
+  }
+
+
+
+
+
+  .containerbox {
+    position: relative;
+    width: 200px;
+    height: 100px;
+  }
+
+  .box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: lightblue;
+    border: 1px solid black;
+    text-align: center;
+    line-height: 100px;
+  }
+
+  #box1 {
+    z-index: 1; /* Lower Layer */
+    /* background-color: lightblue; */
+  }
+
+  #form-button {
+    z-index: 2; /* Higher Layer (Overlaps) */
+  }
+
+
+  #box2 {
+    z-index: 2; /* Higher Layer (Overlaps) */
+    /* background-color: lightcoral; */
+  }
+
+  .hidden {
+    display: none; /* Hide initially */
+  }
+
+  .subscribe-button {
+    display: flex;
+    justify-content: center;   /* Horizontally center */
+    align-items: center;       /* Vertically center */
+  }
+  .box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: lightblue;
+    border: 1px solid black;
+    text-align: center;
+    line-height: 100px;
+  }
+
+
+  #box1 {
+    z-index: 1; /* Lower Layer */
+  }
+
+  #box2 {
+    z-index: 2; /* Higher Layer (Overlaps) */
+  }
