@@ -41,7 +41,7 @@
       </div>
 
       <!-- My Work Section -->
-      <section class="section blog" id="box1" data-section="section7">
+      <section class="section blog"  data-section="section7">
 
 
         <div class="container">
@@ -59,25 +59,21 @@
           </div>
 
             <p>📢 
-              Subscribe to my email list to receive updates on my latest blog posts and projects.
+              Subscribe to my technical blog to receive updates on my latest blog posts and projects.
             </p>
             <br>
             <br>
-            <br>
-
-          <div class="subscribe-button" id="box1" style="text-align: center;">
+            <form id="subscribe-form" class="subscribe-form" action="https://formspree.io/f/asxsas" method="POST">
+              <input type="email" name="email" required placeholder="Your email" style="color: grey; width: 250px">
+              <button type="submit" style="margin-left: 10px; margin-left: 10px;">Subscribe!</button>
+            </form>
+          <div class="subscribe-button" style="text-align: center;">
               <button onclick="toggleButton(this)" class="cta-button">Subscribe to Email List</button>
           <br>
         </div>
 
 
-          <form id="subscribe-form" action="https://formspree.io/f/asxsas" method="POST">
-            <label>
-              Your email:
-              <input type="email" name="email" required>
-            </label>
-            <button type="submit">Send me</button>
-          </form>
+
 
 
           <!-- xyzkqwlj -->
@@ -164,6 +160,18 @@
                     </figcaption>
                   </figure>
                 </div>
+
+
+                <div class="blog-post">
+                  <img src="assets/images/cern_experiment.jpg" alt="Blog Image" class="blog-image" />
+                  <p class="blog-date">February 25, 2025</p>
+                  <h3 class="blog-title">Understanding AI in Everyday Life</h3>
+                </div>
+
+                
+
+
+
   
                 <div class="isotope-item" data-type="MATLAB">
                   <figure class="snip1321">
@@ -235,7 +243,7 @@
   /* customize formbutton here*/     
   formbutton("create", {
     action: "https://formspree.io/YOUR_FORM_ID",
-    title: "Do you have a topic preference?",
+    title: "Do you have a topic preference for the blog?",
     fields: [
       { 
         type: "email", 
@@ -324,7 +332,7 @@
   function moveButton(button) {
     // Get the current margin-top and increase it by 50px
     let currentMargin = parseInt(window.getComputedStyle(button).marginTop) || 0;
-    button.style.marginTop = (currentMargin + 50) + "px";
+    button.style.marginTop = (currentMargin + 40) + "px";
   }
 </script>
 
@@ -343,10 +351,8 @@
     // Position form at the button's position
     // form.style.position = "absolute";
     // form.style.left = rect.left + "px";
-    // form.style.top = rect.top + window.scrollY + "px"; // Adjust for scrolling
+    // form.style.top = rect.top + window.scrollY  + "px"; // Adjust for scrolling
     form.style.display = form.style.display === "none" ? "block" : "none";
-
-
 
 
 
@@ -357,17 +363,23 @@
     }
 
 
-
     if (button.dataset.clicked === "true") {
       // Second click: Move back up and reset text
-      button.style.marginTop = (currentMargin - 80) + "px";
+      button.style.marginTop = (currentMargin - 40) + "px";
       button.innerText = "Subscribe to Email List";
       button.dataset.clicked = "false";
     } else {
       // First click: Move down and change text to "YES"
-      button.style.marginTop = (currentMargin + 80) + "px";
-      button.innerText = "YES";
+      button.style.marginTop = (currentMargin + 40) + "px";
+      button.style.textTransform = "none";
+      button.innerText = "Just submit your email.";
+      button.style.fontSize = "13px";
       button.dataset.clicked = "true";
+      button.style.color = "#fff"; // Change text color to white
+      button.style.backgroundColor = "#444"; // Change color to gray
+      button.style.pointerEvents = "none"; // Make button inactive
+      button.style.boxShadow = "6px 6px 10px rgba(0, 0, 0, 0.5)";
+      
     }
   }
 </script>
