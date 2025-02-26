@@ -1525,11 +1525,11 @@ section.contact-me {
 
   .blog-post {
     text-align: center;
-    width: 300px; /* Adjust as needed */
+    width: 450px; /* Adjust as needed */
     margin: 20px auto;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    /* border: 1px solid #ddd; */
+    /* border-radius: 8px; */
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
   }
   
@@ -1540,13 +1540,22 @@ section.contact-me {
   
   .blog-date {
     font-size: 14px;
-    color: #777;
+    color: #b3b3b3;
     margin: 5px 0;
   }
   
   .blog-title {
     font-size: 20px;
-    color: #333;
+    color: #d8bdbb;
     margin-top: 5px;
   }
+  
+  .blog-container {
+    display: flex;
+    gap: 20px; /* Space between blog posts */
+    justify-content: center; /* Center content horizontally */
+    flex-wrap: wrap; /* Wrap on smaller screens */
+  }
+  
+
   
