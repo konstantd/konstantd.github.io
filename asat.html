@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="assets/css/templatemo-style.css" />
     <link rel="stylesheet" href="assets/css/owl.css" />
     <link rel="stylesheet" href="assets/css/lightbox.css" />
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="assets/css/highlightjs/dracula.css" />
   </head>
 
   <body>
@@ -86,6 +89,20 @@
           <br>
         </div>
 
+
+        Dangling references are a common pitfall in C++ that can lead to undefined behavior, crashes, or memory corruption. 
+        In this article, we explore a real-world example using a configuration manager class, identify the issue, and implement a 
+        proper fix to prevent dangling references.
+
+        Consider the following code. Can you spot the error? Give yourself 1-2 minutes before you scroll further down.
+
+
+        <h1>Prism.js Code Highlighting</h1>
+
+        <!-- Code block you want to highlight -->
+        <pre><code id="cpp-code" class="cpp"> 
+        </code>
+        </pre>
 
 asaassa
 sasaa
@@ -243,7 +260,9 @@ as
 
 
 
-
+<!-- Include Prism.js JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script> <!-- Add specific language components -->
 
 <script>
   function toggleButton(button) {
@@ -288,6 +307,67 @@ as
     }
   }
 </script>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, function (char) {
+        switch (char) {
+            case '&': return '&amp;';
+            case '<': return '&lt;';
+            case '>': return '&gt;';
+            case '"': return '&quot;';
+            case "'": return '&apos;';
+        }
+    });
+  }
+
+  var cppDangl = `
+  #include <iostream>
+  #include <map>
+  #include <string>
+
+  class ConfigManager {
+  private:
+    std::map<std::string, int> configs;
+
+  public:
+    ConfigManager() {
+        configs["max_connections"] = 100;
+        configs["timeout"] = 30;
+    }
+
+    int findConfig(const std::string& name) const {  
+        auto it = configs.find(name);  
+        if (it != configs.end()) 
+            return it->second; 
+        
+        return -1; // Default value indicating missing config
+    }  
+  };
+
+  int main() {
+    ConfigManager configManager;
+
+    std::cout << "Max Connections: " << configManager.findConfig("max_connections") << std::endl;
+    std::cout << "Timeout: " << configManager.findConfig("timeout") << std::endl;
+    std::cout << "Unknown Config: " << configManager.findConfig("unknown") << std::endl;
+
+    return 0;
+  }
+`;
+
+  const escapedCppCode = escapeHtml(cppDangl);
+  document.getElementById('cpp-code').innerHTML = escapedCppCode; 
+
+
+  
+
+</script>
+ 
+
 
 
   </body>
