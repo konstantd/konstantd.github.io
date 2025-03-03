@@ -1588,6 +1588,36 @@ section.contact-me {
     }
 
 
+    .copy-btn {
+        cursor: pointer;
+        /* background-color: #b62d79; */
+        background-color: #a43f49;
+        color: white;
+        font-size: 18px;
+        position: absolute; 
+        top: 0; 
+        right: 0;
+        z-index: 10; /* Ensure the button stays above the code */
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+        transition: background-color 0.2s ease;
+    }
+    .copy-btn:hover {
+        background-color: #473a3a;
+      }
+
+  
+      /* Styling for the code block container */
+      pre {
+        position: relative;
+        background-color: #f4f4f4;
+        overflow-x: auto; */
+        /* white-space: pre-wrap; */
+        /* margin: 0; /* Ensure there's no extra space around */
+      }
+
+
+
+      
 
     /* pre {
        /*  background-color: #282c34; /* Dark background */
