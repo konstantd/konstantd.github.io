@@ -1591,18 +1591,22 @@ section.contact-me {
     .copy-btn {
         cursor: pointer;
         /* background-color: #b62d79; */
-        background-color: #a43f49;
-        color: white;
-        font-size: 18px;
+        background-color: #282A36;
+        /* color: rgb(0, 0, 0); */
+        color: rgb(255, 255, 255);
+        font-size: 5px;
         position: absolute; 
         top: 0; 
         right: 0;
         z-index: 10; /* Ensure the button stays above the code */
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
-        transition: background-color 0.2s ease;
+        /* box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4); */
+        transition: font-size 0.2s ease;
     }
+    
     .copy-btn:hover {
-        background-color: #473a3a;
+        background-color: #282A36;
+        color: rgb(0, 0, 0);
+        font-size:1.2rem;
       }
 
   
@@ -1610,10 +1614,12 @@ section.contact-me {
       pre {
         position: relative;
         background-color: #f4f4f4;
-        overflow-x: auto; */
+        overflow-x: auto;
+        width: 75%; 
+        margin: 0 auto; /* Center the code block */
+      }
         /* white-space: pre-wrap; */
         /* margin: 0; /* Ensure there's no extra space around */
-      }
 
 
 

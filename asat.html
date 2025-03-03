@@ -105,27 +105,31 @@
 
         Consider the following code. Can you spot the error? Give yourself 1-2 minutes before you scroll further down.
 
-
-        <h1>Prism.js Code Highlighting</h1>
-
+        <br><br><br>
         <!-- Code block you want to highlight -->
         <pre id="code-container"><code id="cpp-code" class="cpp">
           <!-- <button class="copy-btn" onclick="copyCode()">Copy</button> -->
 </code></pre>
+<br><br><br>
 
 
-asaassa
-sasaa
-assasaas<br>
-sa<br>
-sa<br>
-as<br><br>
-as<br>
-as<br>
-<br><br>
-as<br>
-asas<br>
-as
+The function 'findConfig' retrieves a configuration value from a std::map of settings. 
+If the requested setting exists, it returns its value. If the setting is missing, 
+it returns a default value (-1). Have you seen now the error?
+
+    <ul>
+      <li>If name exists in the configs map, it returns a reference to the stored int, which is valid.</li>
+      <li>If name does not exist, it returns -1. However, -1 is a temporary (rvalue).</li>
+      <li>Returning a reference to a temporary leads to a dangling reference after the function returns.</li>
+    </ul>
+
+    <br><br><br>
+When we call it with "unknown" as the name, it returns -1, the
+ function tries to return a reference to -1, but -1 is a temporary. The function ends, and the temporary -1 is destroyed. 
+ The returned reference now points to invalid memory (dangling reference). Undefined behavior occurs — possible crash, garbage value, or unexpected results.
+
+ 
+  
      <br>     <!-- xyzkqwlj -->
 
         </div>
@@ -349,12 +353,12 @@ as
         configs["timeout"] = 30;
     }
 
-    int findConfig(const std::string& name) const {  
+    const int& findConfig(const std::string& name) const {  
         auto it = configs.find(name);  
         if (it != configs.end()) 
             return it->second; 
         
-        return -1; // Default value indicating missing config
+        return -1;
     }  
   };
 
@@ -380,7 +384,7 @@ as
         // Create the copy button dynamically
         var copyButton = document.createElement('button');
         copyButton.classList.add('copy-btn');
-        copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+        copyButton.innerHTML = '<i class="fas fa-copy" style="font-size:1.2rem;"></i>';
         copyButton.onclick = copyCode;
         copyButton.title = 'Click to copy the code to clipboard';
   
