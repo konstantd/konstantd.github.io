@@ -15,6 +15,18 @@
     <link rel="stylesheet" href="assets/css/templatemo-style.css" />
     <link rel="stylesheet" href="assets/css/owl.css" />
     <link rel="stylesheet" href="assets/css/lightbox.css" />
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/dracula.css" />
+
+    <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-dracula.css" rel="stylesheet" /> -->
+
+    <!-- Include Prism.js CSS for styling -->
+        
+    <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.css" rel="stylesheet" />
+  -->
+
   </head>
 
   <body>
@@ -40,6 +52,20 @@
         </div>
       </div>
 
+
+  <div class="sidebar">
+    <br>
+        <br>
+    <br>
+
+
+    <h2>Experience</h2>
+    <a href="index.html">First</a>
+    <a href="asat.html">Second</a>
+</div>
+
+
+
       <!-- My Work Section -->
       <section class="section blog"  data-section="section7">
 
@@ -52,197 +78,73 @@
           </br>
           </br>
 
-            <h2>My Blog</h2>
+            <h2>Dangling References</h2>
             <div class="line-dec"></div>
             </br>
-            <span>This is my technical blog, where I will share my thoughts and experiences on the technical projects I have worked on, as well as the latest developments in the field of computer science and technology.</span>
           </div>
 
-            <p>📢 
-              Subscribe to my technical blog to receive updates on my latest blog posts and projects.
-            </p>
-            <br>
-            <br>
-            <form id="subscribe-form" class="subscribe-form" action="https://formspree.io/f/asxsas" method="POST">
-              <input type="email" name="email" required placeholder="Your email" style="color: grey; width: 250px">
-              <button type="submit" style="margin-left: 10px; margin-left: 10px;">Subscribe!</button>
-            </form>
-          <div class="subscribe-button" style="text-align: center;">
-              <button onclick="toggleButton(this)" class="cta-button">Subscribe to Email List</button>
-          <br>
-        </div>
 
 
+        Dangling references are a common pitfall in C++ that can lead to undefined behavior, crashes, or memory corruption. 
+        In this article, we explore a real-world example using a configuration manager class, identify the issue, and implement a 
+        proper fix to prevent dangling references.
+
+        Consider the following code. Can you spot the error? Give yourself 1-2 minutes before you scroll further down.
+
+        <br><br><br>
+        <!-- Code block you want to highlight -->
+        <pre id="code-container"><code id="cpp-code" class="cpp">
+          <!-- <button class="copy-btn" onclick="copyCode()">Copy</button> -->
+</code></pre>
+<br><br><br>
 
 
+The function 'findConfig' retrieves a configuration value from a std::map of settings. 
+If the requested setting exists, it returns its value. If the setting is missing, 
+it returns a default value (-1). Have you seen now the error?
 
-          <!-- xyzkqwlj -->
+    <ul>
+      <li>If name exists in the configs map, it returns a reference to the stored int, which is valid.</li>
+      <li>If name does not exist, it returns -1. However, -1 is a temporary (rvalue).</li>
+      <li>Returning a reference to a temporary leads to a dangling reference after the function returns.</li>
+    </ul>
 
+    <br><br><br>
+When we call it with "unknown" as the name, it returns -1, the
+ function tries to return a reference to -1, but -1 is a temporary. The function ends, and the temporary -1 is destroyed. 
+ The returned reference now points to invalid memory (dangling reference). Undefined behavior occurs — possible crash, garbage value, or unexpected results.
 
-
-          <br /><br /><br /><br />
-          <div class="row">
-            <div class="isotope-wrapper">
-              <form class="isotope-toolbar">
-                <label
-                  ><input
-                    type="radio"
-                    data-type="*"
-                    checked=""
-                    name="isotope-filter"
-                  />
-                  <span>All</span></label
-                >
-                <label
-                  ><input
-                    type="radio"
-                    data-type="Python"
-                    name="isotope-filter"
-                  />
-                  <span>Python</span></label
-                >
-                <label
-                  ><input
-                    type="radio"
-                    data-type="MATLAB"
-                    name="isotope-filter"
-                  />
-                  <span>MATLAB</span></label
-                >
-                <label
-                  ><input
-                    type="radio"
-                    data-type="C"
-                    name="isotope-filter"
-                  />
-                  <span>C / C++</span></label
-                >
-                <label
-                  ><input
-                    type="radio"
-                    data-type="Java"
-                    name="isotope-filter"
-                  />
-                  <span>Java</span></label
-                >
-                <label
-                  ><input
-                    type="radio"
-                    data-type="MySQL"
-                    name="isotope-filter"
-                  />
-                  <span>MySQL</span></label
-                >
-                <label
-                  ><input
-                    type="radio"
-                    data-type="WebDevelopment"
-                    name="isotope-filter"
-                  />
-                  <span>Web Development</span></label
-                >
-              </form>
-  
-  
-              <!-- Projects -->
-
-              <div class="blog-container">
-                <div class="blog-post">
-                  <figure class="snip1321">
-                    <img src="assets/images/cern_experiment.jpg" alt="Blog Image" class="blog-image" />
-                      <figcaption>
-                        <a href="https://github.com/exarchou/Food-Categorization-via-Prediction-of-Ingredients"> <i class="fa fa-search"> </i></a>
-                        <h4>CERN</h4>
-                        <span>Food Categorization via the Prediction of the Ingredients</span>
-                      </figcaption>
-                  </figure>
-
-                  <p class="blog-date">February 25, 2025</p>
-                  <h3 class="blog-title">Understanding AI in Everyday Life</h3>
-                </div>
-
-
-                <div class="blog-post">
-                  <figure class="snip1321">
-                  <img src="assets/images/delet.png" alt="Blog Image" class="blog-image" />
-                  <figcaption>
-                    <a href="https://github.com/exarchou/Food-Categorization-via-Prediction-of-Ingredients"> <i class="fa fa-search"> </i></a>
-                    <h4>CERN</h4>
-                    <span>Food Categorization via the Prediction of the Ingredients</span>
-                  </figcaption>
-                </figure>
-
-                  <p class="blog-date">February 25, 2025</p>
-                  <h3 class="blog-title">What is a Deadlock in C++</h3>
-                </div>
-
-
-                <div class="blog-post">
-                  <figure class="snip1321">
-                  <img src="assets/images/raspberry-pi.jpg" alt="Blog Image" class="blog-image" />
-                  <figcaption>
-                    <a href="dangling_ref.html"> <i class="fa fa-search"> </i></a>
-                    <h4>Dangling References</h4>
-                    <span>Dangling references in C++</span>
-                  </figcaption>
-                </figure>
-
-                  <p class="blog-date">February 25, 2025</p>
-                  <h3 class="blog-title">How to communicate with a sensor.</h3>
-                </div>
-
-
-
-                <div class="blog-post">
-                  <figure class="snip1321">
-                  <img src="assets/images/cern_experiment.jpg" alt="Blog Image" class="blog-image" />
-                  <figcaption>
-                    <a href="https://github.com/exarchou/Food-Categorization-via-Prediction-of-Ingredients"> <i class="fa fa-search"> </i></a>
-                    <h4>CERN</h4>
-                    <span>Food Categorization via the Prediction of the Ingredients</span>
-                  </figcaption>
-                </figure>
-
-                  <p class="blog-date">February 25, 2025</p>
-                  <h3 class="blog-title">Understanding AI in Everyday Life</h3>
-                </div>
-
-
-                
-              </div>
-
-                
-<!-- 
-                <div class="isotope-item" data-type="MATLAB">
-                  <figure class="snip1321">
-                    <img
-                      src="assets/images/speaker-reco.jpg"
-                      alt="sq-sample26"
-                    />
-                    <figcaption>
-                      <a href="https://github.com/exarchou/Automatic-Speaker-Recognition"> <i class="fa fa-search"></i> </a>
-                      <h4>Speaker Recognition</h4>
-                      <span>Voice Activity Detection and signal segmentation in time windows. Feature extraction in time and frequency domain. Classification in ten individual speakers.</span>
-                    </figcaption>
-                  </figure>
-                </div> -->
-  
-              </div>
-  
-  
-  
-  
-  
-  
-            </div>
-          </div>
+ <hr>
+ 
         </div>
   
 
       </section>
 
     
-    
+ <section>
+     
+    <div style="text-align: center;">
+        <br> <br>
+        <p>📢 
+            Subscribe to my technical blog to receive updates on my latest blog posts and projects.
+          </p>
+
+    </div>
+s
+     <form id="subscribe-form" class="subscribe-form" action="https://formspree.io/f/asxsas" method="POST">
+       <input type="email" name="email" required placeholder="Your email" style="color: grey; width: 250px">
+       <button type="submit" style="margin-left: 10px; margin-left: 10px;">Subscribe!</button>
+     </form>
+   <div class="subscribe-button" style="text-align: center;">
+       <button onclick="toggleButton(this)" class="cta-button">Subscribe to Email List</button>
+
+    </div>
+
+    <br><br>
+
+
+ </section>   
     
       <!-- Footer Section -->
       <footer class="footer">
@@ -378,7 +280,9 @@
 
 
 
-
+<!-- Include Prism.js JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script> <!-- Add specific language components -->
 
 <script>
   function toggleButton(button) {
@@ -423,6 +327,107 @@
     }
   }
 </script>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, function (char) {
+        switch (char) {
+            case '&': return '&amp;';
+            case '<': return '&lt;';
+            case '>': return '&gt;';
+            case '"': return '&quot;';
+            case "'": return '&apos;';
+        }
+    });
+  }
+
+  var cppDangl = `
+  #include <iostream>
+  #include <map>
+  #include <string>
+
+  class ConfigManager {
+  private:
+    std::map<std::string, int> configs;
+
+  public:
+    ConfigManager() {
+        configs["max_connections"] = 100;
+        configs["timeout"] = 30;
+    }
+
+    const int& findConfig(const std::string& name) const {  
+        auto it = configs.find(name);  
+        if (it != configs.end()) 
+            return it->second; 
+        
+        return -1;
+    }  
+  };
+
+  int main() {
+    ConfigManager configManager;
+
+    std::cout << "Max Connections: " << configManager.findConfig("max_connections") << std::endl;
+    std::cout << "Timeout: " << configManager.findConfig("timeout") << std::endl;
+    std::cout << "Unknown Config: " << configManager.findConfig("unknown") << std::endl;
+
+    return 0;
+  }
+`;
+
+  const escapedCppCode = escapeHtml(cppDangl);
+  document.getElementById('cpp-code').innerHTML = escapedCppCode; 
+  // <button class="copy-btn" onclick="copyCode()">Copy</button>
+
+
+
+
+
+        // Create the copy button dynamically
+        var copyButton = document.createElement('button');
+        copyButton.classList.add('copy-btn');
+        copyButton.innerHTML = '<i class="fas fa-copy" style="font-size:1.2rem;"></i>';
+        copyButton.onclick = copyCode;
+        copyButton.title = 'Click to copy the code to clipboard';
+  
+        // Append the copy button to the <pre> element (not inside <code>)
+        document.getElementById('code-container').appendChild(copyButton);
+
+
+
+        function copyCode() {
+          // Get the code element
+          var code = document.getElementById('cpp-code');
+      
+          // Create a temporary textarea to copy the text from
+          var tempTextArea = document.createElement('textarea');
+          tempTextArea.value = code.textContent || code.innerText;
+          document.body.appendChild(tempTextArea);
+      
+          // Select and copy the text
+          tempTextArea.select();
+          tempTextArea.setSelectionRange(0, 99999); // For mobile devices
+          document.execCommand('copy');
+      
+          // Remove the temporary textarea
+          document.body.removeChild(tempTextArea);
+      
+          // Alert to notify the user
+          alert('Code copied to clipboard!');
+        }
+
+
+  // <button class="copy-btn" onclick="copyCode()">Copy</button>
+
+  
+
+</script>
+ 
+
 
 
   </body>
