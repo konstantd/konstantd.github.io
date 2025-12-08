@@ -62,7 +62,7 @@
     <h2>Experience</h2>
     <a href="index.html">First</a>
     <a href="asat.html">Second</a>
-</div>
+  </div>
 
 
 
@@ -96,41 +96,42 @@
           <div class="subscribe-button" style="text-align: center;">
               <button onclick="toggleButton(this)" class="cta-button">Subscribe to Email List</button>
           <br>
-        </div>
+          </div>
+          <br>
+
+          Dangling references are a common pitfall in C++ that can lead to undefined behavior, crashes, or memory corruption. 
+          In this article, we explore a real-world example using a configuration manager class, identify the issue, and implement a 
+          proper fix to prevent dangling references.
+
+          Consider the following code. Can you spot the error? Give yourself 1-2 minutes before you scroll further down.
+
+          <br><br><br>
+          <!-- Code block you want to highlight -->
+          <pre id="code-container"><code id="cpp-code" class="cpp">
+            <!-- <button class="copy-btn" onclick="copyCode()">Copy</button> -->
+          </code></pre>
+          <br><br><br>
+
+          <h3>The problem:</h3>
+
+          <br>
+          The function 'findConfig' retrieves a configuration value from a std::map of settings. 
+          If the requested setting exists, it returns its value. If the setting is missing, 
+          it returns a default value (-1). Have you seen now the error?
+          <ul>
+            <li>If name exists in the configs map, it returns a reference to the stored int, which is valid.</li>
+            <li>If name does not exist, it returns -1. However, -1 is a temporary (rvalue).</li>
+            <li>Returning a reference to a temporary leads to a dangling reference after the function returns.</li>
+          </ul>
 
 
-        Dangling references are a common pitfall in C++ that can lead to undefined behavior, crashes, or memory corruption. 
-        In this article, we explore a real-world example using a configuration manager class, identify the issue, and implement a 
-        proper fix to prevent dangling references.
-
-        Consider the following code. Can you spot the error? Give yourself 1-2 minutes before you scroll further down.
-
-        <br><br><br>
-        <!-- Code block you want to highlight -->
-        <pre id="code-container"><code id="cpp-code" class="cpp">
-          <!-- <button class="copy-btn" onclick="copyCode()">Copy</button> -->
-</code></pre>
-<br><br><br>
+           <br>
+           When we call it with "unknown" as the name, it returns -1, the
+           function tries to return a reference to -1, but -1 is a temporary. The function ends, and the temporary -1 is destroyed. 
+           The returned reference now points to invalid memory (dangling reference). Undefined behavior occurs — possible crash, garbage value, or unexpected results.
 
 
-The function 'findConfig' retrieves a configuration value from a std::map of settings. 
-If the requested setting exists, it returns its value. If the setting is missing, 
-it returns a default value (-1). Have you seen now the error?
-
-    <ul>
-      <li>If name exists in the configs map, it returns a reference to the stored int, which is valid.</li>
-      <li>If name does not exist, it returns -1. However, -1 is a temporary (rvalue).</li>
-      <li>Returning a reference to a temporary leads to a dangling reference after the function returns.</li>
-    </ul>
-
-    <br><br><br>
-When we call it with "unknown" as the name, it returns -1, the
- function tries to return a reference to -1, but -1 is a temporary. The function ends, and the temporary -1 is destroyed. 
- The returned reference now points to invalid memory (dangling reference). Undefined behavior occurs — possible crash, garbage value, or unexpected results.
-
- 
-  
-     <br>     <!-- xyzkqwlj -->
+            <br>     <!-- xyzkqwlj -->
 
         </div>
   
@@ -169,7 +170,6 @@ When we call it with "unknown" as the name, it returns -1, the
 
     
     <!-- Scripts -->
-
     <script src="https://formspree.io/js/formbutton-v1.min.js" defer></script>
 
 <script>
@@ -278,6 +278,8 @@ When we call it with "unknown" as the name, it returns -1, the
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script> <!-- Add specific language components -->
 
+
+<!--  Subscribe form button -->
 <script>
   function toggleButton(button) {
     let currentMargin = parseInt(window.getComputedStyle(button).marginTop) || 0;
@@ -322,9 +324,12 @@ When we call it with "unknown" as the name, it returns -1, the
   }
 </script>
 
+<!--  Code snippet highlight -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
+
+<!--  Code snippet Text -->
 <script>
   function escapeHtml(str) {
     return str.replace(/[&<>"']/g, function (char) {
@@ -375,47 +380,40 @@ When we call it with "unknown" as the name, it returns -1, the
 
   const escapedCppCode = escapeHtml(cppDangl);
   document.getElementById('cpp-code').innerHTML = escapedCppCode; 
-  // <button class="copy-btn" onclick="copyCode()">Copy</button>
 
 
-
-
-
-        // Create the copy button dynamically
-        var copyButton = document.createElement('button');
-        copyButton.classList.add('copy-btn');
-        copyButton.innerHTML = '<i class="fas fa-copy" style="font-size:1.2rem;"></i>';
-        copyButton.onclick = copyCode;
-        copyButton.title = 'Click to copy the code to clipboard';
+  // Create the copy button dynamically
+  var copyButton = document.createElement('button');
+  copyButton.classList.add('copy-btn');
+  copyButton.innerHTML = '<i class="fas fa-copy" style="font-size:1.2rem;"></i>';
+  copyButton.onclick = copyCode;
+  copyButton.title = 'Click to copy the code to clipboard'
+  // Append the copy button to the <pre> element (not inside <code>)
+  document.getElementById('code-container').appendChild(copyButton);
   
-        // Append the copy button to the <pre> element (not inside <code>)
-        document.getElementById('code-container').appendChild(copyButton);
+  function copyCode() {
+    // Get the code element
+    var code = document.getElementById('cpp-code');
+
+    // Create a temporary textarea to copy the text from
+    var tempTextArea = document.createElement('textarea');
+    tempTextArea.value = code.textContent || code.innerText;
+    document.body.appendChild(tempTextArea);
+
+    // Select and copy the text
+    tempTextArea.select();
+    tempTextArea.setSelectionRange(0, 99999); // For mobile devices
+    document.execCommand('copy');
+
+    // Remove the temporary textarea
+    document.body.removeChild(tempTextArea);
+
+    // Alert to notify the user
+    alert('Code copied to clipboard!');
+  
+  }
 
 
-
-        function copyCode() {
-          // Get the code element
-          var code = document.getElementById('cpp-code');
-      
-          // Create a temporary textarea to copy the text from
-          var tempTextArea = document.createElement('textarea');
-          tempTextArea.value = code.textContent || code.innerText;
-          document.body.appendChild(tempTextArea);
-      
-          // Select and copy the text
-          tempTextArea.select();
-          tempTextArea.setSelectionRange(0, 99999); // For mobile devices
-          document.execCommand('copy');
-      
-          // Remove the temporary textarea
-          document.body.removeChild(tempTextArea);
-      
-          // Alert to notify the user
-          alert('Code copied to clipboard!');
-        }
-
-
-  // <button class="copy-btn" onclick="copyCode()">Copy</button>
 
   
 
