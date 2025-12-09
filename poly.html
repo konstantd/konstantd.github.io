@@ -15,6 +15,18 @@
     <link rel="stylesheet" href="assets/css/templatemo-style.css" />
     <link rel="stylesheet" href="assets/css/owl.css" />
     <link rel="stylesheet" href="assets/css/lightbox.css" />
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/dracula.css" />
+
+    <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-dracula.css" rel="stylesheet" /> -->
+
+    <!-- Include Prism.js CSS for styling -->
+        
+    <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.css" rel="stylesheet" />
+  -->
+
   </head>
 
   <body>
@@ -40,154 +52,91 @@
         </div>
       </div>
 
+
+  <div class="sidebar">
+    <br>
+        <br>
+    <br>
+
+
+    <h2>Go Back</h2>
+    <a href="blog.html">Blog</a>
+</div>
+
+
+
       <!-- My Work Section -->
       <section class="section blog"  data-section="section7">
+
+
         <div class="container">
+
           <div class="section-heading">
           </br>
           </br>
           </br>
           </br>
 
-            <h2>My Blog</h2>
+            <h2>Inheritance downcasting is dangerous</h2>
             <div class="line-dec"></div>
-            </br>
-            <span>This is my technical blog, where I will share my thoughts and experiences on the technical projects I have worked on, as well as the latest developments in the field of computer science and technology.</span>
           </div>
-            <p>📢 
-              Subscribe to my technical blog to receive updates on my latest blog posts and projects.
-            </p>
-            <br>
-            <br>
-            <form id="subscribe-form" class="subscribe-form" action="https://formspree.io/f/asxsas" method="POST">
-              <input type="email" name="email" required placeholder="Your email" style="color: grey; width: 250px">
-              <button type="submit" style="margin-left: 10px; margin-left: 10px;">Subscribe!</button>
-            </form>
-            <div class="subscribe-button" style="text-align: center;">
-              <button onclick="toggleButton(this)" class="cta-button">Subscribe to Email List</button>
-              <br>
-            </div>
+          Converting a base-class pointer to a derived-class pointer is downcasting. We should be careful when we do that in order to avoid UBs.
+
+        <br><br>
+        Consider the following code. 
+
+        <br><br><br>
+        <!-- Code block you want to highlight -->
+        <pre id="code-container"><code id="cpp-code" class="cpp">
+          <!-- <button class="copy-btn" onclick="copyCode()">Copy</button> -->
+</code></pre>
+<br><br><br>
 
 
+<h3>The Take-Away:</h3>
+<br>
 
-          </section>
+    Never downcast a base pointer to a derived type unless you are sure about the object that it points to. Static cast will compile but will do it as the name suggests, statically. Prefer dynamic_cast and perform a runtime check for the returned ptr.
+    
+    <br>
+    <br>
 
-          <!-- xyzkqwlj -->
+    If we would have a Derived --> Base, this is upcasting the pointer, it is safe and implicit.
+    <br>
+    But for Base    --> Derived, this is downcasting, always dangerous without dynamic_cast.
+    
 
-
-          <section class="section blog"  data-section="section7">
-            <div class="section-heading">
-              <h2>Articles</h2>
-              <div class="line-dec"></div>
-            </div>
-          <div class="row">
-            <div class="isotope-wrapper">
-
-  
-              <!-- BLOGS -->
-
-              <div class="blog-container">
-                <div class="blog-post">
-                  <figure class="snip1321">
-                    <img src="assets/images/cern_experiment.jpg" alt="Blog Image" class="blog-image" />
-                      <figcaption>
-                        <a href="asat.html">Read More</a>
-                        <h4>CERN</h4>
-                        <span>Dangling references</span>
-                      </figcaption>
-                  </figure>
-
-                  <p class="blog-date">February 25, 2025</p>
-                  <h3 class="blog-title">Dangling references</h3>
-                </div>
-
-
-                <div class="blog-post">
-                  <figure class="snip1321">
-                  <img src="assets/images/delet.png" alt="Blog Image" class="blog-image" />
-                  <figcaption>
-                    <a href="https://github.com/exarchou/Food-Categorization-via-Prediction-of-Ingredients"> <i class="fa fa-search"> </i></a>
-                    <h4>CERN</h4>
-                    <span>Food Categorization via the Prediction of the Ingredients</span>
-                  </figcaption>
-                </figure>
-
-                  <p class="blog-date">February 25, 2025</p>
-                  <h3 class="blog-title">What is a Deadlock in C++</h3>
-                </div>
-
-
-                <div class="blog-post">
-                  <figure class="snip1321">
-                  <img src="assets/images/dangling.png" alt="Blog Image" class="blog-image" />
-                  <figcaption>
-                    <a href="dangling_ref.html"> <i class="fa fa-search"> </i></a>
-                    <h4>Dangling References</h4>
-                    <span>Dangling references in C++</span>
-                  </figcaption>
-                </figure>
-                  <p class="blog-date">February 25, 2025</p>
-                  <h3 class="blog-title">How to spot a dangling reference.</h3>  
-                </div>
-                <!-- // how to fix dangling references TODO -->
-
-
-
-                <div class="blog-post">
-                  <figure class="snip1321">
-                  <img src="assets/images/template_comp.jpg" alt="Blog Image" class="blog-image" />
-                  <figcaption>
-                    <a href="template_compilation.html"> <i class="fa fa-search"> </i></a>
-                    <h4>CERN</h4>
-                    <span>Templates Compilation vs Runtime overloading</span>
-                  </figcaption>
-                </figure>
-                  <p class="blog-date">February 25, 2025</p>
-                  <h3 class="blog-title">Templates Compilation vs Runtime overloading</h3>
-                </div> 
-              </div>
-
-
-
-              <div class="blog-post">
-                <figure class="snip1321">
-                  <img src="assets/images/dangling.png" alt="Blog Image" class="blog-image" />
-                <figcaption>
-                  <a href="poly.html"> <i class="fa fa-search"> </i></a>
-                  <span>Polymorhism in C++, Static-Downcasting is a Bad Idea </span>
-                </figcaption>
-              </figure>
-                <p class="blog-date">February 25, 2025</p>
-                <h3 class="blog-title">Polymorhism in C++, Static-Downcasting is a Bad Idea</h3>
-              </div> 
-            </div>
-
-
-                
-<!-- 
-                <div class="isotope-item" data-type="MATLAB">
-                  <figure class="snip1321">
-                    <img
-                      src="assets/images/speaker-reco.jpg"
-                      alt="sq-sample26"
-                    />
-                    <figcaption>
-                      <a href="https://github.com/exarchou/Automatic-Speaker-Recognition"> <i class="fa fa-search"></i> </a>
-                      <h4>Speaker Recognition</h4>
-                      <span>Voice Activity Detection and signal segmentation in time windows. Feature extraction in time and frequency domain. Classification in ten individual speakers.</span>
-                    </figcaption>
-                  </figure>
-                </div> -->
-  
-            </div>
-          </div>
+ <hr>
+ 
         </div>
   
 
-          </section>
+      </section>
 
     
-    
+ <section>
+     
+    <div style="text-align: center;">
+        <br> <br>
+        <p>📢 
+            Subscribe to my technical blog to receive updates on my latest blog posts and projects.
+          </p>
+
+    </div>
+s
+     <form id="subscribe-form" class="subscribe-form" action="https://formspree.io/f/asxsas" method="POST">
+       <input type="email" name="email" required placeholder="Your email" style="color: grey; width: 250px">
+       <button type="submit" style="margin-left: 10px; margin-left: 10px;">Subscribe!</button>
+     </form>
+   <div class="subscribe-button" style="text-align: center;">
+       <button onclick="toggleButton(this)" class="cta-button">Subscribe to Email List</button>
+
+    </div>
+
+    <br><br>
+
+
+ </section>   
     
       <!-- Footer Section -->
       <footer class="footer">
@@ -323,7 +272,9 @@
 
 
 
-
+<!-- Include Prism.js JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script> <!-- Add specific language components -->
 
 <script>
   function toggleButton(button) {
@@ -368,6 +319,149 @@
     }
   }
 </script>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, function (char) {
+        switch (char) {
+            case '&': return '&amp;';
+            case '<': return '&lt;';
+            case '>': return '&gt;';
+            case '"': return '&quot;';
+            case "'": return '&apos;';
+        }
+    });
+  }
+
+  var cppDangl = `
+#include<iostream>
+
+class Base
+{
+public:
+
+    Base() {
+        std::cout << "Base constructor" << std::endl;
+    }
+    void foo()
+    {
+        std::cout << "Base::foo" << std::endl;
+    }
+
+    virtual ~Base()
+    {
+        std::cout << "Base destructor" << std::endl;
+    }
+};
+
+
+class Derived : public Base
+{
+public:
+    void foo()
+    {
+        std::cout << "Derived::foo" << std::endl;
+    }
+
+    Derived() {
+        std::cout << "Derived constructor" << std::endl;
+    }
+
+
+    ~Derived()
+    {
+        std::cout << "Derived destructor" << std::endl;
+    }
+};
+
+
+int main()
+{
+
+
+    Base* base_ptr = new Base();   // OBJECT IS BASE - NOT DERIVED
+    Derived* derived_ptr = static_cast<Derived*>(base_ptr); // DANGER!
+    // The cast would succeed because static_cast performs no runtime check.
+    //  However, derived_ptr would point to an object 
+    // that is only a Base but is being treated as a Derived. 
+
+
+
+    // Now accessing Derived-specific members (like foo() if it touches Derived data) 
+    // leads to undefined behavior and likely memory corruption or a crash.
+    derived_ptr->foo();
+
+
+    // ---------------------------------------------------
+
+    // Its is better to use dynamic_cast and perform a runtime check Like below:
+    Derived* derived_ptr = dynamic_cast<Derived*>(base_ptr);
+    
+    if (derived_ptr) {
+        // This code block is NOT executed because the cast failed
+        derived_ptr->foo(); 
+    } else {
+        std::cout << "ERROR: Cast failed! Object is not a Derived. ";
+    }
+
+
+    return 0;
+}
+    
+`;
+
+  const escapedCppCode = escapeHtml(cppDangl);
+  document.getElementById('cpp-code').innerHTML = escapedCppCode; 
+  // <button class="copy-btn" onclick="copyCode()">Copy</button>
+
+
+
+
+
+        // Create the copy button dynamically
+        var copyButton = document.createElement('button');
+        copyButton.classList.add('copy-btn');
+        copyButton.innerHTML = '<i class="fas fa-copy" style="font-size:1.2rem;"></i>';
+        copyButton.onclick = copyCode;
+        copyButton.title = 'Click to copy the code to clipboard';
+  
+        // Append the copy button to the <pre> element (not inside <code>)
+        document.getElementById('code-container').appendChild(copyButton);
+
+
+
+        function copyCode() {
+          // Get the code element
+          var code = document.getElementById('cpp-code');
+      
+          // Create a temporary textarea to copy the text from
+          var tempTextArea = document.createElement('textarea');
+          tempTextArea.value = code.textContent || code.innerText;
+          document.body.appendChild(tempTextArea);
+      
+          // Select and copy the text
+          tempTextArea.select();
+          tempTextArea.setSelectionRange(0, 99999); // For mobile devices
+          document.execCommand('copy');
+      
+          // Remove the temporary textarea
+          document.body.removeChild(tempTextArea);
+      
+          // Alert to notify the user
+          alert('Code copied to clipboard!');
+        }
+
+
+  // <button class="copy-btn" onclick="copyCode()">Copy</button>
+
+  
+
+</script>
+ 
+
 
 
   </body>
