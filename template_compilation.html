@@ -17,13 +17,12 @@
     <link rel="stylesheet" href="assets/css/lightbox.css" />
     <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="assets/css/dracula.css" />
 
     <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-dracula.css" rel="stylesheet" /> -->
 
     <!-- Include Prism.js CSS for styling -->
-        
+
     <!-- <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.css" rel="stylesheet" />
   -->
 
@@ -55,6 +54,7 @@
 
 
 
+
       <!-- My Work Section -->
       <section class="section blog"  data-section="section7">
 
@@ -67,13 +67,18 @@
           </br>
           </br>
 
-            <h2>Inheritance downcasting is dangerous</h2>
+            <h2>Templates Compilation & Static Assertion</h2>
             <div class="line-dec"></div>
           </div>
-          Converting a base-class pointer to a derived-class pointer is downcasting. We should be careful when we do that in order to avoid UBs.
+
+        Templates complilation generate code at compile time, before the program is executed (Compile-time vs run-time compilation). Every different instantiation produces a separate function at compile time. 
+        This way we avoid writing duplication of the code. Also, we can avoid mistakes even on compilation time when we static assert them. As the name suggests, this checks takes place statically - on compilation. 
+        Like this, we avoid mistakes that might appear during runtime, when we should not instantiate a function of a specific type. Static-asserts was already introduced in C++11, though the we have some important imporvements in C++17 like CTAD and concepts in C++20. We may see some examples on other blogs. 
+
+        Another advantage is Zero-Cost Abstraction since we only use what we need.
 
         <br><br>
-        Consider the following code. 
+        Consider the following code. We have some registers from which we would like to read. We can read and cast the result to the type we need directly, without writing different functions. 
 
         <br><br><br>
         <!-- Code block you want to highlight -->
@@ -83,19 +88,13 @@
 <br><br><br>
 
 
-<h3>The Take-Away:</h3>
+<h3>Will the above code compile?</h3>
 <br>
 
-    Never downcast a base pointer to a derived type unless you are sure about the object that it points to. Static cast will compile but will do it as the name suggests, statically. Prefer dynamic_cast and perform a runtime check for the returned ptr.
-    
-    <br>
-    <br>
+    Check it again. The answer is no. But why? 
 
-    If we would have a Derived --> Base, this is upcasting the pointer, it is safe and implicit.
-    <br>
-    But for Base    --> Derived, this is downcasting, always dangerous without dynamic_cast.
-    
-
+    <br><br>
+    A double occupies 8 bytes and it will fail the stati_assert. Then we should use float instead. This saves us from reading/writing to memory that belongs to other parts and avoids creating UB..
  <hr>
  
         </div>
@@ -318,80 +317,45 @@ s
   }
 
   var cppDangl = `
-#include<iostream>
-
-class Base
-{
-public:
-
-    Base() {
-        std::cout << "Base constructor" << std::endl;
-    }
-    void foo()
-    {
-        std::cout << "Base::foo" << std::endl;
-    }
-
-    virtual ~Base()
-    {
-        std::cout << "Base destructor" << std::endl;
-    }
-};
-
-
-class Derived : public Base
-{
-public:
-    void foo()
-    {
-        std::cout << "Derived::foo" << std::endl;
-    }
-
-    Derived() {
-        std::cout << "Derived constructor" << std::endl;
-    }
-
-
-    ~Derived()
-    {
-        std::cout << "Derived destructor" << std::endl;
-    }
-};
-
-
-int main()
-{
-
-
-    Base* base_ptr = new Base();   // OBJECT IS BASE - NOT DERIVED
-    Derived* derived_ptr = static_cast<Derived*>(base_ptr); // DANGER!
-    // The cast would succeed because static_cast performs no runtime check.
-    //  However, derived_ptr would point to an object 
-    // that is only a Base but is being treated as a Derived. 
-
-
-
-    // Now accessing Derived-specific members (like foo() if it touches Derived data) 
-    // leads to undefined behavior and likely memory corruption or a crash.
-    derived_ptr->foo();
-
-
-    // ---------------------------------------------------
-
-    // Its is better to use dynamic_cast and perform a runtime check Like below:
-    Derived* derived_ptr = dynamic_cast<Derived*>(base_ptr);
+    template<typename TCast>
+    TCast readRegEdge(const edge_reg* const reg) const {  // This is a const pointer to a const register
     
-    if (derived_ptr) {
-        // This code block is NOT executed because the cast failed
-        derived_ptr->foo(); 
-    } else {
-        std::cout << "ERROR: Cast failed! Object is not a Derived. ";
+        // Avoids compilation directly - BRAM reads per word = 4 bytes
+        static_assert(sizeof(TCast) <= 4, "BRAM access type too large (max 32-bit). Use the template as integrals or floats direcly.");
+
+        if (!this->fmcEdgeDriver) {
+            throw std::runtime_error("fmcEdgeDriver is null — did you initialize it?");
+        }   
+
+        TCast value;  
+        if (edge_get(this->fmcEdgeDriver->edge_hdl, const_cast<edge_reg*>(reg), &value) != 0) { 
+            // Avoid heap alloc on exceptions
+            throw std::runtime_error(
+                std::string("Failed to read from register: ") + reg->reg_attr->name +  " | EDGE error: " + btrain_fmc_bsim_strerror(fmcEdgeDriver)
+            );
+        }
+    
+        // Return the value as the requested type
+        return value;
     }
 
 
-    return 0;
-}
-    
+
+    // Now we can read from different registers directly
+    int val = readRegEdge<int>(regs.bfield);  
+    double val = readRegEdge<double>(regs.bfield);
+
+    // Or if we have an enum class for states
+    enum class StateMode : uint8_t {
+        Active = 0,
+        Paused = 1
+        Disabled = 2,
+    };
+
+    // we can take the enum directly 
+    StateMode m = readRegEdge<StateMode>(regs.flag);
+
+
 `;
 
   const escapedCppCode = escapeHtml(cppDangl);
