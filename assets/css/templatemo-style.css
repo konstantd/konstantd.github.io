@@ -625,15 +625,15 @@ button:hover {
 }
 
 .python {
-    width: 10%;
+    width: 85%;
 }
 
 .matlab {
-    width: 80%;
+    width: 96%;
 }
 
 .c {
-    width: 75%;
+    width: 92%;
 }
 
 .linux-bash {
@@ -641,7 +641,7 @@ button:hover {
 }
 
 .java {
-    width: 65%;
+    width: 72%;
 }
 
 .r {
@@ -649,7 +649,7 @@ button:hover {
 }
 
 .webdev {
-    width: 60%;
+    width: 77%;
 }
 
 
@@ -1304,7 +1304,7 @@ section.contact-me {
     /* flex-wrap: wrap; Ensures responsiveness without resizing the image */
 }
 
-/* Tech label */
+/* Tech label Green - Python*/
 .tech-label {
     display: inline-block;
     background: #4CAF50;  /* Default green background */
@@ -1322,6 +1322,93 @@ section.contact-me {
     transform: scale(1.1);
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
 }
+
+
+
+
+
+/* Tech label Green */
+.tech-label-c {
+    display: inline-block;
+    background: #c4a610;  /* Default green background */
+    color: white;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 20px;  /* Rounded edges */
+    font-size: 14px;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.tech-label-c:hover {
+    transform: scale(1.1);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+
+
+/* Tech label */
+.tech-label-cpp,
+.tech-label-c,
+.tech-label-bash,
+.tech-label-verilog,
+.tech-label-java,
+.tech-label-r,
+.tech-label-webdev {
+    display: inline-block;
+    background: #09415d;  /* Default green background */
+    color: white;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 20px;  /* Rounded edges */
+    font-size: 14px;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+
+.tech-label-cpp:hover,
+.tech-label-c:hover,
+.tech-label-bash:hover,
+.tech-label-verilog:hover,
+.tech-label-java:hover,
+.tech-label-r:hover,
+.tech-label-webdev:hover
+
+{
+    transform: scale(1.1);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.tech-label-bash {
+    background: #c1671d;  /* Green background */
+}
+
+.tech-label-verilog {
+    background: #cb1414;  /* Blue background */
+}
+
+.tech-label-java {
+    background: #ff5507;  /* Yellow background */
+}
+
+.tech-label-r {
+    background: #00b3ff;  /* Orange background */
+}
+
+.tech-label-webdev {
+    background: #00C853;  /* Lime background */
+}
+
+
+.tech-label-cpp {
+    background: #6c1010;  /* Lime background */
+}
+
+
 
 .rocket-image {
     display: block;
@@ -1368,6 +1455,8 @@ section.contact-me {
     color: #fff;
     padding: 40px 0;
     text-align: center;
+    width: 100vw;
+    height: auto;
   }
   
   .footer .container {
