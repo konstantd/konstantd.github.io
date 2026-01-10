@@ -1783,3 +1783,20 @@ section.contact-me {
     width: 100%;
     color: #178a17 !important;
 }
+
+
+
+/* This selector is so specific it will crush Bootstrap's defaults */
+body #page-wraper section.blog pre#code-container code#cpp-code {
+    background-color: #282a36 !important;
+    color: #f8f8f2 !important;
+    display: block !important;
+    padding: 15px !important;
+    text-shadow: none !important;
+}
+
+/* Force Prism to stop adding its own white/gray backgrounds */
+#code-container[class*="language-"], 
+#cpp-code[class*="language-"] {
+    background: #282a36 !important;
+}
