@@ -1769,17 +1769,4 @@ section.contact-me {
     /* } */ 
 
 
-#code-container {
-    position: relative; /* Necessary for the absolute position of your copy button */
-    border-radius: 0;
-    overflow-x: auto;   /* Adds a scrollbar if the code is too wide */
-    white-space: pre;   /* Keeps code formatting intact */
-    max-width: 100%;    /* Prevents it from pushing out the right side */
-}
-
-#cpp-code {
-    display: block;
-    width: 100%;
-}
-
 
