@@ -1768,5 +1768,11 @@ section.contact-me {
        /*  font-weight: bold; /* Optional: Make it bold */
     /* } */ 
 
+#code-container {
+    width: 80%;           /* Or a fixed width like 800px */
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block;       /* Pre is block by default, but this ensures it */
+}
 
 
