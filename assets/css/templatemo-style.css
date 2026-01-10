@@ -1800,3 +1800,49 @@ body #page-wraper section.blog pre#code-container code#cpp-code {
 #cpp-code[class*="language-"] {
     background: #282a36 !important;
 }
+
+
+
+
+/* --- Dracula Syntax Highlighting Force --- */
+
+/* Keywords (template, typename, const, if, return) */
+#cpp-code .token.keyword,
+#cpp-code .token.directive-hash {
+    color: #ff79c6 !important; /* Pink */
+}
+
+/* Functions and Methods (readRegEdge, edge_get) */
+#cpp-code .token.function {
+    color: #50fa7b !important; /* Green */
+}
+
+/* Strings and Characters */
+#cpp-code .token.string {
+    color: #f1fa8c !important; /* Yellow */
+}
+
+/* Comments (// This is a comment) */
+#cpp-code .token.comment {
+    color: #6272a4 !important; /* Blue-Grey */
+    font-style: italic !important;
+}
+
+/* Types and Class names (int, double, uint8_t, StateMode) */
+#cpp-code .token.class-name,
+#cpp-code .token.type,
+#cpp-code .token.builtin {
+    color: #8be9fd !important; /* Cyan */
+}
+
+/* Numbers and Booleans */
+#cpp-code .token.number,
+#cpp-code .token.boolean {
+    color: #bd93f9 !important; /* Purple */
+}
+
+/* Operators and Punctuation (=, <, >, &, *) */
+#cpp-code .token.operator,
+#cpp-code .token.punctuation {
+    color: #f8f8f2 !important; /* Off-white */
+}
