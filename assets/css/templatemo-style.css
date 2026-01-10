@@ -624,32 +624,84 @@ button:hover {
     border-radius: 15px;
 }
 
+.cpp {
+    width: 90%;
+    background: #660a12;
+}
 .python {
     width: 85%;
+    background: #f07510;
+
 }
 
 .matlab {
     width: 96%;
+    background: #868070;
+
 }
 
 .c {
+    background: #f5b507;
+
     width: 92%;
 }
 
 .linux-bash {
-    width: 85%;
+    background: #580b0f;
+
+    width: 90%;
 }
 
 .java {
-    width: 72%;
+    background: #3b1336;
+
+    width: 50%;
+}
+
+
+.django {
+    background: #1d805a;
+
+    width: 90%;
+}
+
+
+
+
+.sql {
+    background: #a1ac13;
+
+    width: 87%;
+}
+
+
+.docker {
+    background: #c081bb;
+
+    width: 86%;
 }
 
 .r {
+    background: #122e61;
+
     width: 60%;
 }
 
+.make {
+    width: 90%;
+    background: #c7a947;
+}
+.gdb {
+    background: #9444ca;
+    width: 82%;
+}
+.perf {
+    background: #17868a;
+
+    width: 67%;
+}
 .webdev {
-    width: 77%;
+    width: 57%;
 }
 
 
@@ -1288,12 +1340,11 @@ section.contact-me {
   }
 
 /* Image */
-.fixed-img {
-    width: 400px;
-    height: 350px;
-    border-radius: 50%;
-    margin-right: 10px;
-    flex-shrink: 0;  /* Prevent shrinking in a flex container */
+.left-image-first-post .left-image .fixed-img {
+    /* width: 400px !important;   
+    height: 350px !important; */
+    border-radius: 60% !important;
+    margin-right: 10% !important;
 }
 
 .flex-container {
@@ -1307,7 +1358,7 @@ section.contact-me {
 /* Tech label Green - Python*/
 .tech-label {
     display: inline-block;
-    background: #4CAF50;  /* Default green background */
+    background: #971762;  /* Default green background */
     color: white;
     font-weight: bold;
     padding: 8px 15px;
@@ -1410,7 +1461,7 @@ section.contact-me {
 
 
 
-.rocket-image {
+.rocket-image2 {
     display: block;
     max-width: 100%;
     height: auto;
@@ -1420,16 +1471,6 @@ section.contact-me {
 
 
 
-
-/* Different colors for each technology */
-.python { background: #3572A5; }   /* Python Blue */
-.matlab { background: #E37323; }   /* MATLAB Orange */
-.cpp { background: #00599C; }      /* C++ Blue */
-.linux { background: #FCC624; color: #333; } /* Linux Yellow */
-.verilog { background: #A6120D; }  /* Verilog Red */
-.java { background: #EA2D2E; }      /* Java Red */
-.r { background: #276DC3; }        /* R Blue */
-.webdev { background: #F16529; }    /* HTML Orange */
 
 .rocket-container {
     font-size: 60px; /* Adjust size */
@@ -1726,3 +1767,18 @@ section.contact-me {
         color: red; /* Change text color */
        /*  font-weight: bold; /* Optional: Make it bold */
     /* } */ 
+
+
+#code-container {
+    position: relative; /* Necessary for the absolute position of your copy button */
+    background: #282a36; /* Match your Dracula theme background */
+    border-radius: 0;
+    overflow-x: auto;   /* Adds a scrollbar if the code is too wide */
+    white-space: pre;   /* Keeps code formatting intact */
+    max-width: 100%;    /* Prevents it from pushing out the right side */
+}
+
+#cpp-code {
+    display: block;
+    width: 100%;
+}
