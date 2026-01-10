@@ -1771,7 +1771,6 @@ section.contact-me {
 
 #code-container {
     position: relative; /* Necessary for the absolute position of your copy button */
-    background: #4c7531 !important; /* Match your Dracula theme background */
     border-radius: 0;
     overflow-x: auto;   /* Adds a scrollbar if the code is too wide */
     white-space: pre;   /* Keeps code formatting intact */
