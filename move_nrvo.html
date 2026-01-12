@@ -81,6 +81,7 @@
 <h3>The problem:</h3>
 <br>
 
+
 It looks okay and one might think: “Well, I’m returning a local variable, which is quite expensive to copy, so I should use std::move to avoid a copy!” But actually, you’re making things worse.
 <br><br>
 Modern C++ compilers have an optimization called NRVO (Named Return Value Optimization). Here’s how it works: when you return a local variable, the compiler is allowed to construct that variable directly into the memory location where the caller expects the return value to be. This means no copy or move is needed at all. The object is constructed in place. In other words, instead of:
