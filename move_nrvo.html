@@ -84,7 +84,7 @@
 
 It looks okay and one might think: “Well, I’m returning a local variable, which is quite expensive to copy, so I should use std::move to avoid a copy!” But actually, you’re making things worse.
 <br><br>
-Modern C++ compilers have an optimization called NRVO (Named Return Value Optimization). Here’s how it works: when you return a local variable, the compiler is allowed to construct that variable directly into the memory location where the caller expects the return value to be. This means no copy or move is needed at all. The object is constructed in place. In other words, instead of:
+Modern C++ compilers have an optimization called NRVO (Named Return Value Optimization) or Copy Elision. Here’s how it works: when you return a local variable, the compiler is allowed to construct that variable directly into the memory location where the caller expects the return value to be. This means no copy or move is needed at all. The object is constructed in place. In other words, instead of:
 <br><br>
 - Creating result in the function’s stack frame.
 <br>
@@ -108,14 +108,89 @@ The fix is simple: just return the variable by name
 <br><br>
 
     <br>
- <hr>
  
-        </div>
-  
+        See the below generated code when we compile with -02 flag. On the left side is the code above. On the right side, I used RVO,
+        so just "return result";
+<br>
+    <table>
+        <tr>
+    <td style="width: 20%;">
+    <pre><code class="assembly">
+    ; Without RVO - std::move
+    createSuperExpensiveData():
+            push    rbx
+            mov     rbx, rdi
+            mov     edi, 80000
+            call    operator new(unsigned long)
+            movsd   xmm0, QWORD PTR .LC0[rip]
+            mov     rcx, rax
+            lea     rdx, [rax+80000]
+    .L2:
+            movsd   QWORD PTR [rax], xmm0
+            add     rax, 16
+            movsd   QWORD PTR [rax-8], xmm0
+            cmp     rax, rdx
+            jne     .L2
+            mov     QWORD PTR [rbx+8], rax
+            mov     QWORD PTR [rbx+16], rax
+            mov     rax, rbx
+            mov     QWORD PTR [rbx], rcx
+            pop     rbx
+            ret
+    .LC0:
+            .long   0
+            .long   1076101120
+    </code></pre>
+            </td>
+    <td style="width: 20%;">
+    <pre><code class="assembly">
+    ; With RVO - just return result
+    createSuperExpensiveData():
+        push    rbx
+        mov     rbx, rdi
+        mov     edi, 80000
+        call    operator new(unsigned long)
+        movsd   xmm0, QWORD PTR .LC0[rip]
+        lea     rdx, [rax+80000]
+        mov     QWORD PTR [rbx], rax
+        mov     QWORD PTR [rbx+16], rdx
+.L2:
+        movsd   QWORD PTR [rax], xmm0
+        add     rax, 16
+        movsd   QWORD PTR [rax-8], xmm0
+        cmp     rax, rdx
+        jne     .L2
+        mov     QWORD PTR [rbx+8], rax
+        mov     rax, rbx
+        pop     rbx
+        ret
+.LC0:
+        .long   0
+        .long   1076101120
+    </code></pre>
+            </td>
+        </tr>
+        
+    </table>
 
+
+
+
+
+
+    <br><br>
+    Let's not bother much about assembly and let us just check on the .L2 label, which runs the initialiazation loop of the vector. The CPU spends many mov instructions before the final mov of the caller's address when we don't do RVO.
+    The compiler is trying to do RVO directly, but it fails, so it forces the move. There is still no copy but as you can see above there is some extra overehad. 
+    In the RVO version, the pointers are set before the loop even starts.
+
+</div>
       </section>
 
-    
+
+
+
+
+
  <section>
      
     <div style="text-align: center;">
@@ -387,7 +462,11 @@ s
 
 </script>
  
-
+    <link rel="stylesheet" href="path/to/prism.css">
+    <script src="path/to/prism.js"></script>
+    <script>
+        Prism.highlightAll();
+    </script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-clike.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-c.min.js"></script>
