@@ -114,7 +114,7 @@ The fix is simple: just return the variable by name
 <br>
     <table>
         <tr>
-    <td style="width: 20%;">
+    <td style="width: 30%;">
     <pre><code class="assembly">
     ; Without RVO - std::move
     createSuperExpensiveData():
@@ -142,7 +142,7 @@ The fix is simple: just return the variable by name
             .long   1076101120
     </code></pre>
             </td>
-    <td style="width: 20%;">
+    <td style="width: 30%;">
     <pre><code class="assembly">
     ; With RVO - just return result
     createSuperExpensiveData():
@@ -154,7 +154,7 @@ The fix is simple: just return the variable by name
         lea     rdx, [rax+80000]
         mov     QWORD PTR [rbx], rax
         mov     QWORD PTR [rbx+16], rdx
-.L2:
+    .L2:
         movsd   QWORD PTR [rax], xmm0
         add     rax, 16
         movsd   QWORD PTR [rax-8], xmm0
@@ -164,7 +164,7 @@ The fix is simple: just return the variable by name
         mov     rax, rbx
         pop     rbx
         ret
-.LC0:
+    .LC0:
         .long   0
         .long   1076101120
     </code></pre>
@@ -405,12 +405,15 @@ s
   }
 
   var cppDangl = `
-  std::vector<double> createSuperExpensiveData() {
+#include <utility>
+#include<vector>
 
-    // result is contructed locally
-    std::vector<double> result = {1,2,3,4};
-    // ....
-    return std::move(result);  // breaks RVO 
+std::vector<double> createSuperExpensiveData() {
+
+  // result is constructed locally
+  std::vector<double> result(10000, 10.0);
+  // ....
+  return std::move(result);  // breaks RVO 
 }
 `;
 
