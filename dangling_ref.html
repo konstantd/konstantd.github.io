@@ -90,9 +90,8 @@
   Returning a reference to a temporary leads to a dangling reference after the function returns.
 
     <br><br>
-When we call it with "unknown" as the name, it returns -1, the
- function tries to return a reference to -1, but -1 is a temporary. The function ends, and the temporary -1 is destroyed. 
- The returned reference now points to invalid memory (dangling reference). Undefined behavior occurs — possible crash, garbage value, or unexpected results.
+  When we call it with "unknown" as the name, it returns -1, the function ends, and the temporary -1 is destroyed. 
+ The returned reference now points to invalid memory (dangling reference). Undefined behavior occurs — possible crash, garbage value, or unexpected results. We should be careful when a function returns a reference.
 
  <hr>
  
