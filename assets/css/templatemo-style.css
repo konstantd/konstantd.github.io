@@ -1776,3 +1776,28 @@ section.contact-me {
 }
 
 
+  .terminal-output {
+    color: #fff;
+    background-color: #000;
+    padding: 10px;
+    font-family: monospace;
+    font-size: 14px;
+    white-space: pre;
+  }
+
+  .benchmark-title {
+    color: #ff0;
+    font-weight: bold;
+  }
+
+  .benchmark-time {
+    color: #0ff;
+  }
+
+  .benchmark-cpu {
+    color: #f0f;
+  }
+
+  .benchmark-iterations {
+    color: #f00;
+  }
