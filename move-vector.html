@@ -400,6 +400,8 @@
             case '>': return '&gt;';
             case '"': return '&quot;';
             case "'": return '&apos;';
+            case '\\': return '&#47;';
+
         }
     });
   }
@@ -413,13 +415,13 @@ struct S {
     int x;
 
     S(int new_x) : x(new_x) {
-        std::cout << "Constructor!";
+        std::cout << "Constructor!\\n";
     }
     S(const S &s) : x(s.x) {
-        std::cout << "Copy Constructor!";
+        std::cout << "Copy Constructor!\\n";
     }
     S(S &&s) noexcept : x(s.x) {   // if this is not noexcept then std::vector uses only the copy constructor
-        std::cout << "Move Constructor!";
+        std::cout << "Move Constructor!\\n";
     }
     
 };
