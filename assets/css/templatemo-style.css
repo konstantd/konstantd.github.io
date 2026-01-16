@@ -1801,3 +1801,31 @@ section.contact-me {
   .benchmark-iterations {
     color: #f00;
   }
+
+/* Fancy Arrow List Styling */
+ul.fancy-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+ul.fancy-list li {
+    position: relative;
+    padding: 15px 15px 15px 45px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    border-left: 2px solid transparent;
+}
+
+
+/* The Fancy Arrow */
+ul.fancy-list li::before {
+    content: "➔";
+    position: absolute;
+    left: 15px;
+    color: var(--primary-blue);
+    font-size: 1.2rem;
+    transition: transform 0.2s ease;
+    color: red;
+    font-weight: bold;
+}
