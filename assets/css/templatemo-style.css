@@ -642,8 +642,7 @@ button:hover {
 
 .c {
     background: #f5b507;
-
-    width: 92%;
+    width: 80%;
 }
 
 .linux-bash {
@@ -693,12 +692,12 @@ button:hover {
 }
 .gdb {
     background: #9444ca;
-    width: 82%;
+    width: 90%;
 }
 .perf {
     background: #17868a;
 
-    width: 67%;
+    width: 74%;
 }
 .webdev {
     width: 57%;
