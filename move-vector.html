@@ -413,13 +413,13 @@ struct S {
     int x;
 
     S(int new_x) : x(new_x) {
-        std::cout << "Constructor!\n";
+        std::cout << "Constructor!";
     }
     S(const S &s) : x(s.x) {
-        std::cout << "Copy Constructor!\n";
+        std::cout << "Copy Constructor!";
     }
     S(S &&s) noexcept : x(s.x) {   // if this is not noexcept then std::vector uses only the copy constructor
-        std::cout << "Move Constructor!\n";
+        std::cout << "Move Constructor!";
     }
     
 };
