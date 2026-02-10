@@ -1,0 +1,66 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'My C++ Technical Blog'
+theme = "PaperMod"
+
+
+[[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 200
+
+# 1. Add this to enable the Search Index
+[outputs]
+    home = ["HTML", "RSS", "JSON"]
+
+# 2. Add Search to your Menu
+[[menu.main]]
+    name = "Search"
+    url = "/search/"
+    weight = 5   # Weight 5 puts it before "About" (Weight 10)
+
+
+[[menu.main]]
+    name = "Tags"
+    url = "/tags/"
+    weight = 15
+
+
+[params]
+    ShowReadingTime = true
+    ShowWordCount = true
+    ShowShareButtons = false
+    ShowCodeCopyButtons = true
+    ShowPostMeta = true
+    ShowFullTextContent = false
+    HideMeta = false
+
+
+
+    [params.homeInfoParams]
+        Title = "Hi there! 👋"
+        Content = "This is my technical blog, where I will focus on C++ since it is what I am mostly using. I will share my experiences from technical projects I have worked on, as well as the latest developments of C++. I will try to keep the articles short, purely technical and to the point without fluffy additions. I hope you find it useful! :)"
+        buttons = [
+                { name = "Subscribe", url = "/subscribe/" }
+            ]
+
+    [params.fuseConfig]
+        isCaseSensitive = false
+        shouldSort = true
+        location = 0
+        distance = 1000
+        threshold = 0.4
+        minMatchCharLength = 0
+        keys = ["title", "permalink", "summary", "content"]
+
+
+            
+    [params.footer]
+        customContent = "Built with ❤️ and C++"        
+
+
+
+
+[markup.goldmark.renderer]
+    unsafe = true
+

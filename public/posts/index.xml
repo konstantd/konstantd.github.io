@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on My C&#43;&#43; Technical Blog</title>
+    <link>http://localhost:1313/posts/</link>
+    <description>Recent content in Posts on My C&#43;&#43; Technical Blog</description>
+    <generator>Hugo -- 0.155.3</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 10 Feb 2026 14:31:20 +0100</lastBuildDate>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Move Constructor&#39;s promise not to throw improves performance</title>
+      <link>http://localhost:1313/posts/move-ctor-no-except/</link>
+      <pubDate>Tue, 10 Feb 2026 14:31:20 +0100</pubDate>
+      <guid>http://localhost:1313/posts/move-ctor-no-except/</guid>
+      <description>&lt;p&gt;Ideally, we should never throw on the move Constructor of an object. If a move constructor throws an exception while a vector is resizing, the vector is in a &amp;ldquo;broken&amp;rdquo; state: half of the elements are in the new memory, and half are in the old memory. Move operations often modify the source object (leaving it empty or null), making it dangerous to undo the changes. Therefore, the compiler wants to avoid this risk and uses a copy rather than a movment. We want to avoid this, and the way to do this is to declare the move constructor as noexcept. Like this, we give the promise that we do not throw, and the compiler can safely use it.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Don&#39;t Break NRVO on return</title>
+      <link>http://localhost:1313/posts/dont-break-nrvo/</link>
+      <pubDate>Tue, 10 Feb 2026 11:24:55 +0100</pubDate>
+      <guid>http://localhost:1313/posts/dont-break-nrvo/</guid>
+      <description>&lt;p&gt;Consider the following code.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;utility&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&amp;lt;vector&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;vector&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; createSuperExpensiveData() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// result is constructed locally
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;vector&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; result(&lt;span style=&#34;color:#ae81ff&#34;&gt;10000&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;10.0&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// ....
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;move(result);  &lt;span style=&#34;color:#75715e&#34;&gt;// breaks RVO 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;c-optimization-dont-stdmove-your-returns&#34;&gt;C++ Optimization: Don&amp;rsquo;t &lt;code&gt;std::move&lt;/code&gt; Your Returns&lt;/h1&gt;
+&lt;h3 id=&#34;-the-common-misconception&#34;&gt;🚩 The Common Misconception&lt;/h3&gt;
+&lt;p&gt;It looks intuitive: &lt;em&gt;“I’m returning a local variable that is expensive to copy, so I should use &lt;code&gt;std::move&lt;/code&gt; to ensure it&amp;rsquo;s efficient!”&lt;/em&gt; &lt;strong&gt;The Reality:&lt;/strong&gt; You are likely making your code &lt;strong&gt;slower&lt;/strong&gt;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;-how-modern-compilers-work-nrvo&#34;&gt;🚀 How Modern Compilers Work: NRVO&lt;/h3&gt;
+&lt;p&gt;Modern C++ compilers use &lt;strong&gt;NRVO&lt;/strong&gt; (Named Return Value Optimization) or &lt;strong&gt;Copy Elision&lt;/strong&gt;. Instead of a &amp;ldquo;Create -&amp;gt; Copy -&amp;gt; Destroy&amp;rdquo; cycle, the compiler optimizes the memory management:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Templates Compilation</title>
+      <link>http://localhost:1313/posts/templates-compilation/</link>
+      <pubDate>Tue, 10 Feb 2026 11:23:23 +0100</pubDate>
+      <guid>http://localhost:1313/posts/templates-compilation/</guid>
+      <description>&lt;p&gt;Templates complilation generate code at compile time, before the program is executed (Compile-time vs run-time compilation). Every different instantiation produces a separate function at compile time. This way we avoid writing duplication of the code. Also, we can avoid mistakes even on compilation time when we static assert them. As the name suggests, this checks takes place statically - on compilation. Like this, we avoid mistakes that might appear during runtime, when we should not instantiate a function of a specific type. Static-asserts was already introduced in C++11, though the we have some important imporvements in C++17 like CTAD and concepts in C++20. We may see some examples on other blogs. Another advantage is Zero-Cost Abstraction since we only use what we need.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Dangling References in C&#43;&#43;</title>
+      <link>http://localhost:1313/posts/dangling-ref/</link>
+      <pubDate>Tue, 10 Feb 2026 11:19:20 +0100</pubDate>
+      <guid>http://localhost:1313/posts/dangling-ref/</guid>
+      <description>const T&amp;amp; binds to everything but it is dangerous</description>
+    </item>
+    <item>
+      <title>Inheritance downcasting is dangerous</title>
+      <link>http://localhost:1313/posts/inheritance-downcasting/</link>
+      <pubDate>Mon, 10 Feb 2025 10:38:41 +0100</pubDate>
+      <guid>http://localhost:1313/posts/inheritance-downcasting/</guid>
+      <description>Converting a base-class pointer to a derived-class pointer is downcasting. We should be careful when we do that in order to avoid UBs.</description>
+    </item>
+  </channel>
+</rss>
