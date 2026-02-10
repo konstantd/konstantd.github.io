@@ -127,45 +127,13 @@
     <header class="entry-header">
         <h1>Hi there! 👋</h1>
     </header>
-    <section class="entry-content">
+    <div class="entry-content">
         This is my technical blog, where I will focus on C++ since it is what I am mostly using. I will share my experiences from technical projects I have worked on, as well as the latest developments of C++. I will try to keep the articles short, purely technical and to the point without fluffy additions. I hope you find it useful! :)
-    </section>
+    </div>
     <footer class="entry-footer">
-        <div class="social-icons" align="center">
+        <div class="social-icons" >
 </div>
 
-        
-        <div class="home-info-extension" style="margin-top: 30px; text-align: center;">
-            
-            <p style="color: gray; font-size: 0.95rem; margin-bottom: 12px;">
-                📢 Subscribe to my technical blog to receive updates on my latest blog posts and projects.
-            </p>
-
-            <form action="/subscribe/" method="get" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
-                <input type="email" 
-                       name="email" 
-                       placeholder="Enter your email..." 
-                       required
-                       style="padding: 12px 15px; 
-                              border-radius: 8px; 
-                              border: 1px solid gray; 
-                              background: var(--code-bg); 
-                              min-width: 250px;
-                              outline: none;">
-                
-                <button type="submit" 
-                        style="background-color: var(--primary); 
-                               color: var(--theme); 
-                               padding: 12px 24px; 
-                               border-radius: 8px; 
-                               border: none;
-                               cursor: pointer;
-                               font-weight: 600;
-                               transition: opacity 0.2s;">
-                    Subscribe
-                </button>
-            </form>
-        </div>
     </footer>
 </article>
 
@@ -178,7 +146,7 @@
     <p>Ideally, we should never throw on the move Constructor of an object. If a move constructor throws an exception while a vector is resizing, the vector is in a “broken” state: half of the elements are in the new memory, and half are in the old memory. Move operations often modify the source object (leaving it empty or null), making it dangerous to undo the changes. Therefore, the compiler wants to avoid this risk and uses a copy rather than a movment. We want to avoid this, and the way to do this is to declare the move constructor as noexcept. Like this, we give the promise that we do not throw, and the compiler can safely use it.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2026-02-10 14:31:20 +0100 CET'>February 10, 2026</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>624 words</span></footer>
+  <footer class="entry-footer"><span title='2026-02-10 14:31:20 +0100 +0100'>February 10, 2026</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>624 words</span></footer>
   <a class="entry-link" aria-label="post link to Move Constructor&#39;s promise not to throw improves performance" href="http://localhost:1313/posts/move-ctor-no-except/"></a>
 </article>
 
@@ -193,7 +161,7 @@
 🚀 How Modern Compilers Work: NRVO Modern C&#43;&#43; compilers use NRVO (Named Return Value Optimization) or Copy Elision. Instead of a “Create -&gt; Copy -&gt; Destroy” cycle, the compiler optimizes the memory management:
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2026-02-10 11:24:55 +0100 CET'>February 10, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>414 words</span></footer>
+  <footer class="entry-footer"><span title='2026-02-10 11:24:55 +0100 +0100'>February 10, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>414 words</span></footer>
   <a class="entry-link" aria-label="post link to Don&#39;t Break NRVO on return" href="http://localhost:1313/posts/dont-break-nrvo/"></a>
 </article>
 
@@ -206,7 +174,7 @@
     <p>Templates complilation generate code at compile time, before the program is executed (Compile-time vs run-time compilation). Every different instantiation produces a separate function at compile time. This way we avoid writing duplication of the code. Also, we can avoid mistakes even on compilation time when we static assert them. As the name suggests, this checks takes place statically - on compilation. Like this, we avoid mistakes that might appear during runtime, when we should not instantiate a function of a specific type. Static-asserts was already introduced in C&#43;&#43;11, though the we have some important imporvements in C&#43;&#43;17 like CTAD and concepts in C&#43;&#43;20. We may see some examples on other blogs. Another advantage is Zero-Cost Abstraction since we only use what we need.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2026-02-10 11:23:23 +0100 CET'>February 10, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>381 words</span></footer>
+  <footer class="entry-footer"><span title='2026-02-10 11:23:23 +0100 +0100'>February 10, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>381 words</span></footer>
   <a class="entry-link" aria-label="post link to Templates Compilation" href="http://localhost:1313/posts/templates-compilation/"></a>
 </article>
 
@@ -218,7 +186,7 @@
   <div class="entry-content">
     <p>const T&amp; binds to everything but it is dangerous</p>
   </div>
-  <footer class="entry-footer"><span title='2026-02-10 11:19:20 +0100 CET'>February 10, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>287 words</span></footer>
+  <footer class="entry-footer"><span title='2026-02-10 11:19:20 +0100 +0100'>February 10, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>287 words</span></footer>
   <a class="entry-link" aria-label="post link to Dangling References in C&#43;&#43;" href="http://localhost:1313/posts/dangling-ref/"></a>
 </article>
 
@@ -230,7 +198,7 @@
   <div class="entry-content">
     <p>Converting a base-class pointer to a derived-class pointer is downcasting. We should be careful when we do that in order to avoid UBs.</p>
   </div>
-  <footer class="entry-footer"><span title='2025-02-10 10:38:41 +0100 CET'>February 10, 2025</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>384 words</span></footer>
+  <footer class="entry-footer"><span title='2025-02-10 10:38:41 +0100 +0100'>February 10, 2025</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>384 words</span></footer>
   <a class="entry-link" aria-label="post link to Inheritance downcasting is dangerous" href="http://localhost:1313/posts/inheritance-downcasting/"></a>
 </article>
     </main>
@@ -243,8 +211,8 @@
             
             <div style="font-size: 0.9rem; line-height: 1.6;">
                 <strong style="display: block; margin-bottom: 5px;">Contact Me</strong>
-                <span style="opacity: 0.8;">Email:</span> <a href="mailto:knsa@gmail.com" style="text-decoration: none; border-bottom: 1px solid transparent;">knsa@gmail.com</a><br>
-                <span style="opacity: 0.8;">Phone:</span> +2121322 3125
+                <span style="opacity: 0.8;">Email:</span> <a href="mailto:knstantinos.diamantis@gmail.com" style="text-decoration: none; border-bottom: 1px solid transparent;">knstantinos.diamantis@gmail.com</a><br>
+                <span style="opacity: 0.8;">Phone:</span> +41 76 21 32 935
             </div>
 
             <div style="font-size: 0.9rem; line-height: 1.6; text-align: right;">

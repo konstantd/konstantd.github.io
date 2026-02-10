@@ -35,7 +35,7 @@ Hi there! I am Konstantinos Diamantis, a Software Engineer with more than 5 year
 ## Experience
 
 
-<img src="/images/cern-bemfem.png" align="right" width="250" style="margin-left: 20px; border-radius: 8px;">
+<img src="/images/cern_logo.jpg" align="right" width="250" style="margin-left: 20px; border-radius: 8px;">
 
 **Software Engineer ~ CERN, European Organization for Nuclear Research**
 
@@ -56,7 +56,7 @@ During my time at CERN, I also wroked as a Software Engineer for the developmet 
 
 ---
 
-<img src="/images/cern-bemfem.png" align="left" width="250" style="margin-right: 20px; border-radius: 8px;">
+<img src="/images/embed_sys.jpg" align="left" width="250" style="margin-right: 20px; border-radius: 8px;">
 
 
 **Embedded Software Engineer ~ ASAT, Aristotle Space & Aeronatics Team**
@@ -68,7 +68,7 @@ I worked full-time as an Embedded Software Engineer in the Rocketry Project of A
 ---
 
 
-<img src="/images/cern-bemfem.png" align="left" width="250" style="margin-right: 20px; border-radius: 8px;">
+<img src="/images/closed-loop-diab.jpg" align="left" width="250" style="margin-right: 20px; border-radius: 8px;">
 
 **Research Engineer ~ Helmholtz-Institute, RWTH Aachen University**
 
@@ -80,7 +80,7 @@ My work focused on the implementation of a novel pharmacokinetics model of insul
 
 
 
-<img src="/images/cern-bemfem.png" align="left" width="250" style="margin-right: 20px; border-radius: 8px;">
+<img src="/images/antenna_fieldscale.png" align="left" width="250" style="margin-right: 20px; border-radius: 8px;">
 
 
 **Computational Electromagnetics Engineer ~ Fieldscale**
