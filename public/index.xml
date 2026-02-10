@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>My C&#43;&#43; Technical Blog</title>
-    <link>http://localhost:1313/</link>
+    <link>http://localhost:42627/</link>
     <description>Recent content on My C&#43;&#43; Technical Blog</description>
     <generator>Hugo -- 0.155.3</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 10 Feb 2026 14:31:20 +0100</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:42627/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Move Constructor&#39;s promise not to throw improves performance</title>
-      <link>http://localhost:1313/posts/move-ctor-no-except/</link>
+      <link>http://localhost:42627/posts/move-ctor-no-except/</link>
       <pubDate>Tue, 10 Feb 2026 14:31:20 +0100</pubDate>
-      <guid>http://localhost:1313/posts/move-ctor-no-except/</guid>
+      <guid>http://localhost:42627/posts/move-ctor-no-except/</guid>
       <description>&lt;p&gt;Ideally, we should never throw on the move Constructor of an object. If a move constructor throws an exception while a vector is resizing, the vector is in a &amp;ldquo;broken&amp;rdquo; state: half of the elements are in the new memory, and half are in the old memory. Move operations often modify the source object (leaving it empty or null), making it dangerous to undo the changes. Therefore, the compiler wants to avoid this risk and uses a copy rather than a movment. We want to avoid this, and the way to do this is to declare the move constructor as noexcept. Like this, we give the promise that we do not throw, and the compiler can safely use it.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Don&#39;t Break NRVO on return</title>
-      <link>http://localhost:1313/posts/dont-break-nrvo/</link>
+      <link>http://localhost:42627/posts/dont-break-nrvo/</link>
       <pubDate>Tue, 10 Feb 2026 11:24:55 +0100</pubDate>
-      <guid>http://localhost:1313/posts/dont-break-nrvo/</guid>
+      <guid>http://localhost:42627/posts/dont-break-nrvo/</guid>
       <description>&lt;p&gt;Consider the following code.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;utility&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&amp;lt;vector&amp;gt;
@@ -40,32 +40,32 @@
     </item>
     <item>
       <title>Templates Compilation</title>
-      <link>http://localhost:1313/posts/templates-compilation/</link>
+      <link>http://localhost:42627/posts/templates-compilation/</link>
       <pubDate>Tue, 10 Feb 2026 11:23:23 +0100</pubDate>
-      <guid>http://localhost:1313/posts/templates-compilation/</guid>
+      <guid>http://localhost:42627/posts/templates-compilation/</guid>
       <description>&lt;p&gt;Templates complilation generate code at compile time, before the program is executed (Compile-time vs run-time compilation). Every different instantiation produces a separate function at compile time. This way we avoid writing duplication of the code. Also, we can avoid mistakes even on compilation time when we static assert them. As the name suggests, this checks takes place statically - on compilation. Like this, we avoid mistakes that might appear during runtime, when we should not instantiate a function of a specific type. Static-asserts was already introduced in C++11, though the we have some important imporvements in C++17 like CTAD and concepts in C++20. We may see some examples on other blogs. Another advantage is Zero-Cost Abstraction since we only use what we need.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Dangling References in C&#43;&#43;</title>
-      <link>http://localhost:1313/posts/dangling-ref/</link>
+      <link>http://localhost:42627/posts/dangling-ref/</link>
       <pubDate>Tue, 10 Feb 2026 11:19:20 +0100</pubDate>
-      <guid>http://localhost:1313/posts/dangling-ref/</guid>
+      <guid>http://localhost:42627/posts/dangling-ref/</guid>
       <description>const T&amp;amp; binds to everything but it is dangerous</description>
     </item>
     <item>
-      <title>About</title>
-      <link>http://localhost:1313/about/</link>
-      <pubDate>Tue, 10 Feb 2026 10:43:26 +0100</pubDate>
-      <guid>http://localhost:1313/about/</guid>
-      <description>&lt;p&gt;Hello Hihihi
-I am at cern&lt;/p&gt;</description>
+      <title>Inheritance downcasting is dangerous</title>
+      <link>http://localhost:42627/posts/inheritance-downcasting/</link>
+      <pubDate>Mon, 10 Feb 2025 10:38:41 +0100</pubDate>
+      <guid>http://localhost:42627/posts/inheritance-downcasting/</guid>
+      <description>Converting a base-class pointer to a derived-class pointer is downcasting. We should be careful when we do that in order to avoid UBs.</description>
     </item>
     <item>
-      <title>Inheritance downcasting is dangerous</title>
-      <link>http://localhost:1313/posts/inheritance-downcasting/</link>
-      <pubDate>Mon, 10 Feb 2025 10:38:41 +0100</pubDate>
-      <guid>http://localhost:1313/posts/inheritance-downcasting/</guid>
-      <description>Converting a base-class pointer to a derived-class pointer is downcasting. We should be careful when we do that in order to avoid UBs.</description>
+      <title>About me</title>
+      <link>http://localhost:42627/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:42627/about/</guid>
+      <description>&lt;p&gt;Hi there! I am Konstantinos Diamantis, a Software Engineer with more than 5 years of professional experience. Currently, I work at CERN, and I have also been involved in different industries, such as avionics and freelance projects. I am specialized in debugging and optimizing large C/C++ codebases, numerical and real-time computations, with strong proficiency in the GCC toolchain, GDB, and performance tuning for high-efficiency software.&lt;/p&gt;
+&lt;p&gt;📢 Feel free to contact me for any questions or inquiries regarding my work or even for article suggestions for my C++ blog.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

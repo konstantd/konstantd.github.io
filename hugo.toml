@@ -57,3 +57,11 @@ theme = "PaperMod"
             
     [params.footer]
         customContent = "Built with ❤️ and C++"        
+
+
+
+
+[markup.goldmark.renderer]
+    unsafe = true
+
+    

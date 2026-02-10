@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Mid on My C&#43;&#43; Technical Blog</title>
-    <link>http://localhost:1313/tags/mid/</link>
+    <link>http://localhost:42627/tags/mid/</link>
     <description>Recent content in Mid on My C&#43;&#43; Technical Blog</description>
     <generator>Hugo -- 0.155.3</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 10 Feb 2025 10:38:41 +0100</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/mid/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:42627/tags/mid/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Inheritance downcasting is dangerous</title>
-      <link>http://localhost:1313/posts/inheritance-downcasting/</link>
+      <link>http://localhost:42627/posts/inheritance-downcasting/</link>
       <pubDate>Mon, 10 Feb 2025 10:38:41 +0100</pubDate>
-      <guid>http://localhost:1313/posts/inheritance-downcasting/</guid>
+      <guid>http://localhost:42627/posts/inheritance-downcasting/</guid>
       <description>Converting a base-class pointer to a derived-class pointer is downcasting. We should be careful when we do that in order to avoid UBs.</description>
     </item>
   </channel>

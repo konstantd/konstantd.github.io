@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on My C&#43;&#43; Technical Blog</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>http://localhost:42627/tags/</link>
     <description>Recent content in Tags on My C&#43;&#43; Technical Blog</description>
     <generator>Hugo -- 0.155.3</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 10 Feb 2025 10:38:41 +0100</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:42627/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Inheritance</title>
-      <link>http://localhost:1313/tags/inheritance/</link>
+      <link>http://localhost:42627/tags/inheritance/</link>
       <pubDate>Mon, 10 Feb 2025 10:38:41 +0100</pubDate>
-      <guid>http://localhost:1313/tags/inheritance/</guid>
+      <guid>http://localhost:42627/tags/inheritance/</guid>
       <description></description>
     </item>
     <item>
       <title>Mid</title>
-      <link>http://localhost:1313/tags/mid/</link>
+      <link>http://localhost:42627/tags/mid/</link>
       <pubDate>Mon, 10 Feb 2025 10:38:41 +0100</pubDate>
-      <guid>http://localhost:1313/tags/mid/</guid>
+      <guid>http://localhost:42627/tags/mid/</guid>
       <description></description>
     </item>
   </channel>

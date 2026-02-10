@@ -109,3 +109,5 @@ int main()
 * Requires explicit casting. Always prefer `dynamic_cast` and perform a runtime check for the returned pointer to avoid crashes or undefined behavior.
 
 ---
+
+{{< social_icons_extend_with_subscribe >}}
