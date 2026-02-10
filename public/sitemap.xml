@@ -2,13 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/posts/dont-break-nrvo/</loc>
-    <lastmod>2026-02-10T11:24:55+01:00</lastmod>
+    <loc>http://localhost:1313/posts/move-ctor-no-except/</loc>
+    <lastmod>2026-02-10T14:31:20+01:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2026-02-10T11:24:55+01:00</lastmod>
+    <lastmod>2026-02-10T14:31:20+01:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2026-02-10T14:31:20+01:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/dont-break-nrvo/</loc>
     <lastmod>2026-02-10T11:24:55+01:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/templates-compilation/</loc>

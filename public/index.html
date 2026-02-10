@@ -127,37 +127,64 @@
     <header class="entry-header">
         <h1>Hi there! 👋</h1>
     </header>
-    <div class="entry-content">
-        Welcome to my technical blog. I write about C++, RVO, and safe casting.
-    </div>
+    <section class="entry-content">
+        This is my technical blog, where I will focus on C++ since it is what I am mostly using. I will share my experiences from technical projects I have worked on, as well as the latest developments of C++. I will try to keep the articles short, purely technical and to the point without fluffy additions. I hope you find it useful! :)
+    </section>
     <footer class="entry-footer">
-        <div class="social-icons" >
-    <a href="https://github.com/konstantd" target="_blank" rel="noopener noreferrer me"
-        title="Github">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-    stroke-linecap="round" stroke-linejoin="round">
-    <path
-        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-    </path>
-</svg>
-    </a>
-    <a href="https://www.linkedin.com/in/konstantinosdiamantis/" target="_blank" rel="noopener noreferrer me"
-        title="Linkedin">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-    stroke-linecap="round" stroke-linejoin="round">
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-    <rect x="2" y="9" width="4" height="12"></rect>
-    <circle cx="4" cy="4" r="2"></circle>
-</svg>
-    </a>
+        <div class="social-icons" align="center">
 </div>
 
+        
+        <div class="home-info-extension" style="margin-top: 30px; text-align: center;">
+            
+            <p style="color: gray; font-size: 0.95rem; margin-bottom: 12px;">
+                📢 Subscribe to my technical blog to receive updates on my latest blog posts and projects.
+            </p>
+
+            <form action="/subscribe/" method="get" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                <input type="email" 
+                       name="email" 
+                       placeholder="Enter your email..." 
+                       required
+                       style="padding: 12px 15px; 
+                              border-radius: 8px; 
+                              border: 1px solid gray; 
+                              background: var(--code-bg); 
+                              min-width: 250px;
+                              outline: none;">
+                
+                <button type="submit" 
+                        style="background-color: var(--primary); 
+                               color: var(--theme); 
+                               padding: 12px 24px; 
+                               border-radius: 8px; 
+                               border: none;
+                               cursor: pointer;
+                               font-weight: 600;
+                               transition: opacity 0.2s;">
+                    Subscribe
+                </button>
+            </form>
+        </div>
     </footer>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Dont Break Nrvo
+    <h2 class="entry-hint-parent">Move Constructor&#39;s promise not to throw improves performance
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Ideally, we should never throw on the move Constructor of an object. If a move constructor throws an exception while a vector is resizing, the vector is in a “broken” state: half of the elements are in the new memory, and half are in the old memory. Move operations often modify the source object (leaving it empty or null), making it dangerous to undo the changes. Therefore, the compiler wants to avoid this risk and uses a copy rather than a movment. We want to avoid this, and the way to do this is to declare the move constructor as noexcept. Like this, we give the promise that we do not throw, and the compiler can safely use it.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-02-10 14:31:20 +0100 CET'>February 10, 2026</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>607 words</span></footer>
+  <a class="entry-link" aria-label="post link to Move Constructor&#39;s promise not to throw improves performance" href="http://localhost:1313/posts/move-ctor-no-except/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Don&#39;t Break NRVO on return
     </h2>
   </header>
   <div class="entry-content">
@@ -167,7 +194,7 @@
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2026-02-10 11:24:55 +0100 CET'>February 10, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>397 words</span></footer>
-  <a class="entry-link" aria-label="post link to Dont Break Nrvo" href="http://localhost:1313/posts/dont-break-nrvo/"></a>
+  <a class="entry-link" aria-label="post link to Don&#39;t Break NRVO on return" href="http://localhost:1313/posts/dont-break-nrvo/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -207,82 +234,34 @@
   <a class="entry-link" aria-label="post link to Inheritance downcasting is dangerous" href="http://localhost:1313/posts/inheritance-downcasting/"></a>
 </article>
     </main>
-    
-<footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:1313/">My C&#43;&#43; Technical Blog</a></span> · 
-
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu');
-    if (menu) {
+    <footer class="footer">
+    <div class="footer-container" style="padding: 20px 0; border-top: 1px solid var(--border);">
         
-        const scrollPosition = localStorage.getItem("menu-scroll-position");
-        if (scrollPosition) {
-            menu.scrollLeft = parseInt(scrollPosition, 10);
-        }
-        
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 30px; text-align: left;">
+            
+            <div style="color: var(--secondary); font-size: 0.9rem; line-height: 1.6;">
+                <strong style="color: var(--content); display: block; margin-bottom: 5px;">Contact Me</strong>
+                Email: <a href="mailto:knsa@gmail.com" style="color: var(--secondary); text-decoration: none;">knsa@gmail.com</a><br>
+                Phone: +2121322 3125
+            </div>
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
+            <div style="color: var(--secondary); font-size: 0.9rem; line-height: 1.6; text-align: right;">
+                <strong style="color: var(--content); display: block; margin-bottom: 5px;">Follow Me</strong>
+                <a href="https://github.com/konstantd" style="color: var(--secondary); text-decoration: none;">Github</a><br>
+                <a href="https://www.linkedin.com/in/konstantinosdiamantis/" style="color: var(--secondary); text-decoration: none;">Linkedin</a>
+            </div>
+        </div>
 
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
+        <div style="text-align: center; border-top: 1px solid var(--border); padding-top: 20px;">
+            <div style="color: var(--secondary); font-size: 0.9rem;">
+                &copy; 2026 Konstantinos Diamantis. All Rights Reserved.
+            </div>
+            <div style="margin-top: 10px; color: var(--secondary); font-size: 0.85rem;">
+                Built with ❤️ and C++
+            </div>
+        </div>
 
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        const html = document.querySelector("html");
-        if (html.dataset.theme === "dark") {
-            html.dataset.theme = 'light';
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            html.dataset.theme = 'dark';
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
+    </div>
+</footer></body>
 
 </html>

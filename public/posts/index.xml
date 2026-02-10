@@ -6,10 +6,17 @@
     <description>Recent content in Posts on My C&#43;&#43; Technical Blog</description>
     <generator>Hugo -- 0.155.3</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 10 Feb 2026 11:24:55 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 10 Feb 2026 14:31:20 +0100</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Dont Break Nrvo</title>
+      <title>Move Constructor&#39;s promise not to throw improves performance</title>
+      <link>http://localhost:1313/posts/move-ctor-no-except/</link>
+      <pubDate>Tue, 10 Feb 2026 14:31:20 +0100</pubDate>
+      <guid>http://localhost:1313/posts/move-ctor-no-except/</guid>
+      <description>&lt;p&gt;Ideally, we should never throw on the move Constructor of an object. If a move constructor throws an exception while a vector is resizing, the vector is in a &amp;ldquo;broken&amp;rdquo; state: half of the elements are in the new memory, and half are in the old memory. Move operations often modify the source object (leaving it empty or null), making it dangerous to undo the changes. Therefore, the compiler wants to avoid this risk and uses a copy rather than a movment. We want to avoid this, and the way to do this is to declare the move constructor as noexcept. Like this, we give the promise that we do not throw, and the compiler can safely use it.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Don&#39;t Break NRVO on return</title>
       <link>http://localhost:1313/posts/dont-break-nrvo/</link>
       <pubDate>Tue, 10 Feb 2026 11:24:55 +0100</pubDate>
       <guid>http://localhost:1313/posts/dont-break-nrvo/</guid>

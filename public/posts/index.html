@@ -129,7 +129,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Dont Break Nrvo
+    <h2 class="entry-hint-parent">Move Constructor&#39;s promise not to throw improves performance
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Ideally, we should never throw on the move Constructor of an object. If a move constructor throws an exception while a vector is resizing, the vector is in a “broken” state: half of the elements are in the new memory, and half are in the old memory. Move operations often modify the source object (leaving it empty or null), making it dangerous to undo the changes. Therefore, the compiler wants to avoid this risk and uses a copy rather than a movment. We want to avoid this, and the way to do this is to declare the move constructor as noexcept. Like this, we give the promise that we do not throw, and the compiler can safely use it.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-02-10 14:31:20 +0100 CET'>February 10, 2026</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>607 words</span></footer>
+  <a class="entry-link" aria-label="post link to Move Constructor&#39;s promise not to throw improves performance" href="http://localhost:1313/posts/move-ctor-no-except/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Don&#39;t Break NRVO on return
     </h2>
   </header>
   <div class="entry-content">
@@ -139,7 +152,7 @@
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2026-02-10 11:24:55 +0100 CET'>February 10, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>397 words</span></footer>
-  <a class="entry-link" aria-label="post link to Dont Break Nrvo" href="http://localhost:1313/posts/dont-break-nrvo/"></a>
+  <a class="entry-link" aria-label="post link to Don&#39;t Break NRVO on return" href="http://localhost:1313/posts/dont-break-nrvo/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -179,82 +192,34 @@
   <a class="entry-link" aria-label="post link to Inheritance downcasting is dangerous" href="http://localhost:1313/posts/inheritance-downcasting/"></a>
 </article>
     </main>
-    
-<footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:1313/">My C&#43;&#43; Technical Blog</a></span> · 
-
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu');
-    if (menu) {
+    <footer class="footer">
+    <div class="footer-container" style="padding: 20px 0; border-top: 1px solid var(--border);">
         
-        const scrollPosition = localStorage.getItem("menu-scroll-position");
-        if (scrollPosition) {
-            menu.scrollLeft = parseInt(scrollPosition, 10);
-        }
-        
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 30px; text-align: left;">
+            
+            <div style="color: var(--secondary); font-size: 0.9rem; line-height: 1.6;">
+                <strong style="color: var(--content); display: block; margin-bottom: 5px;">Contact Me</strong>
+                Email: <a href="mailto:knsa@gmail.com" style="color: var(--secondary); text-decoration: none;">knsa@gmail.com</a><br>
+                Phone: +2121322 3125
+            </div>
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
+            <div style="color: var(--secondary); font-size: 0.9rem; line-height: 1.6; text-align: right;">
+                <strong style="color: var(--content); display: block; margin-bottom: 5px;">Follow Me</strong>
+                <a href="https://github.com/konstantd" style="color: var(--secondary); text-decoration: none;">Github</a><br>
+                <a href="https://www.linkedin.com/in/konstantinosdiamantis/" style="color: var(--secondary); text-decoration: none;">Linkedin</a>
+            </div>
+        </div>
 
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
+        <div style="text-align: center; border-top: 1px solid var(--border); padding-top: 20px;">
+            <div style="color: var(--secondary); font-size: 0.9rem;">
+                &copy; 2026 Konstantinos Diamantis. All Rights Reserved.
+            </div>
+            <div style="margin-top: 10px; color: var(--secondary); font-size: 0.85rem;">
+                Built with ❤️ and C++
+            </div>
+        </div>
 
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        const html = document.querySelector("html");
-        if (html.dataset.theme === "dark") {
-            html.dataset.theme = 'light';
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            html.dataset.theme = 'dark';
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
+    </div>
+</footer></body>
 
 </html>
