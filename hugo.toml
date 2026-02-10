@@ -1,0 +1,67 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'My C++ Technical Blog'
+theme = "PaperMod"
+
+
+
+[[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 10
+
+# 1. Add this to enable the Search Index
+[outputs]
+    home = ["HTML", "RSS", "JSON"]
+
+# 2. Add Search to your Menu
+[[menu.main]]
+    name = "Search"
+    url = "/search/"
+    weight = 5   # Weight 5 puts it before "About" (Weight 10)
+
+
+[[menu.main]]
+    name = "Tags"
+    url = "/tags/"
+    weight = 15
+
+
+[params]
+    ShowReadingTime = true
+    ShowWordCount = true
+    ShowShareButtons = true
+    ShowCodeCopyButtons = true
+    ShowPostMeta = true
+    ShowFullTextContent = false
+    HideMeta = false
+    copyright = "© 2026 Konstantinos Diamantis"
+
+    socialIcons = [
+        { name = "github", url = "https://github.com/konstantd" },
+        { name = "linkedin", url = "https://www.linkedin.com/in/konstantinosdiamantis/" }
+    ]
+
+    buttons = [
+                { name = "Subscribe", url = "/subscribe/" }
+            ]
+
+            
+    [params.footer]
+        customContent = "Built with ❤️ and C++"
+
+    [params.homeInfoParams]
+        Title = "Hi there! 👋"
+        Content = "Welcome to my technical blog. I write about C++, RVO, and safe casting."
+        buttons = [
+                { name = "Subscribe", url = "/subscribe/" }
+            ]
+
+    [params.fuseConfig]
+        isCaseSensitive = false
+        shouldSort = true
+        location = 0
+        distance = 1000
+        threshold = 0.4
+        minMatchCharLength = 0
+        keys = ["title", "permalink", "summary", "content"]
