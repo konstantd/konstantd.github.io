@@ -2,6 +2,7 @@
 date = '2026-02-10T14:31:20+01:00'
 draft = false
 title = "Move Constructor's promise not to throw improves performance"
+tags = ["mid-level", "rule-of-5", "performance"]
 +++
 
 
