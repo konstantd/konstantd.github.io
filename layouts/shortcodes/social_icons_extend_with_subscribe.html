@@ -1,10 +1,38 @@
-<div style="margin: 50px 0 20px 0; padding: 20px; border-left: 4px solid var(--primary, #007acc); background: var(--code-bg); border-radius: 0 8px 8px 0;">
-    <h4 style="margin: 0 0 10px 0; color: var(--primary);">Thanks for reading!</h4>
-    <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">
-        I hope this breakdown of <strong>Directional Safety</strong> was helpful. 
-        If you have questions about C++ casting or real-time systems, feel free to share this post or reach out.
-    </p>
-    <div style="margin-top: 15px;">
-        <a href="/posts" style="font-size: 0.85rem; text-decoration: none; color: var(--primary); font-weight: 600;">← Back to Blog</a>
-    </div>
+<div style="margin: 10px 0 20px 0; padding: 1px; background: var(--code-bg);">
+
+    <footer class="entry-footer">
+        {{ partial "social_icons.html" (dict "Context" . "align" "center") }}
+        
+        <div class="home-info-extension" style="margin-top: 10px; text-align: center;">
+            
+            <p style="color: gray; font-size: 0.95rem; margin-bottom: 12px;">
+                📢 Subscribe to my technical blog to receive updates on my latest blog posts and projects.
+            </p>
+
+            <form action="/subscribe/" method="get" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                <input type="email" 
+                       name="email" 
+                       placeholder="Enter your email..." 
+                       required
+                       style="padding: 12px 15px; 
+                              border-radius: 8px; 
+                              border: 1px solid gray; 
+                              background: var(--code-bg); 
+                              min-width: 250px;
+                              outline: none;">
+                
+                <button type="submit" 
+                        style="background-color: var(--primary); 
+                               color: var(--theme); 
+                               padding: 12px 24px; 
+                               border-radius: 8px; 
+                               border: none;
+                               cursor: pointer;
+                               font-weight: 600;
+                               transition: opacity 0.2s;">
+                    Subscribe
+                </button>
+            </form>
+        </div>
+    </footer>
 </div>

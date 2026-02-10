@@ -60,3 +60,8 @@ Consider the following code. We have some registers from which we would like to 
 Check it again. The answer is no. But why?
 
 A double occupies 8 bytes and it will fail the stati_assert. Then we should use float instead. This saves us from reading/writing to memory that belongs to other parts and avoids creating UB..
+
+
+---
+
+{{< social_icons_extend_with_subscribe >}}

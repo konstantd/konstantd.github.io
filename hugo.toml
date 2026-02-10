@@ -29,7 +29,7 @@ theme = "PaperMod"
 [params]
     ShowReadingTime = true
     ShowWordCount = true
-    ShowShareButtons = true
+    ShowShareButtons = false
     ShowCodeCopyButtons = true
     ShowPostMeta = true
     ShowFullTextContent = false
@@ -64,4 +64,3 @@ theme = "PaperMod"
 [markup.goldmark.renderer]
     unsafe = true
 
-    

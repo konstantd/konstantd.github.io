@@ -98,6 +98,7 @@ int main()
 
 ---
 
+
 ### Directional Safety
 
 #### ⬆️ Upcasting (`Derived` --> `Base`)
