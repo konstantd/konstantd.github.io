@@ -4,11 +4,10 @@ title = 'My C++ Technical Blog'
 theme = "PaperMod"
 
 
-
 [[menu.main]]
     name = "About"
     url = "/about/"
-    weight = 10
+    weight = 200
 
 # 1. Add this to enable the Search Index
 [outputs]
