@@ -8,8 +8,6 @@ disableShare = false
 +++
 
 
-## Inheritance downcasting is dangerous!
-
 
 Converting a base-class pointer to a derived-class pointer is downcasting. We should be careful when we do that in order to avoid UBs.
 
