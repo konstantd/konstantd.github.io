@@ -2,6 +2,7 @@
 date = '2026-01-10T11:24:55+01:00'
 draft = false
 title = "De-Optimizing C++: How Manual Moves Kills NRVO"
+summary = 'Returning a moved big object will actually create extra overhead for the compiler, as a zero-cost operation is traded for a cheap move operation.'
 tags = ["mid-level", "rule-of-5", "performance"]
 +++
 
@@ -59,15 +60,12 @@ You have traded a **zero-cost operation** (NRVO) for a **move operation**. This 
 
 ---
 
-### ✅ The Fix
-Keep it simple. Just return the variable by name:
 
-```cpp
-// ❌ BAD: Forces a move, kills NRVO
-return std::move(result);
 
-// ✅ GOOD: Allows the compiler to use NRVO (Zero cost)
-return result;
+### Let's have a look on the assembly
+
+
+See the below generated code when we compile with -02 flag. 
 
 
 ``` assembly
@@ -101,6 +99,9 @@ return result;
 
 
 
+And this is the generated code when I use RVO, so just `return result;`.
+
+
 ``` assembly
 
     ; With RVO - just return result
@@ -129,8 +130,38 @@ return result;
 ```
 
 
+Let's not bother much about the assembly instructions and let us just check on the `.L2 label`, which runs the initialiazation loop of the vector. The CPU spends many `mov` instructions before the final `mov` of the caller's address when we don't use RVO.
+The compiler is trying to do RVO directly, but it fails, so it forces the move. There is still no copy but as you can see above there is some extra overhead. 
+
+**In the RVO version, the pointers are set before the loop even starts.**
+
+
+### ✅ The Fix
+
+
+Keep it simple. Just return the variable by name:
+
+
+```cpp
+#include <utility>
+#include<vector>
+
+std::vector<double> createSuperExpensiveData() {
+
+  // result is constructed locally
+  std::vector<double> result(10000, 10.0);
+  // ....
+  return result;  // This is simple and more efficient
+}
+
+```
+
+
+
 
 
 ---
 
 {{< social_icons_extend_with_subscribe >}}
+
+
