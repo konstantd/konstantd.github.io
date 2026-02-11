@@ -65,7 +65,7 @@ During my time at CERN, I also wroked as a Software Engineer for the developmet 
 
 **Embedded Software Engineer ~ ASAT, Aristotle Space & Aeronatics Team**
 
-Embedded Software Engineer ~ CERN, European Organization for Nuclear Research
+
 I worked full-time as an Embedded Software Engineer in the Rocketry Project of Aristotle Space & Aeronautics Team (ASAT). I was working on the Avionics Subsystem of the rocket and I was responsible for Embedded Software development, major enhancements in telemetry, and sensors upgrade. My work involved enhancing the performance and reliability of the rocket's avionics systems.
 
 
