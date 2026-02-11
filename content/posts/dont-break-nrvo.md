@@ -3,7 +3,7 @@ date = '2026-01-10T11:24:55+01:00'
 draft = false
 title = "De-Optimizing C++: How Manual Moves Kills NRVO"
 summary = 'Returning a moved big object will actually create extra overhead for the compiler, as a zero-cost operation is traded for a cheap move operation.'
-tags = ["mid-level", "rule-of-5", "performance"]
+tags = ["mid-level", "performance"]
 +++
 
 

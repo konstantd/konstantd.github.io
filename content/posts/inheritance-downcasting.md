@@ -1,7 +1,7 @@
 +++
 date = '2025-11-26T10:38:41+01:00'
 draft = false
-title = 'Inheritance downcasting is dangerous'
+title = 'Inheritance Downcasting is Dangerous'
 summary = 'Converting a base-class pointer to a derived-class pointer is downcasting. We should be careful when we do that in order to avoid UBs.'
 tags = ["mid-level", "inheritance"]
 disableShare = false
@@ -72,9 +72,20 @@ int main()
     derived_ptr->foo();
 
 
-    // ---------------------------------------------------
+    return 0;
+}
+```
 
-    // Its is better to use dynamic_cast and perform a runtime check Like below:
+
+
+
+
+
+Its is better to use dynamic_cast and perform a runtime check like below:
+
+
+``` cpp
+
     Derived* derived_ptr = dynamic_cast<Derived*>(base_ptr);
     
     if (derived_ptr) {
@@ -82,12 +93,9 @@ int main()
         derived_ptr->foo(); 
     } else {
         std::cout << "ERROR: Cast failed! Object is not a Derived. " << "\n">>;
-    }
-
-
-    return 0;
 }
 ```
+
 
 ## The TakeAway
 *Never downcast a base pointer to a derived type unless you are 100% certain of the object it points to.*
