@@ -7,7 +7,11 @@ ShowShareButtons = false
 +++
 
 
-Hi there! I am Konstantinos Diamantis, a Software Engineer with more than 5 years of professional experience. Currently, I work at CERN, and I have also been involved in different industries, such as avionics and freelance projects. I am specialized in debugging and optimizing large C/C++ codebases, numerical and real-time computations, with strong proficiency in the GCC toolchain, GDB, and performance tuning for high-efficiency software.
+
+<img src="/images/profile_picture.jpg" align="right" width="250" style="margin-left: 20px; border-radius: 8px;">
+
+
+Hi there! 👋 I am Konstantinos Diamantis. I have an MSc. in Electrical & Computer Engineering from Aristotle University of Thessaloniki. I have more than 5 years of professional experience and currently, I work at CERN, and I have also been involved in different industries, such as avionics and freelance projects. I am specialized in debugging and optimizing large C/C++ codebases, numerical and Real-Time computations, with strong proficiency in the GCC toolchain, GDB, and performance tuning for high-efficiency software.
 
 
 
@@ -91,32 +95,13 @@ Fieldscale is a company that focuses on the development of algorithms for comput
 
 ---
 
-## 🎓 Education
-
-### **Master of Engineering in Electrical & Computer Engineering**
-*Aristotle University of Thessaloniki* | *Thessaloniki, Greece*
-*Specialization: Telecommunications*
-*ECTS: 307 - Key Focus: Signal Processing, Networking, and Telecommunications.*
-* **GPA:** **8.40 / 10.00** (Top 10% of the class)
-
-
----
-
-### **High School Diploma**
-*General High School* | *Agia, Larisa, Greece*
-*Sector: Technology, Mathematics, Physics*
-
-* **Grade:** **19.9 / 20.00** (Top 1% the class)
-
-
----
 
 
 ## 📚 Publications
 
 ### **Data-Driven Modeling of Accelerator Magnets**
 *IEEE Transactions on Magnetics*, 2026  
-[Link to Paper](#) 
+[DOI: 10.1109/TMAG.2026.3657972](https://ieeexplore.ieee.org/document/11363469)
 
 ### **A Software Framework to Enable Model-Based Systems Engineering for Accelerator Magnets**
-*International Conference on the Computation of Electromagnetic Fields in Accelerator Magnets (COMPUMAG 2025)* [Link to Conference](#)
+*International Conference on the Computation of Electromagnetic Fields in Accelerator Magnets (COMPUMAG 2025)*

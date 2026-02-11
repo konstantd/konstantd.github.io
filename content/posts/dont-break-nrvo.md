@@ -1,5 +1,5 @@
 +++
-date = '2026-02-10T11:24:55+01:00'
+date = '2026-01-10T11:24:55+01:00'
 draft = false
 title = "De-Optimizing C++: How Manual Moves Kills NRVO"
 tags = ["mid-level", "rule-of-5", "performance"]

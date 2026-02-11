@@ -1,5 +1,5 @@
 +++
-date = '2025-02-10T10:38:41+01:00'
+date = '2025-11-26T10:38:41+01:00'
 draft = false
 title = 'Inheritance downcasting is dangerous'
 summary = 'Converting a base-class pointer to a derived-class pointer is downcasting. We should be careful when we do that in order to avoid UBs.'

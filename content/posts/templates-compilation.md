@@ -1,5 +1,5 @@
 +++
-date = '2026-02-10T11:23:23+01:00'
+date = '2025-10-10T11:23:23+01:00'
 draft = false
 title = 'Templates Compilation'
 tags = ["mid-level", "templates"]

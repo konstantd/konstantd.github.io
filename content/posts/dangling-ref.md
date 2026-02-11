@@ -1,5 +1,5 @@
 +++
-date = '2026-02-10T11:19:20+01:00'
+date = '2025-10-10T11:19:20+01:00'
 draft = false
 title = 'Dangling References in C++'
 summary = 'const T& binds to everything but it is dangerous'

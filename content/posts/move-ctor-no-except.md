@@ -1,5 +1,5 @@
 +++
-date = '2026-02-10T14:31:20+01:00'
+date = '2025-12-29T14:31:20+01:00'
 draft = false
 title = "C++ Move Semantics: Why 'noexcept' is mandatory for High-Performance Containers"
 tags = ["mid-level", "rule-of-5", "performance"]
