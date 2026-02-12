@@ -1,5 +1,5 @@
 +++
-date = '2025-10-10T11:23:23+01:00'
+date = '2025-11-11T11:23:23+01:00'
 draft = false
 title = 'Advanced Template Metaprogramming: Implementing Hardware Constraints with C++20 Concepts'
 tags = ["advanced-level", "templates", "concepts", "undefined-behaviour"]
