@@ -7,8 +7,9 @@ tags = ["advanced-level", "HPC", "cache-locality", "performance", "tiling", "sim
 +++
 
 
-In this benchmark, we explore the importance of keeping data within the CPU cache to avoid expensive retrieval from RAM. By simply ensuring **linear data access**, we can achieve massive performance gains without changing the underlying algorithm. We will demonstrate this effect in a simple matrix multiplication example.
+In this benchmark, we explore the importance of keeping data within the CPU cache to avoid expensive retrieval from RAM. By simply ensuring **linear data access**, we can achieve massive performance gains without changing the underlying algorithm. We will demonstrate this effect in a simple matrix multiplication example using the **perf** tool and **google-benchmark**.
 
+We will have 3 scenarios, one bad multiplication that we do not access the data linearly, then one that we do access the data linearly. We will notice how massive speed we can gain just from this small change. Then we will try to improve it even more, accessing in **blocks** wof size that fit in cache memory (**tiling**).
 
 
 ## The Core Concept: CPU Cache vs. RAM
@@ -16,6 +17,9 @@ In this benchmark, we explore the importance of keeping data within the CPU cach
 Data access speed is largely determined by physical distance and the hierarchy of memory. When we operate on tables linearly, the CPU can effectively "predict" what data we need next.
 
  
+ Below table gives an idea of the time and cycles the CPU needs to access data. 
+
+
 | Memory Level - |   Time to reach  |   CPU Cycles (Approx.)
 | :--- | :--- | :--- |
 | L1 Cache	   |   ~1 ns | 4–5 cycles |  
@@ -27,7 +31,7 @@ Data access speed is largely determined by physical distance and the hierarchy o
 
 ## The Code: Naive vs. Optimized Matrix Multiplication
 
-We are comparing two versions of a matrix multiplication. The only difference is the order of the nested loops, which dictates how we traverse memory.
+We are comparing two versions of a matrix multiplication. The only difference is the order of the nested loops, which defines how we traverse memory.
 
 
 
@@ -239,3 +243,25 @@ Because the data is contiguous, the compiler (especially with `-O3` optimization
 ## Conclusion:
 
 When writing HPC code, how you traverse your data is often more important than the algorithm itself. Keep them linear, and in cache.
+
+
+We do in order to..
+
+
+``` bash
+sudo sysctl -w kernel.perf_event_paranoid=-1
+```
+
+``` bash
+perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads,L1-dcache-load-misses,LLC-loads,LLC-load-misses -v ./cache_perf_test.exe --benchmark_filter=Tilling
+```
+
+
+``` bash
+perf stat -e \
+L1-dcache-load-misses,\
+l2_rqsts.references,\
+l2_rqsts.miss,\
+LLC-load-misses \
+./cache_perf_test.exe --benchmark_filter=Tilling
+``` bash
