@@ -7,6 +7,10 @@ tags = ["advanced-level", "HPC", "cache-locality", "performance", "tiling", "sim
 +++
 
 
+// std::span
+
+
+
 In this benchmark, we explore the importance of keeping data within the CPU cache to avoid expensive retrieval from RAM. By simply ensuring **linear data access**, we can achieve massive performance gains without changing the underlying algorithm. We will demonstrate this effect in a simple matrix multiplication example using the **perf** tool and **google-benchmark**.
 
 We will have 3 scenarios, one bad multiplication that we do not access the data linearly, then one that we do access the data linearly. We will notice how massive speed we can gain just from this small change. Then we will try to improve it even more, accessing in **blocks** wof size that fit in cache memory (**tiling**).
