@@ -6,10 +6,10 @@ summary = 'In this benchmark, we explore the importance of keeping data within t
 tags = ["advanced-level", "HPC", "cache-locality", "performance", "tiling", "simd"]
 +++
 
-
+TODO:
 // std::span
 
-
+// AoS design, avoid runtime dispatch but here we just demo on a simple matrix multip
 
 In this benchmark, we explore the importance of keeping data within the CPU cache to avoid expensive retrieval from RAM. By simply ensuring **linear data access**, we can achieve massive performance gains without changing the underlying algorithm. We will demonstrate this effect in a simple matrix multiplication example using the **perf** tool and **google-benchmark**.
 
