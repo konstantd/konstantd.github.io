@@ -484,7 +484,7 @@ When writing High Performance code, how you traverse your data is often more imp
 ### Notes
 
 
-- `std::mdspan` introduced in C++23 and does the Tiling - Blocking part, avoiding the loop we implemented manually
+- `std::mdspan` was introduced in C++23 and does the Tiling - Blocking part, avoiding the loop we implemented manually
 - **Data Oriented Design (DOD)** aims to benefit exactly from this. We might see such an example in a future article.
 
 
