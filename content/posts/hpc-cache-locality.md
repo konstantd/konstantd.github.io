@@ -91,14 +91,21 @@ void multiply_performance(const std::vector<T>& a, const std::vector<T>& b, std:
 ```
 
 
-Now, we can use **Tiling** or **Blokcing** in order to split in blocks that fit in L1 and L2 and save some extra CPU cycles:
+Now, we can use **Tiling** or **Blokcing** in order to split in blocks that fit in L1 and save some extra CPU cycles. The `BLOCK_SIZE` is an important parameter here, since it will define if the data fit in L1.
+
+Doing the math for a double of 8 bytes:
+
+3* (B * B * 8 bytes) <= 32768 bytes (32 KiB) - (L1 size)
+
+
+Then B should be B <= 37, so we choose 32 safely, which is often a sweet spot for modern CPUs.
 
 ```cpp
 template<typename T> 
 void multiply_performance_tilling(const std::vector<T>& a, const std::vector<T>& b, std::vector<T>& result, int const N) {
     std::fill(result.begin(), result.end(), 0);
 
-    // Choose a block size. 32 or 64 is often a sweet spot for modern CPUs.
+    // Choose a block size of 32 given our math above
     const int BLOCK_SIZE = 32; 
 
     // Outer loops: Iterate over tiles
@@ -182,6 +189,18 @@ static void BM_Multiply_Perf_Template(benchmark::State& state) {
 BENCHMARK_TEMPLATE(BM_Multiply_Naive_Template, double)->Arg(1024);
 BENCHMARK_TEMPLATE(BM_Multiply_Perf_Template, double)->Arg(1024);
 BENCHMARK_TEMPLATE(BM_Multiply_Perf_Tilling_Template, double)->Arg(1024);
+
+BENCHMARK_TEMPLATE(BM_Multiply_Naive_Template, double)->Arg(1024);
+BENCHMARK_TEMPLATE(BM_Multiply_Perf_Template, double)->Arg(1024);
+BENCHMARK_TEMPLATE(BM_Multiply_Perf_Tilling_Template, double)->Arg(1024);
+
+BENCHMARK_TEMPLATE(BM_Multiply_Naive_Template, double)->Arg(1024);
+BENCHMARK_TEMPLATE(BM_Multiply_Perf_Template, double)->Arg(1024);
+BENCHMARK_TEMPLATE(BM_Multiply_Perf_Tilling_Template, double)->Arg(1024);
+
+BENCHMARK_TEMPLATE(BM_Multiply_Naive_Template, double)->Arg(1024);
+BENCHMARK_TEMPLATE(BM_Multiply_Perf_Template, double)->Arg(1024);
+BENCHMARK_TEMPLATE(BM_Multiply_Perf_Tilling_Template, double)->Arg(1024);
 BENCHMARK_MAIN();
 ```
 
@@ -190,35 +209,52 @@ BENCHMARK_MAIN();
 Compile with:
 
 ```zsh
-g++ -03 cache_locality_matrix.cpp -o cache_perf_test.exe -lpthread -lbenchmark 
+g++ -O3 -march=native cache_locality_matrix.cpp -o cache_perf_test.exe -lpthread -lbenchmark 
 ```
 
-We use aggresive optimization of `-O3` for `SIMD vectorization` apart from the linear prefetcher, to get even even better results
+We use aggresive optimization of `-O3` for `SIMD vectorization` apart from the linear prefetcher, to get even even better results. Given that we run on an old hardware I use also native arch flag to activate SIMD - otherwise the compiler prevented it in my case. 
 
 
 
 
 ## Benchmark Results
 
+Note that you can run the code to test it directly in your machine. Of course, results will vary per hardware. I have optimized the Blocking version above for my given hardware **based on L1 cache**.
 
 
-The following hardware specs were used to run these benchmarks. Note that you can find the code in my github repo and run it to test it in your machine. Of course, results will vary per hardware.
+``` bash
+./cache_perf_test.exe 
+2026-02-24T12:21:10+01:00
+Running ./cache_perf_test.exe
+Run on (4 X 2270.21 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x2)
+  L1 Instruction 32 KiB (x2)
+  L2 Unified 256 KiB (x2)
+  L3 Unified 3072 KiB (x1)
+Load Average: 0.83, 0.81, 0.73
 
-| Component | Specification |
-| :--- | :--- |
-| **CPU** | 12 X 2712 MHz |
-| **L1 Data Cache** | 48 KiB (x6) |
-| **L1 Instruction Cache** | 32 KiB (x6) |
-| **L2 Unified Cache** | 512 KiB (x6) |
-| **L3 Unified Cache** | 12288 KiB (x1) |
+
+-----------------------------------------------------------------------------------------
+Benchmark                                               Time             CPU   Iterations
+-----------------------------------------------------------------------------------------
+BM_Multiply_Naive_Template<double>/32               29684 ns        29529 ns        23667
+BM_Multiply_Perf_Template<double>/32                14096 ns        14060 ns        44138
+BM_Multiply_Perf_Tilling_Template<double>/32        11775 ns        11735 ns        56519
+BM_Multiply_Naive_Template<double>/96              840709 ns       837230 ns          752
+BM_Multiply_Perf_Template<double>/96               436760 ns       433365 ns         1458
+BM_Multiply_Perf_Tilling_Template<double>/96       338696 ns       335899 ns         2070
+BM_Multiply_Naive_Template<double>/320           48389745 ns     47677130 ns           15
+BM_Multiply_Perf_Template<double>/320            23002329 ns     22579461 ns           31
+BM_Multiply_Perf_Tilling_Template<double>/320    13449012 ns     13321432 ns           42
+BM_Multiply_Naive_Template<double>/1024        1.2313e+10 ns   1.2205e+10 ns            1
+BM_Multiply_Perf_Template<double>/1024          999436845 ns    978583268 ns            1
+BM_Multiply_Perf_Tilling_Template<double>/1024  623033424 ns    617335362 ns            1
+```
+At $N=32$, your entire matrix is exactly one "Block."Matrix A ($32 \times 32$): 8 KiBMatrix B ($32 \times 32$): 8 KiBResult ($32 \times 32$): 8 KiBTotal: 24 KiBSince $24 \text{ KiB} < 32 \text{ KiB}$ (your L1 size), the CPU loads these matrices once and they never leave the L1 cache.
 
 
-
-
-| Benchmark | Time (Wall) | CPU Time | Iterations |
-| :--- | :--- | :--- | :--- |
-| `BM_Multiply_Naive<double>/1024` | 1,946,863,116 ns | 1,946,797,038 ns | 1 |
-| `BM_Multiply_Perf<double>/1024` | 379,033,700 ns | 379,018,676 ns | 2 |
+$N=32$: Tiling and IKJ are roughly equal because the overhead is negligible and everything stays in L1.$N=96$: IKJ wins because Tiling disrupts the L2 prefetcher and adds loop overhead.$N=1024$: Tiling wins big because it prevents "Cache Thrashing" in the L3 and RAM.
 
 
 
@@ -265,68 +301,9 @@ perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads,L
 
 
 
-```
+``` bash
 perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads,L1-dcache-load-misses,LLC-loads,LLC-load-misses -v ./cache_perf_test.exe --benchmark_filter=Tilling
-Control descriptor is not initialized
-Warning:
-kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
-Warning:
-kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
-Warning:
-kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
-Warning:
-kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
-Warning:
-kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
-Warning:
-kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
-Warning:
-kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
-Warning:
-kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
-2026-02-23T22:15:48+01:00
-Running ./cache_perf_test.exe
-Run on (4 X 2700 MHz CPU s)
-CPU Caches:
-  L1 Data 32 KiB (x2)
-  L1 Instruction 32 KiB (x2)
-  L2 Unified 256 KiB (x2)
-  L3 Unified 3072 KiB (x1)
-Load Average: 1.13, 0.39, 0.24
-***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
------------------------------------------------------------------------------------------
-Benchmark                                               Time             CPU   Iterations
------------------------------------------------------------------------------------------
-BM_Multiply_Perf_Tilling_Template<double>/1024  580543215 ns    569520099 ns            1
-cycles:u: 1512989646 606248302 301883163
-instructions:u: 3680757891 606248302 378010534
-cache-references:u: 161727837 606248302 378602689
-cache-misses:u: 5945403 606248302 379596198
-L1-dcache-loads:u: 1252137815 606248302 380573631
-L1-dcache-load-misses:u: 214937003 606248302 379914987
-LLC-loads:u: 51702197 606248302 302625598
-LLC-load-misses:u: 265743 606248302 301796942
-
- Performance counter stats for './cache_perf_test.exe --benchmark_filter=Tilling':
-
-     1,512,989,646      cycles:u                                                                (49.80%)
-     3,680,757,891      instructions:u                   #    2.43  insn per cycle              (62.35%)
-       161,727,837      cache-references:u                                                      (62.45%)
-         5,945,403      cache-misses:u                   #    3.68% of all cache refs           (62.61%)
-     1,252,137,815      L1-dcache-loads:u                                                       (62.78%)
-       214,937,003      L1-dcache-load-misses:u          #   17.17% of all L1-dcache accesses   (62.67%)
-        51,702,197      LLC-loads:u                                                             (49.92%)
-           265,743      LLC-load-misses:u                #    0.51% of all LL-cache accesses    (49.78%)
-
-       0.612500850 seconds time elapsed
-
-       0.578505000 seconds user
-       0.016582000 seconds sys
-
 ```
-
-
-
 
 ``` bash
 perf stat -e \
