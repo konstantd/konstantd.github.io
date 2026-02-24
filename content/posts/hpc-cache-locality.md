@@ -181,17 +181,17 @@ static void BM_Multiply_Perf_Template(benchmark::State& state) {
 
 
 // Tests with different N to have a general picture
-BENCHMARK_TEMPLATE(BM_Multiply_Naive_Template, double)->Arg(1024);
-BENCHMARK_TEMPLATE(BM_Multiply_Perf_Template, double)->Arg(1024);
-BENCHMARK_TEMPLATE(BM_Multiply_Perf_Tilling_Template, double)->Arg(1024);
+BENCHMARK_TEMPLATE(BM_Multiply_Naive_Template, double)->Arg(32);
+BENCHMARK_TEMPLATE(BM_Multiply_Perf_Template, double)->Arg(32);
+BENCHMARK_TEMPLATE(BM_Multiply_Perf_Tilling_Template, double)->Arg(32);
 
-BENCHMARK_TEMPLATE(BM_Multiply_Naive_Template, double)->Arg(1024);
-BENCHMARK_TEMPLATE(BM_Multiply_Perf_Template, double)->Arg(1024);
-BENCHMARK_TEMPLATE(BM_Multiply_Perf_Tilling_Template, double)->Arg(1024);
+BENCHMARK_TEMPLATE(BM_Multiply_Naive_Template, double)->Arg(96);
+BENCHMARK_TEMPLATE(BM_Multiply_Perf_Template, double)->Arg(96);
+BENCHMARK_TEMPLATE(BM_Multiply_Perf_Tilling_Template, double)->Arg(96);
 
-BENCHMARK_TEMPLATE(BM_Multiply_Naive_Template, double)->Arg(1024);
-BENCHMARK_TEMPLATE(BM_Multiply_Perf_Template, double)->Arg(1024);
-BENCHMARK_TEMPLATE(BM_Multiply_Perf_Tilling_Template, double)->Arg(1024);
+BENCHMARK_TEMPLATE(BM_Multiply_Naive_Template, double)->Arg(320);
+BENCHMARK_TEMPLATE(BM_Multiply_Perf_Template, double)->Arg(320);
+BENCHMARK_TEMPLATE(BM_Multiply_Perf_Tilling_Template, double)->Arg(320);
 
 BENCHMARK_TEMPLATE(BM_Multiply_Naive_Template, double)->Arg(1024);
 BENCHMARK_TEMPLATE(BM_Multiply_Perf_Template, double)->Arg(1024);
