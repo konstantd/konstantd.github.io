@@ -27,12 +27,14 @@ std::vector<double> createSuperExpensiveData() {
 
 # C++ Optimization: Don't `std::move` Your Returns
 
-### 🚩 The Common Misconception
+### The Common Misconception
+
 It looks intuitive: *“I’m returning a local variable that is expensive to copy, so I should use `std::move` to ensure it's efficient!”* **The Reality:** You are likely making your code **slower**.
 
 ---
 
-### 🚀 How Modern Compilers Work: NRVO
+### Modern Compilers & NRVO
+
 Modern C++ compilers use **NRVO** (Named Return Value Optimization) or **Copy Elision**. Instead of a "Create -> Copy -> Destroy" cycle, the compiler optimizes the memory management:
 
 * **Standard Logic:**
@@ -48,7 +50,8 @@ This effectively reduces the cost to **zero operations**.
 
 ---
 
-### ⚠️ The Catch: "Pessimization"
+###  Pessimization
+
 NRVO has strict rules. For it to work, the `return` statement must return the variable **by name**. 
 
 When you write `return std::move(result);`:
@@ -136,7 +139,7 @@ The compiler is trying to do RVO directly, but it fails, so it forces the move. 
 **In the RVO version, the pointers are set before the loop even starts.**
 
 
-### ✅ The Fix
+### The Simple Fix
 
 
 Keep it simple. Just return the variable by name:
