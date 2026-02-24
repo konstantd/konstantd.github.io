@@ -264,6 +264,70 @@ perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads,L
 ```
 
 
+
+```
+perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads,L1-dcache-load-misses,LLC-loads,LLC-load-misses -v ./cache_perf_test.exe --benchmark_filter=Tilling
+Control descriptor is not initialized
+Warning:
+kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
+Warning:
+kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
+Warning:
+kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
+Warning:
+kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
+Warning:
+kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
+Warning:
+kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
+Warning:
+kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
+Warning:
+kernel.perf_event_paranoid=2, trying to fall back to excluding kernel and hypervisor  samples
+2026-02-23T22:15:48+01:00
+Running ./cache_perf_test.exe
+Run on (4 X 2700 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x2)
+  L1 Instruction 32 KiB (x2)
+  L2 Unified 256 KiB (x2)
+  L3 Unified 3072 KiB (x1)
+Load Average: 1.13, 0.39, 0.24
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+-----------------------------------------------------------------------------------------
+Benchmark                                               Time             CPU   Iterations
+-----------------------------------------------------------------------------------------
+BM_Multiply_Perf_Tilling_Template<double>/1024  580543215 ns    569520099 ns            1
+cycles:u: 1512989646 606248302 301883163
+instructions:u: 3680757891 606248302 378010534
+cache-references:u: 161727837 606248302 378602689
+cache-misses:u: 5945403 606248302 379596198
+L1-dcache-loads:u: 1252137815 606248302 380573631
+L1-dcache-load-misses:u: 214937003 606248302 379914987
+LLC-loads:u: 51702197 606248302 302625598
+LLC-load-misses:u: 265743 606248302 301796942
+
+ Performance counter stats for './cache_perf_test.exe --benchmark_filter=Tilling':
+
+     1,512,989,646      cycles:u                                                                (49.80%)
+     3,680,757,891      instructions:u                   #    2.43  insn per cycle              (62.35%)
+       161,727,837      cache-references:u                                                      (62.45%)
+         5,945,403      cache-misses:u                   #    3.68% of all cache refs           (62.61%)
+     1,252,137,815      L1-dcache-loads:u                                                       (62.78%)
+       214,937,003      L1-dcache-load-misses:u          #   17.17% of all L1-dcache accesses   (62.67%)
+        51,702,197      LLC-loads:u                                                             (49.92%)
+           265,743      LLC-load-misses:u                #    0.51% of all LL-cache accesses    (49.78%)
+
+       0.612500850 seconds time elapsed
+
+       0.578505000 seconds user
+       0.016582000 seconds sys
+
+```
+
+
+
+
 ``` bash
 perf stat -e \
 L1-dcache-load-misses,\
