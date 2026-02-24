@@ -9,8 +9,6 @@ tags = ["advanced-level", "HPC", "cache-locality", "performance", "blocking", "t
 TODO:
 // std::span
 
-// AoS design, avoid runtime dispatch but here we just demo on a simple matrix multip
-
 In this benchmark, we explore the importance of keeping data within the CPU cache to avoid expensive retrieval from RAM. By simply ensuring **linear data access**, we can achieve massive performance gains without changing the underlying algorithm. This principle is used also in **Data Oriented Design (DOD)** with **Array of Structures (AoS)** or **Structures of Arrays (SoA)**, since we lay down all our data to fit linearly. Apart from that there is also the benefit, that when we follow **DOD** designs we avoid also the runtime dynamic dispatch on polymorphism. Though here, in our example we will just focus on the benefit of keeping the cache hot with and we will demonstrate the performance gain in a simple matrix multiplication example using the **perf** tool and **google-benchmark**.
 
 We will have 3 scenarios:
@@ -93,12 +91,12 @@ void multiply_performance(const std::vector<T>& a, const std::vector<T>& b, std:
 
 Now, we can use **Tiling** or **Blokcing** in order to split in blocks that fit in L1 and save some extra CPU cycles. The `BLOCK_SIZE` is an important parameter here, since it will define if the data fit in L1.
 
-Doing the math for a double of 8 bytes:
+Doing the math for a double of 8 bytes, we have matrix A, B and one of the same dimenstions to hold the results - so 3 in total.
 
-3* (B * B * 8 bytes) <= 32768 bytes (32 KiB) - (L1 size)
+3* (*Block* * *Block* * 8 bytes) <= 32768 bytes (32 KiB, L1 size)
 
 
-Then B should be B <= 37, so we choose 32 safely, which is often a sweet spot for modern CPUs.
+Then *Block* should be *Block* <= 37, so we choose 32 safely, which is often a sweet spot for modern CPUs.
 
 ```cpp
 template<typename T> 
@@ -183,9 +181,7 @@ static void BM_Multiply_Perf_Template(benchmark::State& state) {
 }
 
 
-// Tests with N = 1024 
-// 
-// One array of 1024 * 1024 * 8 will fit in L3 (in my machine 12 MB)
+// Tests with different N to have a general picture
 BENCHMARK_TEMPLATE(BM_Multiply_Naive_Template, double)->Arg(1024);
 BENCHMARK_TEMPLATE(BM_Multiply_Perf_Template, double)->Arg(1024);
 BENCHMARK_TEMPLATE(BM_Multiply_Perf_Tilling_Template, double)->Arg(1024);
@@ -219,7 +215,7 @@ We use aggresive optimization of `-O3` for `SIMD vectorization` apart from the l
 
 ## Benchmark Results
 
-Note that you can run the code to test it directly in your machine. Of course, results will vary per hardware. I have optimized the Blocking version above for my given hardware **based on L1 cache**.
+Note that you can run the code to test it directly in your machine. Of course, results will vary per hardware. I have optimized the Blocking version above for my given hardware **based on my L1 cache**.
 
 ``` bash
 ./cache_perf_test.exe 
@@ -282,12 +278,39 @@ BM_Multiply_Naive_Template<double>/1024        1.2313e+10 ns   1.2205e+10 ns    
 BM_Multiply_Perf_Template<double>/1024          999436845 ns    978583268 ns            1
 BM_Multiply_Perf_Tilling_Template<double>/1024  623033424 ns    617335362 ns            1
 ```
-At $N=32$, your entire matrix is exactly one "Block."Matrix A ($32 \times 32$): 8 KiBMatrix B ($32 \times 32$): 8 KiBResult ($32 \times 32$): 8 KiBTotal: 24 KiBSince $24 \text{ KiB} < 32 \text{ KiB}$ (your L1 size), the CPU loads these matrices once and they never leave the L1 cache.
+
+## N = 32 
+
+At N=32, the entire working set fits within a standard 32 KiB L1 cache. Because the data never has to be evicted to slower memory layers, the specific algorithm choice matters very little.
+
+* **Matrix A (*32 * 32*):** 8 KiB   
+* **Matrix B (*32 * 32*):** 8 KiB
+* **Result (*32 * 32*):** 8 KiB
+* **Total Working Set:** **24 KiB**
+
+> **Analysis:** Since 24  KiB < 32  KiB  (L1 size), the CPU loads these matrices once and they never leave the L1 cache. So we don't see any effect.
 
 
-$N=32$: Tiling and IKJ are roughly equal because the overhead is negligible and everything stays in L1.$N=96$: IKJ wins because Tiling disrupts the L2 prefetcher and adds loop overhead.$N=1024$: Tiling wins big because it prevents "Cache Thrashing" in the L3 and RAM.
+## N = 96
 
 
+
+---
+
+### Performance Comparison by Scale
+
+| Matrix Size (*N*) | Performance Winner | Reasoning |
+| :--- | :--- | :--- |
+| ***N=32*** | **Tie** (Tiling ≈ IKJ) | Overhead is negligible; everything stays in L1. |
+| ***N=96*** | **IKJ Order** | Tiling disrupts the L2 prefetcher and adds loop overhead. |
+| ***N=1024*** | **Tiling** | Prevents **"Cache Thrashing"** in the L3 and RAM. |
+
+---
+
+### Key Takeaways
+1. ***N=32*:** Tiling and IKJ are roughly equal because the hardware isn't being pushed to its capacity.
+2. ***N=96*:** IKJ wins because it maintains a linear access pattern that the prefetcher loves, whereas tiling breaks that flow.
+3. ***N=1024*:** Tiling wins big. At this scale, the cost of a cache miss (going to RAM) is so high that the extra loop overhead of tiling is a small price to pay for keeping data local.
 
 ### Deeper Dive with perf
 
