@@ -3,7 +3,7 @@ date = '2026-02-12T11:06:26+01:00'
 draft = false
 title = 'Avoid the RAM Latency: Keeping the Cache Hot and on Linear Access is the Ultimate C++ Optimization'
 summary = 'In this benchmark, we explore the importance of keeping data within the CPU cache to avoid expensive retrieval from RAM. By simply ensuring linear data access and accessing by blocks that fit in L1 and L2, we can achieve massive performance gains without changing the underlying algorithm.'
-tags = ["advanced-level", "HPC", "cache-locality", "performance", "tiling", "simd"]
+tags = ["advanced-level", "HPC", "cache-locality", "performance", "blocking", "tiling", "simd", "DOD", "AoS", "perf"]
 +++
 
 TODO:
@@ -11,17 +11,20 @@ TODO:
 
 // AoS design, avoid runtime dispatch but here we just demo on a simple matrix multip
 
-In this benchmark, we explore the importance of keeping data within the CPU cache to avoid expensive retrieval from RAM. By simply ensuring **linear data access**, we can achieve massive performance gains without changing the underlying algorithm. We will demonstrate this effect in a simple matrix multiplication example using the **perf** tool and **google-benchmark**.
+In this benchmark, we explore the importance of keeping data within the CPU cache to avoid expensive retrieval from RAM. By simply ensuring **linear data access**, we can achieve massive performance gains without changing the underlying algorithm. This principle is used also in **Data Oriented Design (DOD)** with **Array of Structures (AoS)** or **Structures of Arrays (SoA)**, since we lay down all our data to fit linearly. Apart from that there is also the benefit, that when we follow **DOD** designs we avoid also the runtime dynamic dispatch on polymorphism. Though here, in our example we will just focus on the benefit of keeping the cache hot with and we will demonstrate the performance gain in a simple matrix multiplication example using the **perf** tool and **google-benchmark**.
 
-We will have 3 scenarios, one bad multiplication that we do not access the data linearly, then one that we do access the data linearly. We will notice how massive speed we can gain just from this small change. Then we will try to improve it even more, accessing in **blocks** wof size that fit in cache memory (**tiling**).
+We will have 3 scenarios:
+
+1. one bad multiplication that we do not access the data linearly, 
+2. then one that we do access the data linearly. We will notice how massive speed we can gain just from this small change. 
+3. Then we will try to improve it even more, accessing in **blocks** of size that fit in cache L1/L2 (**tiling**). 
+
+(Note that similar techniques are implemented to fit data in the cache line when reading or modifying data, aligning with 64 bytes which is the cache line. In C++17 we also have `std::hardware_constructive_interference_size`, but in most machines this is the same as 64bytes anyways.)
 
 
 ## The Core Concept: CPU Cache vs. RAM
 
-Data access speed is largely determined by physical distance and the hierarchy of memory. When we operate on tables linearly, the CPU can effectively "predict" what data we need next.
-
- 
- Below table gives an idea of the time and cycles the CPU needs to access data. 
+Data access speed is largely determined by physical distance and the hierarchy of memory. Below table gives an idea of the time and cycles the CPU needs to access data from the corresponding memory. Going down to the hierarchy, the memory grows and the speed also decreases.
 
 
 | Memory Level - |   Time to reach  |   CPU Cycles (Approx.)
@@ -33,16 +36,17 @@ Data access speed is largely determined by physical distance and the hierarchy o
  
 
 
-## The Code: Naive vs. Optimized Matrix Multiplication
-
-We are comparing two versions of a matrix multiplication. The only difference is the order of the nested loops, which defines how we traverse memory.
+Notice that accessing RAM can be 100 times slower thatn L1. It would be nice to try to keep our data in cache, so we avoid this cost and this is exactly what we are going to do.
 
 
+
+## The Code: Naive vs Optimized vs Blocking
+
+We are comparing 3 versions of a matrix multiplication. We lay our matrixes down linearly. For the first 2, the only difference is the order of the nested loops, which defines how we traverse memory.
 
 ``` cpp
 #include<vector>
 #include <benchmark/benchmark.h>
-
 
 
 // Simple and naive
@@ -63,7 +67,7 @@ void multiply_naive(const std::vector<T>& a, const std::vector<T>& b, std::vecto
 
 
 
-Now the improved version for performance, just changing the stride:
+Now the improved version **Optimized** just changing the stride:
 
 
 ```cpp
@@ -87,7 +91,7 @@ void multiply_performance(const std::vector<T>& a, const std::vector<T>& b, std:
 ```
 
 
-Now, we can use tiling in order to split in blocks that fit in L1 and L2 and save some extra CPU cycles:
+Now, we can use **Tiling** or **Blokcing** in order to split in blocks that fit in L1 and L2 and save some extra CPU cycles:
 
 ```cpp
 template<typename T> 
@@ -124,6 +128,10 @@ void multiply_performance_tilling(const std::vector<T>& a, const std::vector<T>&
 ```
 
 
+Below I have the functions I used to benchmark them, I just populate the data and I say  `benchmark::DoNotOptimize(data);` which actually fakes the compiler. It is like saying: I am doing something here, better leave it as is. If we skip it, the compiler would just wipe out the data because it sees we do not perform anything on these tables.
+
+
+
 ```cpp
 // Now the Benchmarks for all the above:
 template <typename T>
@@ -140,8 +148,6 @@ static void BM_Multiply_Perf_Tilling_Template(benchmark::State& state) {
     }
 }
 
-
-
 template <typename T>
 static void BM_Multiply_Naive_Template(benchmark::State& state) {
     int N = state.range(0);
@@ -154,10 +160,6 @@ static void BM_Multiply_Naive_Template(benchmark::State& state) {
         benchmark::DoNotOptimize(m3.data()); 
     }
 }
-
-
-
-
 
 template <typename T>
 static void BM_Multiply_Perf_Template(benchmark::State& state) {
@@ -174,8 +176,6 @@ static void BM_Multiply_Perf_Template(benchmark::State& state) {
 }
 
 
-
-
 // Tests with N = 1024 
 // 
 // One array of 1024 * 1024 * 8 will fit in L3 (in my machine 12 MB)
@@ -183,8 +183,6 @@ BENCHMARK_TEMPLATE(BM_Multiply_Naive_Template, double)->Arg(1024);
 BENCHMARK_TEMPLATE(BM_Multiply_Perf_Template, double)->Arg(1024);
 BENCHMARK_TEMPLATE(BM_Multiply_Perf_Tilling_Template, double)->Arg(1024);
 BENCHMARK_MAIN();
-
-`;
 ```
 
 ---
@@ -224,8 +222,13 @@ The following hardware specs were used to run these benchmarks. Note that you ca
 
 
 
+### Deeper Dive with perf
 
-We compared a **Naive** matrix multiplication (`i-j-k` loops) **vs** an **Optimized** version (`i-k-j` loops).
+
+Let's see what is going on for the scenarios where data 
+
+
+We compared a **Naive** matrix multiplication (`i-j-k` loops) **vs** an **Optimized** version (`i-k-j` loops) **vs** **Blocking** version.
 
 
 ---
@@ -268,4 +271,4 @@ l2_rqsts.references,\
 l2_rqsts.miss,\
 LLC-load-misses \
 ./cache_perf_test.exe --benchmark_filter=Tilling
-``` bash
+``` 
