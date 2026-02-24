@@ -197,6 +197,11 @@ BENCHMARK_TEMPLATE(BM_Multiply_Perf_Tilling_Template, double)->Arg(1024);
 BENCHMARK_TEMPLATE(BM_Multiply_Naive_Template, double)->Arg(1024);
 BENCHMARK_TEMPLATE(BM_Multiply_Perf_Template, double)->Arg(1024);
 BENCHMARK_TEMPLATE(BM_Multiply_Perf_Tilling_Template, double)->Arg(1024);
+
+BENCHMARK_TEMPLATE(BM_Multiply_Naive_Template, double)->Arg(2048);
+BENCHMARK_TEMPLATE(BM_Multiply_Perf_Template, double)->Arg(2048);
+BENCHMARK_TEMPLATE(BM_Multiply_Perf_Tilling_Template, double)->Arg(2048);
+
 BENCHMARK_MAIN();
 ```
 
@@ -205,10 +210,30 @@ BENCHMARK_MAIN();
 Compile with:
 
 ```zsh
-g++ -O3 -march=native cache_locality_matrix.cpp -o cache_perf_test.exe -lpthread -lbenchmark 
+g++ -O3 -march=native cache_locality_matrix.cpp \
+    -o cache_perf_test.exe -lpthread -lbenchmark 
 ```
 
 We use aggresive optimization of `-O3` for `SIMD vectorization` apart from the linear prefetcher, to get even even better results. Given that we run on an old hardware I use also native arch flag to activate SIMD - otherwise the compiler prevented it in my case. 
+
+
+
+###  Linear Access vs. Strided Access vs. Blocking
+
+On the **Naive** implementation, we iterate over `i-j-k`. In this pattern, the `b` vector needs to jump `k * N` every time `k` is incremented. This results in "strided" access, which is the enemy of the CPU cache. The prefetcher will load the next elements of the vector in the cache but they are useless in our case since we do not need the next elements but a stride of them. And cache is small so the CPU takes them from RAM, slowing us down.
+
+
+
+On the **Performance** version, we iterate over `i-k-j`, so the `b` vector has **linear access**. The compiler and hardware are smart enough to prefetch the data: while we operate on the `j^{th}` element, the CPU loads the `(j+1)^{th}` and `(j+2)^{th}` elements into the cache before they are even requested. Now we saved the extra cycles "walking" to RAM.
+
+
+On the **Blocking** version we follow the same princliple but we take data in bulk that fit in our cache, gaining massive speed.
+
+
+### SIMD Vectorization
+
+Because the data is contiguous in our 2 good examples (Perf and Blocking), the compiler (especially with `-O3` optimization) can use **AVX instructions** for **SIMD (Single Instruction, Multiple Data)** vectorization. This allows the CPU to calculate multiple multiplications in a single clock cycle.
+
 
 
 
@@ -249,97 +274,102 @@ BM_Multiply_Perf_Tilling_Template<double>/2048 4568252067 ns   4546480151 ns    
 ```
 
 
-``` bash
-./cache_perf_test.exe 
-2026-02-24T12:21:10+01:00
-Running ./cache_perf_test.exe
-Run on (4 X 2270.21 MHz CPU s)
-CPU Caches:
-  L1 Data 32 KiB (x2)
-  L1 Instruction 32 KiB (x2)
-  L2 Unified 256 KiB (x2)
-  L3 Unified 3072 KiB (x1)
-Load Average: 0.83, 0.81, 0.73
+### 1. The Small Scale (N=32 and N=96): "The Blocking Penalty"
 
+**Winner: Linear Access**
 
------------------------------------------------------------------------------------------
-Benchmark                                               Time             CPU   Iterations
------------------------------------------------------------------------------------------
-BM_Multiply_Naive_Template<double>/32               29684 ns        29529 ns        23667
-BM_Multiply_Perf_Template<double>/32                14096 ns        14060 ns        44138
-BM_Multiply_Perf_Tilling_Template<double>/32        11775 ns        11735 ns        56519
-BM_Multiply_Naive_Template<double>/96              840709 ns       837230 ns          752
-BM_Multiply_Perf_Template<double>/96               436760 ns       433365 ns         1458
-BM_Multiply_Perf_Tilling_Template<double>/96       338696 ns       335899 ns         2070
-BM_Multiply_Naive_Template<double>/320           48389745 ns     47677130 ns           15
-BM_Multiply_Perf_Template<double>/320            23002329 ns     22579461 ns           31
-BM_Multiply_Perf_Tilling_Template<double>/320    13449012 ns     13321432 ns           42
-BM_Multiply_Naive_Template<double>/1024        1.2313e+10 ns   1.2205e+10 ns            1
-BM_Multiply_Perf_Template<double>/1024          999436845 ns    978583268 ns            1
-BM_Multiply_Perf_Tilling_Template<double>/1024  623033424 ns    617335362 ns            1
-```
+At these sizes, the entire dataset fits within a standard 32 KiB L1 cache. Because the data never has to be evicted to slower memory layers, the specific algorithm choice matters very little.
 
-## N = 32 
-
-At N=32, the entire working set fits within a standard 32 KiB L1 cache. Because the data never has to be evicted to slower memory layers, the specific algorithm choice matters very little.
 
 * **Matrix A (*32 * 32*):** 8 KiB   
 * **Matrix B (*32 * 32*):** 8 KiB
 * **Result (*32 * 32*):** 8 KiB
 * **Total Working Set:** **24 KiB**
 
-> **Analysis:** Since 24  KiB < 32  KiB  (L1 size), the CPU loads these matrices once and they never leave the L1 cache. So we don't see any effect.
+ Since 24  KiB < 32  KiB  (L1 size), the CPU loads these matrices once and they never leave the L1 cache.
 
 
-## N = 96
+* **Observation:** The "Perf" (IKJ) version is actually ~20% faster than Tiling here.
+* **Reason:** Because the data is already in the fast cache, the extra overhead of tiling (extra loops for block offsets, index calculations) acts as a penalty. IKJ's linear access with the hardware prefetcher is doing well here.
+
+
+### 2. The Mid-Range (N=320): 
+
+**Winner: Blocking**
+* **Observation:** Perf (IKJ) and Blocking are quite close here.
+* **Reason:** At N=320, the matrices take up roughly **2.3 MiB**. Remember now the above math we did, now we have
+  3 * (320 * 320 * 8) bytes which is almost 2.5 MiB -  exceeds the **L2 cache (256 KiB)** but still fits inside the **L3 cache (3 MiB)**. The benefit of tiling starts to slowly appear here.
+
+### 3. Large Scale (N=1024 to N=2048): Blocking wins by far
+
+
+Once N=2048, the matrices require **96 MiB** of space. This is 32x larger than the **L3 cache**.
+
+* **The Naive (IJK) Disaster:** At N=2048, Naive takes **~100 seconds**, while Tiling takes **~4.5 seconds**. 
+* **The Blocking Advantage:** Blocking is now ~20% faster than IKJ and **22x faster** than Naive. 
+
+When we just move data from RAM to cache and do not perform any calculations on them, and also need to evict them, this is called "Cache Thrashing". In the IKJ version, while the row access is good, it is still streaming through 96 MiB of data, that do not fit even on L3. So it takes data from RAM - data that are carried with the cache-line, stores them in cache and evicts the previous data that do not fit anymore, but **will be needed later** for the next row multiplication. Blocking ensures that once a block is pulled from the high-latency RAM into the L3/L2, they are all used for operations and there is no need to evict anything. So it is a massive gain.
 
 
 
 ---
 
-### Performance Comparison by Scale
-
-| Matrix Size (*N*) | Performance Winner | Reasoning |
-| :--- | :--- | :--- |
-| ***N=32*** | **Tie** (Tiling ≈ IKJ) | Overhead is negligible; everything stays in L1. |
-| ***N=96*** | **IKJ Order** | Tiling disrupts the L2 prefetcher and adds loop overhead. |
-| ***N=1024*** | **Tiling** | Prevents **"Cache Thrashing"** in the L3 and RAM. |
-
----
-
-### Key Takeaways
-1. ***N=32*:** Tiling and IKJ are roughly equal because the hardware isn't being pushed to its capacity.
-2. ***N=96*:** IKJ wins because it maintains a linear access pattern that the prefetcher loves, whereas tiling breaks that flow.
-3. ***N=1024*:** Tiling wins big. At this scale, the cost of a cache miss (going to RAM) is so high that the extra loop overhead of tiling is a small price to pay for keeping data local.
 
 ### Deeper Dive with perf
 
 
-Let's see what is going on for the scenarios where data 
+Let's see what is going on for the scenario with matrixes of the big N=2048 that will not fit in our cache at all.
 
 
-We compared a **Naive** matrix multiplication (`i-j-k` loops) **vs** an **Optimized** version (`i-k-j` loops) **vs** **Blocking** version.
+
+
+With the below flags we can see all the cache and hits on L1, L2 and L3. We will analyse the 3 implementations:
+
+
+First the naive:
+
+
+``` bash
+perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads,\
+    L1-dcache-load-misses,LLC-loads,LLC-load-misses \
+    -v ./cache_perf_test.exe \
+    --benchmark_filter="Naive.*/2048"
+```
+
+The Perf - Linear Access:
+
+```bash
+perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads,\
+    L1-dcache-load-misses,LLC-loads,LLC-load-misses \
+    -v ./cache_perf_test.exe \
+    --benchmark_filter="Perf.*/2048"
+```
+
+
+The Blocking/Tilling:
+
+``` bash
+perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads, \
+    L1-dcache-load-misses,LLC-loads,LLC-load-misses \
+    -v ./cache_perf_test.exe \
+    --benchmark_filter="Tilling.*/2048"
+```
+
+
+
+
+
 
 
 ---
 
-## Analysis: Why the 5.1x Speedup?
-
-We managed to get **~5.1x faster** calculations just by changing the for-loop index.
-
-### 1. Linear Access vs. Strided Access
-On the **Naive** implementation, we iterate over `i-j-k`. In this pattern, the `b` vector needs to jump `k * N` every time `k` is incremented. This results in "strided" access, which is the enemy of the CPU cache. The prefetcher will load the next elements of the vector in the cache but they are useless in our case since we do not need the next elements but a stride of them. And cache is small so the CPU takes them from RAM, slowing us down.
 
 
 
-On the **Performance** version, we iterate over `i-k-j`, so the `b` vector has **linear access**. The compiler and hardware are smart enough to prefetch the data: while we operate on the `j^{th}` element, the CPU loads the `(j+1)^{th}` and `(j+2)^{th}` elements into the cache before they are even requested. Now we saved the extra cycles "walking" to RAM.
-
-### 2. SIMD Vectorization
-Because the data is contiguous, the compiler (especially with `-O3` optimization) can use **AVX instructions** for **SIMD (Single Instruction, Multiple Data)** vectorization. This allows the CPU to calculate multiple multiplications in a single clock cycle.
 
 ## Conclusion:
 
-When writing HPC code, how you traverse your data is often more important than the algorithm itself. Keep them linear, and in cache.
+When writing HPC code, how you traverse your data is often more important than the algorithm itself. Keep them linear, and in cache. **DOD** aims to benefit exactly from this. We might see such an example in a future article.
 
 
 We do in order to..
@@ -349,21 +379,4 @@ We do in order to..
 sudo sysctl -w kernel.perf_event_paranoid=-1
 ```
 
-``` bash
-perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads,L1-dcache-load-misses,LLC-loads,LLC-load-misses -v ./cache_perf_test.exe --benchmark_filter=Tilling
-```
 
-
-
-``` bash
-perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads,L1-dcache-load-misses,LLC-loads,LLC-load-misses -v ./cache_perf_test.exe --benchmark_filter=Tilling
-```
-
-``` bash
-perf stat -e \
-L1-dcache-load-misses,\
-l2_rqsts.references,\
-l2_rqsts.miss,\
-LLC-load-misses \
-./cache_perf_test.exe --benchmark_filter=Tilling
-``` 
