@@ -221,6 +221,37 @@ We use aggresive optimization of `-O3` for `SIMD vectorization` apart from the l
 
 Note that you can run the code to test it directly in your machine. Of course, results will vary per hardware. I have optimized the Blocking version above for my given hardware **based on L1 cache**.
 
+``` bash
+./cache_perf_test.exe 
+2026-02-24T16:49:02+01:00
+Running ./cache_perf_test.exe
+Run on (4 X 2494.28 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x2)
+  L1 Instruction 32 KiB (x2)
+  L2 Unified 256 KiB (x2)
+  L3 Unified 3072 KiB (x1)
+Load Average: 0.88, 0.88, 0.63
+-----------------------------------------------------------------------------------------
+Benchmark                                               Time             CPU   Iterations
+-----------------------------------------------------------------------------------------
+BM_Multiply_Naive_Template<double>/32               30977 ns        30783 ns        21123
+BM_Multiply_Perf_Template<double>/32                 8646 ns         8603 ns        82986
+BM_Multiply_Perf_Tilling_Template<double>/32        10786 ns        10722 ns        60000
+BM_Multiply_Naive_Template<double>/96              844889 ns       841980 ns          793
+BM_Multiply_Perf_Template<double>/96               228622 ns       227727 ns         3122
+BM_Multiply_Perf_Tilling_Template<double>/96       255608 ns       254843 ns         2651
+BM_Multiply_Naive_Template<double>/320           40599337 ns     40463478 ns           13
+BM_Multiply_Perf_Template<double>/320            10196626 ns     10159836 ns           61
+BM_Multiply_Perf_Tilling_Template<double>/320    10222128 ns     10187554 ns           64
+BM_Multiply_Naive_Template<double>/1024        9695255635 ns   9637606553 ns            1
+BM_Multiply_Perf_Template<double>/1024          626099493 ns    617875934 ns            1
+BM_Multiply_Perf_Tilling_Template<double>/1024  549344328 ns    545949753 ns            1
+BM_Multiply_Naive_Template<double>/2048        1.0114e+11 ns   1.0054e+11 ns            1
+BM_Multiply_Perf_Template<double>/2048         5701418543 ns   5626022840 ns            1
+BM_Multiply_Perf_Tilling_Template<double>/2048 4568252067 ns   4546480151 ns            1
+```
+
 
 ``` bash
 ./cache_perf_test.exe 
