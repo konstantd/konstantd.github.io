@@ -1,13 +1,12 @@
 +++
-date = '2026-02-12T11:06:26+01:00'
+date = '2026-02-24T11:06:26+01:00'
 draft = false
 title = 'Avoid the RAM Latency: Keeping the Cache Hot and on Linear Access is the Ultimate C++ Optimization'
 summary = 'In this benchmark, we explore the importance of keeping data within the CPU cache to avoid expensive retrieval from RAM. By simply ensuring linear data access and accessing by blocks that fit in L1 and L2, we can achieve massive performance gains without changing the underlying algorithm.'
 tags = ["advanced-level", "HPC", "cache-locality", "performance", "blocking", "tiling", "simd", "DOD", "AoS", "perf"]
 +++
 
-TODO:
-// std::span
+
 
 In this benchmark, we explore the importance of keeping data within the CPU cache to avoid expensive retrieval from RAM. By simply ensuring **linear data access**, we can achieve massive performance gains without changing the underlying algorithm. This principle is used also in **Data Oriented Design (DOD)** with **Array of Structures (AoS)** or **Structures of Arrays (SoA)**, since we lay down all our data to fit linearly. Apart from that there is also the benefit, that when we follow **DOD** designs we avoid also the runtime dynamic dispatch on polymorphism. Though here, in our example we will just focus on the benefit of keeping the cache hot with and we will demonstrate the performance gain in a simple matrix multiplication example using the **perf** tool and **google-benchmark**.
 
@@ -15,7 +14,7 @@ We will have 3 scenarios:
 
 1. one bad multiplication that we do not access the data linearly, 
 2. then one that we do access the data linearly. We will notice how massive speed we can gain just from this small change. 
-3. Then we will try to improve it even more, accessing in **blocks** of size that fit in cache L1/L2 (**tiling**). 
+3. Then we will try to improve it even more, accessing in **blocks** of size that fit in L1 cache (**tiling**). 
 
 (Note that similar techniques are implemented to fit data in the cache line when reading or modifying data, aligning with 64 bytes which is the cache line. In C++17 we also have `std::hardware_constructive_interference_size`, but in most machines this is the same as 64bytes anyways.)
 
@@ -315,18 +314,21 @@ When we just move data from RAM to cache and do not perform any calculations on 
 ---
 
 
-### Deeper Dive with perf
+### Deeper Dive with perf tool
 
 
-Let's see what is going on for the scenario with matrixes of the big N=2048 that will not fit in our cache at all.
+Let's see what is going on for the scenario with matrixes of the big N=2048 that will not fit in our cache at all. With the below flags we can see all the cache and hits on L1, L2 and L3. We will analyse the 3 implementations:
 
 
+Below command allows kernel-level profiling and hardware counts.
 
 
-With the below flags we can see all the cache and hits on L1, L2 and L3. We will analyse the 3 implementations:
+``` bash
+sudo sysctl -w kernel.perf_event_paranoid=-1
+```
 
 
-First the naive:
+### First the naive:
 
 
 ``` bash
@@ -364,7 +366,11 @@ LLC-load-misses: 8403483781 96969310198 48489258590
 ```
 
 
-The Perf - Linear Access:
+LLC-load-misses are the L3 misses. Which is 95%. This is HUGE. Almost every single time the CPU looks for data in the L1, L2 or L3 cache, it isn't there. The CPU has to stop everything and wait for the RAM, and this also gives a really-really bad instructions per cycle of 0.19. 
+
+
+
+### The Perf - Linear Access:
 
 ```bash
 perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads,\
@@ -405,9 +411,18 @@ LLC-load-misses: 147854096 5791414256 2892376125
 
 ```
 
+- L1 Miss Rate: Dropped from 95% to 26%.
+
+- LLC Miss Rate: Dropped from 94% (Naive) to 21%.
+
+Now we are accessing memory in a straight line, the Prefetcher can guess what you need next. It starts pulling data from RAM before you even ask for it.
+
+The instructions per cycle - IPC jumped to 0.59. It is 3x faster, but the CPU is still stalling - we have described the reason above - once we need data for the next row multiplication we need the data with start of this row in cache - previously they were already there but we were out of L3 space, so they got evicted from L3 in LRU order. This means we need AGAIN the same data from RAM. And this gives also a not that good IPC.
 
 
-The Blocking/Tilling:
+
+
+### The Blocking/Tilling:
 
 ``` bash
 perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads,\
@@ -449,6 +464,9 @@ LLC-load-misses: 3111522 4600547279 2298895236
 ```
 
 
+- LLC-load-misses is now down to 3.5%. The CPU rarely needs to go to RAM to get data, what it needs is almost always in cache. 
+- Now for every clock cycle, we get more than 1 instruction, we got IPC from 0.6 to IPC = 1.17. **Excellent!**
+
 
 
 
@@ -456,18 +474,19 @@ LLC-load-misses: 3111522 4600547279 2298895236
 
 
 
-
-
 ## Conclusion:
 
-When writing HPC code, how you traverse your data is often more important than the algorithm itself. Keep them linear, and in cache. **DOD** aims to benefit exactly from this. We might see such an example in a future article.
+When writing High Performance code, how you traverse your data is often more important than the algorithm itself. Benchmark always, imagive we have a huge computational system and this iterations should run multiple times on different data. Summing all this extra waiting time up makes a big difference. Also, **DO NOT guess, MEAUSRE    directly**. `perf` is an excellent tool to see the cache miss or hits and **understand the hardware**. Keep the data linear, and in cache - as much as possible. 
 
 
-We do in order to..
 
 
-``` bash
-sudo sysctl -w kernel.perf_event_paranoid=-1
-```
+### Notes
+
+
+- `std::mdspan` introduced in C++23 and does the Tiling - Blocking part, avoiding the loop we implemented manually
+- **Data Oriented Design (DOD)** aims to benefit exactly from this. We might see such an example in a future article.
+
+
 
 
