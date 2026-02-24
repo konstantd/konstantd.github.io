@@ -330,32 +330,123 @@ First the naive:
 
 
 ``` bash
-perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads,\
-    L1-dcache-load-misses,LLC-loads,LLC-load-misses \
-    -v ./cache_perf_test.exe \
-    --benchmark_filter="Naive.*/2048"
+sudo perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads,\
+L1-dcache-load-misses,LLC-loads,LLC-load-misses \
+-v -- ./cache_perf_test.exe --benchmark_filter="Naive.*/2048"
 ```
+
+``` bash
+BM_Multiply_Naive_Template<double>/2048 9.7241e+10 ns   9.5302e+10 ns            1
+cycles: 236337972490 96969310198 48491131510
+instructions: 43806438921 96969310198 60612349587
+cache-references: 9312837146 96969310198 60605207473
+cache-misses: 8650212874 96969310198 60600566834
+L1-dcache-loads: 13119364058 96969310198 60600980737
+L1-dcache-load-misses: 12492970228 96969310198 60601988490
+LLC-loads: 8870298075 96969310198 48488107158
+LLC-load-misses: 8403483781 96969310198 48489258590
+
+ Performance counter stats for './cache_perf_test.exe --benchmark_filter=Naive.*/2048':
+
+   236,337,972,490      cycles                                                                  (50.01%)
+    43,806,438,921      instructions                     #    0.19  insn per cycle              (62.51%)
+     9,312,837,146      cache-references                                                        (62.50%)
+     8,650,212,874      cache-misses                     #   92.88% of all cache refs           (62.49%)
+    13,119,364,058      L1-dcache-loads                                                         (62.50%)
+    12,492,970,228      L1-dcache-load-misses            #   95.23% of all L1-dcache accesses   (62.50%)
+     8,870,298,075      LLC-loads                                                               (50.00%)
+     8,403,483,781      LLC-load-misses                  #   94.74% of all LL-cache accesses    (50.00%)
+
+      97.324655915 seconds time elapsed
+
+      95.322590000 seconds user
+       0.060503000 seconds sys
+```
+
 
 The Perf - Linear Access:
 
 ```bash
 perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads,\
-    L1-dcache-load-misses,LLC-loads,LLC-load-misses \
-    -v ./cache_perf_test.exe \
-    --benchmark_filter="Perf.*/2048"
+L1-dcache-load-misses,LLC-loads,LLC-load-misses \
+-v ./cache_perf_test.exe \
+--benchmark_filter="Perf_Template.*/2048"
 ```
+
+```bash
+---------------------------------------------------------------------------------
+Benchmark                                       Time             CPU   Iterations
+---------------------------------------------------------------------------------
+BM_Multiply_Perf_Template<double>/2048 5706398240 ns   5520526706 ns            1
+cycles: 14883020444 5791414256 2892144199
+instructions: 8810721969 5791414256 3616863209
+cache-references: 1864671979 5791414256 3621198456
+cache-misses: 1095803386 5791414256 3622645754
+L1-dcache-loads: 5436462959 5791414256 3622965093
+L1-dcache-load-misses: 1454919790 5791414256 3621470331
+LLC-loads: 682781128 5791414256 2892857066
+LLC-load-misses: 147854096 5791414256 2892376125
+
+ Performance counter stats for './cache_perf_test.exe --benchmark_filter=Perf_Template.*/2048':
+
+    14,883,020,444      cycles                                                                  (49.94%)
+     8,810,721,969      instructions                     #    0.59  insn per cycle              (62.45%)
+     1,864,671,979      cache-references                                                        (62.53%)
+     1,095,803,386      cache-misses                     #   58.77% of all cache refs           (62.55%)
+     5,436,462,959      L1-dcache-loads                                                         (62.56%)
+     1,454,919,790      L1-dcache-load-misses            #   26.76% of all L1-dcache accesses   (62.53%)
+       682,781,128      LLC-loads                                                               (49.95%)
+       147,854,096      LLC-load-misses                  #   21.65% of all LL-cache accesses    (49.94%)
+
+       5.803357483 seconds time elapsed
+
+       5.540186000 seconds user
+       0.071809000 seconds sys
+
+```
+
 
 
 The Blocking/Tilling:
 
 ``` bash
-perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads, \
-    L1-dcache-load-misses,LLC-loads,LLC-load-misses \
-    -v ./cache_perf_test.exe \
-    --benchmark_filter="Tilling.*/2048"
+perf stat -e cycles,instructions,cache-references,cache-misses,L1-dcache-loads,\
+L1-dcache-load-misses,LLC-loads,LLC-load-misses \
+-v ./cache_perf_test.exe \
+--benchmark_filter="Tilling.*/2048"
 ```
 
 
+``` bash
+-----------------------------------------------------------------------------------------
+Benchmark                                               Time             CPU   Iterations
+-----------------------------------------------------------------------------------------
+BM_Multiply_Perf_Tilling_Template<double>/2048 4544805539 ns   4428673382 ns            1
+cycles: 11913764889 4600547279 2299384402
+instructions: 13949810100 4600547279 2874449269
+cache-references: 287582812 4600547279 2875806198
+cache-misses: 49065998 4600547279 2875890019
+L1-dcache-loads: 7695992754 4600547279 2876809499
+L1-dcache-load-misses: 1459673513 4600547279 2875351381
+LLC-loads: 85428531 4600547279 2300052381
+LLC-load-misses: 3111522 4600547279 2298895236
+
+ Performance counter stats for './cache_perf_test.exe --benchmark_filter=Tilling.*/2048':
+
+    11,913,764,889      cycles                                                                  (49.98%)
+    13,949,810,100      instructions                     #    1.17  insn per cycle              (62.48%)
+       287,582,812      cache-references                                                        (62.51%)
+        49,065,998      cache-misses                     #   17.06% of all cache refs           (62.51%)
+     7,695,992,754      L1-dcache-loads                                                         (62.53%)
+     1,459,673,513      L1-dcache-load-misses            #   18.97% of all L1-dcache accesses   (62.50%)
+        85,428,531      LLC-loads                                                               (50.00%)
+         3,111,522      LLC-load-misses                  #    3.64% of all LL-cache accesses    (49.97%)
+
+       4.629830187 seconds time elapsed
+
+       4.448874000 seconds user
+       0.061816000 seconds sys
+```
 
 
 
