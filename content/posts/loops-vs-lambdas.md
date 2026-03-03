@@ -19,6 +19,9 @@ The loops are not really showing intention here, and the logic is hard to be und
 
 We extend the blog a step at a time reaching to the modern way.
 
+You can find the full code here: 
+
+
 
 ``` cpp
 struct NetworkPacket {
@@ -34,9 +37,13 @@ struct NetworkPacket {
     bool m_isEncrypted;
     Priority m_priority;
 
-    NetworkPacket(std::string src, std::string dest, int size, bool encrypted = false, Priority priority = Priority::LOW)
-        : m_sourceIp(src), m_destinationIp(dest), m_packetSize(size), m_isEncrypted(encrypted), m_priority(priority) 
-        {}
+    NetworkPacket(std::string src, std::string dest, 
+                  int size, bool encrypted = false, 
+                  Priority priority = Priority::LOW) 
+                  : 
+                  m_sourceIp(src), m_destinationIp(dest), 
+                  m_packetSize(size), m_isEncrypted(encrypted), 
+                  m_priority(priority) {}
 
     // Move ctor default and noexcept
     NetworkPacket(NetworkPacket&& other) noexcept = default;
