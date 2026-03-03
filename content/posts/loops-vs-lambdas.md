@@ -15,7 +15,9 @@ Consider the below example. We have a `NetWorkPacket` and then a `NetworkBuffer`
 
 
 
-The loops are not really showing intention here, and the logic is hard to be understood. As a 1st step, we can replace every for loop with a lambda to gain maximal inlining and moving the overhead to the compilation time. Then we can identify a pattern and implement a template function that accepts lambdas to filter and act. Finally we can see how we can achieve the same with `views` from `C++20`.
+The loops are not really showing intention here, and the logic is hard to be understood. As a 1st step, we can replace every for loop with a lambda to gain maximal inlining and moving the overhead to the compilation time. Then we can identify a pattern and implement a template function that accepts lambdas to filter and act. Finally we can see how we can achieve the same with `views` from `C++20`. 
+
+We extend the blog a step at a time reaching to the modern way.
 
 
 ``` cpp
