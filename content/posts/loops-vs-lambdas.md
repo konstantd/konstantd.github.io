@@ -1,23 +1,22 @@
 +++
 date = '2026-02-25T17:09:56+01:00'
 draft = false
-title = '0% Loops vs 100% Lambdas & Template Metaprogramming: Maximal Inlining'
-tags = ["advanced-level", "performance", "lambdas", "views"]
+title = '0% Loops vs 100% Lambdas, TMP and Views: Maximal Inlining'
+tags = ["advanced-level", "performance", "lambdas", "views", "parallelization"]
 +++
 
 TODO 
  std::execution
  mention std::execution::par. By switching from a loop to a lambda-based algorithm, you gain the ability to parallelize you
 
-I want to replace every for loop with a lambda.
-
-Consider the below example. We have a `NetWorkPacket` and then a `NetworkBuffer` that stores a vector of packets. We would like to filter some of the packets based on - for instance -  the encryption or the sourceIP, gather these filtered packets from the buffer and apply some logic on these. This screams `C++20` and `views` as this is the nicest feature of `C++20` but we will see the steps we could take even before we run it with C++20. 
+On this article, we can see in a mini real-world example how we can get rid of loops that are not at all descriptive, they are difficult to read and maintain, do not help the compiler to inline them and hence, they lack of performance. We will start with simple refactoring using lambdas, then we can advance a bit and expose the lambdas from a template function - imititating the `views` implementation - and finally  we will run the code with `C++20` and use modern `views` directly.
 
 
+Consider the below example. We have a `NetWorkPacket` and then a `NetworkBuffer` that stores a vector of packets. We would like to filter some of the packets based on - for instance -  the encryption or the sourceIP, gather these filtered packets from the buffer and maybe apply some logic on these. This screams `C++20` and `views` but we will extend the blog a step at a time reaching to the modernest and most performant and readable way.
 
-The loops are not really showing intention here, and the logic is hard to be understood. As a 1st step, we can replace every for loop with a lambda to gain maximal inlining and moving the overhead to the compilation time. Then we can identify a pattern and implement a template function that accepts lambdas to filter and act. Finally we can see how we can achieve the same with `views` from `C++20`. 
 
-We extend the blog a step at a time reaching to the modern way.
+
+
 
 You can find the full code here: 
 
@@ -93,10 +92,10 @@ So given the above Buffer of packets, now I am populating it randomly, allocatin
 ```
 
 
-And now this is our logic. As we said we are filtering some packets from the buffer and then we might like to apply some logic on the filtered ones.
+And now this is our logic. As we said we are filtering some packets from the buffer and gathering the packets in a new vector. I have 3 filters here, but you get the idea. 
 
 ``` cpp
-    // Filter packets by IP "10.0.0.5" source 
+    // Filter 1 - packets by IP "10.0.0.5" source 
     std::vector<NetworkPacket> filteredPacketsfromSrc;
     for (const auto& packet : buffer.m_packetBuffer) {
         if (packet.m_sourceIp == "10.0.0.5") {
@@ -104,7 +103,7 @@ And now this is our logic. As we said we are filtering some packets from the buf
         }
     }
 
-    // Filter packets that are encrypted with HIGH priority
+    // Filter 2 - packets that are encrypted with HIGH priority
     std::vector<NetworkPacket> filteredHighPriorEncrypted;
     for (const auto& packet : buffer.m_packetBuffer) {
         if ( (packet.m_isEncrypted) && (packet.m_priority == Priority::HIGH) ) {
@@ -112,16 +111,17 @@ And now this is our logic. As we said we are filtering some packets from the buf
         }
     }
 
-    // Filter packets by IP "6.8.8.8" destination and size of message > 128 bytes
+    // Filter 3 - packets by IP "6.8.8.8" destination and size of message > 128 bytes
     std::vector<NetworkPacket> filteredPacketsfromDst_128;
     for (const auto& packet : buffer.m_packetBuffer) {
         if ( (packet.m_destinationIp == "6.8.8.8") && (packet.m_packetSize > 128) ) {
             filteredPacketsfromDst_128.push_back(packet);
         }
     }
-    
-
 ```
+
+
+The loops are not really showing intention here, imagine we had some hard-coded extra filtering - the logic is hard to be understood. As a 1st step, we can replace every for loop with a lambda to gain inlining and moving the overhead to the compilation time. 
 
 
 
@@ -147,10 +147,16 @@ std::for_each(buffer.m_packetBuffer.begin(), buffer.m_packetBuffer.end(), [&](co
 
 
 
-Note that I use a fixed seed to produce the same packages sso testing is fair. See full code in my github profile.
+Note that I use a fixed seed to produce the same packages sso testing is fair. See full code in my github profile. 
+
+Lambdas offer parallelization in hand. We just do:
+
+`std::execution::par`
 
 
 ## Avdanced Predicate and Action template class
+
+Then we can identify a pattern and implement a template function that accepts lambdas to filter and act. Finally we can see how we can achieve the same with `views` from `C++20`. 
 
 We can create a template function for the `struct NetworkBuffer` class that accepts a Predicate and an Action.
 
@@ -170,7 +176,6 @@ We can create a template function for the `struct NetworkBuffer` class that acce
 
 
 And now 
-
 
 
 ```cpp
@@ -209,26 +214,35 @@ And we can do the same with views:
 
 
 ```cpp
-auto srcView = buffer
+auto filter1 = buffer
     | std::views::filter([](const auto& p) { return p.m_sourceIp == "10.0.0.5";} );
 
-auto highPriorView = buffer 
+auto filter2 = buffer 
     | std::views::filter([](const auto& p) { return p.m_isEncrypted && p.m_priority == Priority::HIGH;});
 
-auto dst128View = buffer 
+auto filter3 = buffer 
     | std::views::filter([](const auto& p) { return p.m_destinationIp == "6.8.8.8"; })
     | std::views::filter([](const auto& p) { return p.m_packetSize > 128; });
 ```
 
 
+The advantages now:
+
+- Obviously way more readable
+
+- Previously we were manually doing a `push_back`, which could trigger mem allocations. (In our case we had reserved memory, so we avoided it). Views do not create a new vector - `std::views::filter` is lazy, meaning that it doesn't move anything until you actually iterate over it. This saves us from allocating 3 separate temporary vectors.
+
+- Also, In our `template filter_and_execute`, we have to run a new loop for every filter. With `views`, we can chain them and the compiler can optimize the logic into a single pass over the data, which is much better for the CPU cache.
 
 
 
-
-When you reach the C++20 Views section, emphasize that srcView does not create a new vector.
-In your previous steps, you were manually doing push_back, which triggers memory allocations. You should mention that:
-
-"Unlike the previous steps, std::views::filter is lazy. It doesn't move a single byte of data until you actually iterate over it. This saves us from allocating 3 separate temporary vectors."
+## Concluding
 
 
-One advanced point - In your template filter_and_execute, you have to run a new loop for every filter. With Views, if you chain them, the compiler can often optimize the logic into a single pass over the data, which is much better for the CPU cache.
+- Lambdas are more readable and easier for the compiler to inline
+- If you act on a container often and manipulate data, like `std::for_each` and `std::transform` consider using a template function and forward lambdas like our `Predicate` and `Action` 
+- lamdbas offer parallelization in hand with `std::execution::par` - way easier than your manual loop
+- views are even more readable 
+- views are lazy - they do not create temporary vectors for copies
+- views give maximum inlining and performance
+- views do not offer parallelization, at least yet. 
