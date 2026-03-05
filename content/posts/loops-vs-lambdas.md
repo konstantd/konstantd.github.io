@@ -1,5 +1,5 @@
 +++
-date = '2026-02-25T17:09:56+01:00'
+date = '2026-03-05T17:09:56+01:00'
 draft = false
 title = '0% Loops vs 100% Lambdas, TMP and Views: Maximal Inlining'
 tags = ["advanced-level", "performance", "lambdas", "views", "parallelization"]
