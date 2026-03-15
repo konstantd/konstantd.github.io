@@ -10,6 +10,10 @@ In this article we will see shortly the trap of forwarding references for a memb
 
 Below we design a simple stack using a vector. We just need functions of `empty` ,`top` a `pop` and `push`. 
 
+
+As always, you can also find the code example in the [src-code from the repo](https://github.com/konstantd/konstantd.github.io/tree/main/src-code).
+
+
 Where to be careful here for the `API` design:
 - `top` should not copy and return, but should return as a reference.
 In our case we make it also const reference for `read-only `access.
