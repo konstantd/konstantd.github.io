@@ -2,7 +2,7 @@
 date = '2026-03-15T12:23:42+02:00'
 draft = false   
 title = "The 'T&&' Trap: Forwarding References in Templated Classes"
-tags = ["advanced-level", "templates", "Move-Semantics", "concepts"]
+tags = ["advanced-level", "templates", "performance", "Move-Semantics", "concepts"]
 +++
 
 
@@ -48,7 +48,7 @@ public:
 But, now we always copy the element when we need to push it inside our stack. The `push` function should be able to distinguish if the element that is being pushed should be copied or not, in order to save copies. Why to copy a temporary anyways? 
 
 ``` cpp
-MyStack st;
+MyStack<std::string> st;
 // We dont want to copy a temporary
 st.push("Temporary");
 ```
