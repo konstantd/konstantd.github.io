@@ -2,7 +2,7 @@
 date = '2026-03-15T12:23:42+02:00'
 draft = false   
 title = "The 'T&&' Trap: Forwarding References in Templated Classes"
-tags = ["advanced-level", "templates", "concepts"]
+tags = ["advanced-level", "templates", "Move-Semantics", "concepts"]
 +++
 
 
