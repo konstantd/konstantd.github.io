@@ -8,7 +8,7 @@ tags = ["advanced-level", "templates", "performance", "Move-Semantics", "concept
 
 In this article we will see shortly the trap of forwarding references for a member function of a class that is already templated. Let's start with a practical and simple example of designing our own stack and get to the topic.
 
-Below we design a simple stack using a vector. We just need functions of `empty` ,`top` a `pop` and `push`. 
+Below we design a simple stack using a vector. We just need functions of `empty` ,`top`, `pop` and `push`. 
 
 
 As always, you can also find the code example in the [src-code from the repo](https://github.com/konstantd/konstantd.github.io/tree/main/src-code).
