@@ -2,6 +2,8 @@
 date = '2026-03-25T13:03:31+01:00'
 draft = false
 title = 'No Moves, In-Place Construction: Perfect Forwarding vs. Variadic Templates'
+tags = ["advanced-level", "templates", "performance", "Move-Semantics", "variadic-templates"]
+
 +++
 
 
@@ -121,3 +123,8 @@ This is because of the `addPacketForward` function, as described above.
 1. The **cost** of forwarding a packet is **one move operation** even when we pass **rvalues**.
 
 2. The **cost** of adding a packet with **variadic templates and perfect forwarding** is **zero moves and zero copies**. This is because we construct the NetworkPacket directly **in-place** of the vector's memory, without creating any temporary objects that need to be moved or copied.
+
+
+---
+
+{{< social_icons_extend_with_subscribe >}}
