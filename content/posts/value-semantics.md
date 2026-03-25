@@ -1,7 +1,7 @@
 +++
 date = '2026-03-24T15:14:39+01:00'
 draft = false
-title = 'Value Semantics'
+title = 'How to Get Rid of Runtime-Dispatch with Modern Value Semantics'
 +++
 
 
@@ -36,9 +36,4 @@ class Vehicle {
             std::cout << "Truck needs more space.\n"; 
         }
     };
-
-
-
-    
-
 ```

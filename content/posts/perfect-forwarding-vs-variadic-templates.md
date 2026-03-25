@@ -1,7 +1,7 @@
 +++
 date = '2026-03-25T13:03:31+01:00'
 draft = false
-title = 'Perfect Forwarding vs Variadic Templates'
+title = 'No Moves, In-Place Construction: Perfect Forwarding vs. Variadic Templates'
 +++
 
 
