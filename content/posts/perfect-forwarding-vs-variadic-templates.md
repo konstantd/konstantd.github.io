@@ -120,9 +120,10 @@ This is because of the `addPacketForward` function, as described above.
 ## Conclusion
 
 
-1. The **cost** of forwarding a packet is **one move operation** even when we pass **rvalues**.
 
-2. The **cost** of adding a packet with **variadic templates and perfect forwarding** is **zero moves and zero copies**. This is because we construct the NetworkPacket directly **in-place** of the vector's memory, without creating any temporary objects that need to be moved or copied.
+1. The **cost** of forwarding a packet is **one move operation** even when we pass **rvalues**. `push_back` is a perfect example, since it involves a move or a copy of a constructed object.
+
+2. The **cost** of adding a packet with **variadic templates and perfect forwarding** is **zero moves and zero copies**. This is because we construct the NetworkPacket directly **in-place** of the vector's memory, without creating any temporary objects that need to be moved or copied. `emplace_back` is a perfect example of it - it is implemented exactly like above. We pass the arguments for the constructor. 
 
 
 ---
