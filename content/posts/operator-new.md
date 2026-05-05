@@ -10,9 +10,10 @@ tags = ["beginner", "memory"]
 In this beginner friendly article we dive into the memory internals. For the matter of this blog I will use the `new` and `delete` keywords below to showcase what is going on under the hood. Though, always rememeber to use `RAII` principles (unique ptr in that case). The manual management of the underlying memory is not the safe way to do it but could be used in more advanced topics.
 
 
+## Code
+
 Let's say we have a minor struct.
 
-## Code
 
 ```cpp
 struct Bar {
@@ -35,11 +36,11 @@ Now the manual way:
 
 
 ```cpp
-    void* raw = operator new(sizeof(Bar));  // Just allocates memory of the size of our Bar
-    Bar* ptr = new(raw) Bar;                // Construct IN-PLACE: constructs a Bar object in the pre-allocated memory
+void* raw = operator new(sizeof(Bar));  // Just allocates memory of the size of our Bar
+Bar* ptr = new(raw) Bar;                // Construct IN-PLACE: constructs a Bar object in the pre-allocated memory
 
-    ptr->~Bar();            // Manually call the destructor
-    operator delete(raw);   // Manually deallocate the raw memory
+ptr->~Bar();            // Manually call the destructor
+operator delete(raw);   // Manually deallocate the raw memory
 ```
 
 
