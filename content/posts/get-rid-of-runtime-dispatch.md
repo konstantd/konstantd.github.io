@@ -1,413 +1,185 @@
 +++
 date = '2026-05-13T21:55:47+03:00'
 draft = true
-title = 'Get Rid of Runtime Dispatch'
+title = 'Literally Everything You Need to Know About the True Cost of Runtime Dispatch And How to Avoid It'
 +++
 
 
-When using OOP it is classic to design our classes using polymorhism and use pointers to the base class. Then objectes will inherit from a base clase, which will have some virtual functions and then depending the object type the corresponding function will be called. This introduces the dynamic dispath. Dynamic dispatch selects a polymorhic operation to be called during runtime.
+When writing classic Object-Oriented Programming (OOP) in C++, we are taught to design our systems using polymorphism. We define a base class with virtual functions, inherit from it, and manipulate those objects using base class pointers. 
 
-Note that for dynamic polymorhism., virtual functions are needed to act on a pointer of the Base class. 
+At runtime, the program dynamically selects the correct function execution based on the actual object type. This is known as **dynamic (or runtime) dispatch**.
 
+While flexible, this design introduces significant hidden costs in terms of memory layout, allocation overhead, and CPU performance. In modern C++, especially for performance-critical or embedded systems, we can entirely eliminate this overhead by shifting to **value semantics** using `std::variant`.
 
-As an example:
+---
+
+## The Classic OOP Approach (and Why It is BAD)
+
+Let’s look at a classic setup. We have a `Vehicle` base class and a couple of derived classes: `Car` and `MotorBike`.
 
 ```cpp
-class Vehicle {
-    virtual void honk();
-    virtual void reverse();
-};
+#include <iostream>
+#include <vector>
+#include <memory>
+#include <string>
 
+class Vehicle {
+public:
+    virtual ~Vehicle() = default; // Crucial for OOP, but adds to the overhead!
+    virtual void honk() const = 0;
+    virtual void reverse() const = 0;
+};
 
 class Car : public Vehicle {
-    void honk() override;
-    void reverse() override;
+    std::string name;
+public:
+    Car(std::string n) : name(std::move(n)) {}
+    void honk() const override { std::cout << name << " goes Honk!\n"; }
+    void reverse() const override { std::cout << name << " reverses.\n"; }
+};
+
+class MotorBike : public Vehicle {
+    std::string name;
+public:
+    MotorBike(std::string n) : name(std::move(n)) {}
+    void honk() const override { std::cout << name << " goes Beep!\n"; }
+    void reverse() const override { std::cout << name << " cannot easily reverse.\n"; }
 };
 
 
-class MotorBike : public Vehicle {
-    void honk() override;
-    void reverse() override;
-}
-```
-
+If we want to store these mixed types together in a container, classic OOP forces us to use a collection of pointers:
 
 ```cpp
 int main() {
-    // THIS IS A BAD DESIGN - VIRTUAL DISPATCH ON THE POINTER AND INHERITANCE
-    using Vehicles = std::vector<std::unique<Vehicle>>;
+    // ANTI-PATTERN: Heap allocations, memory fragmentation, and pointer indirection
+    using Vehicles = std::vector<std::unique_ptr<Vehicle>>;
     Vehicles vehicles;
-    // Fill with nice Cars
+
+    // Manual heap allocations via make_unique
     vehicles.emplace_back(std::make_unique<Car>("Corvette C8"));
     vehicles.emplace_back(std::make_unique<Car>("Ferrari F40"));
-    vehicles.emplace_back(std::make_unique<Car>("Toyota Supra MK4"));
-    vehicles.emplace_back(std::make_unique<Car>("Nissan Skyline R34"));
-    
-    // ALSO MANUAL ALLOCATIONS!!!  --- ???????? 
-
-    // Fill with Bikes 
     vehicles.emplace_back(std::make_unique<MotorBike>("Yamaha YZ"));
-    vehicles.emplace_back(std::make_unique<MotorBike>("Kawasaki Hayabusa"));
     vehicles.emplace_back(std::make_unique<MotorBike>("BMW R1200GS"));
-    
 
-    for (auto v : vehicles) {
-        v->honk();
+    // Runtime dispatch in a loop
+    for (const auto& v : vehicles) {
+        v->honk(); 
     }
 
-
     return 0;
 }
 ```
 
 
 
-## Why The Above is A Bad Design?
 
-The above implementation uses virtual functions which introduces virtual dispatch and is used with a vector of pointers. The pointers are stored consecutively in memory but they point to different places in memory to store the objects, which create memory fragmentation. Also, depending on the machine, on a 64-bit architecture a pointer will be 8 bytes and this on a big vector occupies a lot of memory. The impliciation of addding virtual to a function of a class is 
-that now the class contains a vptr and a vtable. The hidden pointer in a 64bit machine is 8 bytes, so the class is also 8 bytes bigger now.
+## The Architectural Pitfalls of this Design
 
+Memory Fragmentation & Cache Misses: While the std::vector stores the std::unique_ptr elements contiguously in memory, the actual objects themselves are scattered randomly across the heap. Iterating through the vector forces the CPU to constantly chase pointers to different memory addresses, completely destroying CPU cache efficiency.
 
+Pointer Overhead: On a 64-bit architecture, each pointer takes up 8 bytes of memory. If you have a massive array, you are wasting considerable memory just storing the "maps" to your data. In the embedded world, this can get really bad. 
 
-# What About the Runtime Dispatch
+The OOP Core Traps: By sticking to value inheritance, you open the door to classic C++ bugs:
 
-Behind the scenes every call in the loop means the exact function (Car::honk or MotorBike::honk) will be chosen at runtime, depending on what kind of object d actually points to.
+Object Slicing: Accidentally passing or copying a derived object into a base object by value, which completely truncates the derived data.
 
+Undefined Behavior: Forgetting to declare a virtual ~Vehicle() destructor results in resource leaks when deleting via a base pointer.
 
-Internally, each object of a class with virtual functions has a vtable pointer, a hidden pointer to a table of function addresses.
+Constructor Hazards: Calling virtual functions inside constructors or destructors doesn't work as you'd intuitively expect, because the derived class layer hasn't been built (or has already been destroyed) yet.
 
-When you call `v->honk();` the CPU must look up the vtable pointer inside `v` object, jump to the correct function address stored in that table and execute it. So, the dispatch (decision of which honk() to call) happens at runtime, not at compile time.
+## Under the Hood: What is Runtime Dispatch Actually Costing You?
 
+When you mark a function as virtual, the compiler shifts the responsibility of choosing the function from compile-time to runtime using two hidden mechanisms:
 
+The vtable (Virtual Table): A static array of function addresses generated per class. It is constant, shared across all instances, and typically placed by the compiler into ROM/Flash memory (the .rodata or .text sections).
 
-# Why that is slower and less predictable?
+The vptr (Virtual Pointer): A hidden pointer injected into every instance of your object in RAM, pointing to its class vtable. On a 64-bit system, this adds a fixed 8-byte overhead to every single object.
 
-It adds one extra memory read and one indirect jump per call. The compiler can’t inline it, because the actual function isn’t known during compilation. This introduces branch misprediction risk and it is bad for hardware control loops or real-time critical systems.
+## The RAM Trap
 
+Consider a small embedded class like an LED control:
 
-
-
-
-# Value Semantics Solution
-
-
-
-We can avoid the extra memory as well as the runtime overhead with `variant`. 
 ``` cpp
-int main() {
-
-
-    using Vehicles = std::variant<Car,Motorbike>;
-
-
-    std::vector<Vehicles> vehicles;
-
-    // Creating some shapes
-
-    // NO POINTERS, NO ALLOCATION, ONLY VALUES!!!
-    vehicles.emplace_back(Car("Corvette C8"));
-    vehicles.emplace_back(Car("Ferrari F40"));
-    vehicles.emplace_back(Car("Toyota Supra MK4"));
-    vehicles.emplace_back(Car("Nissan Skyline R34"));
-
-    // Fill with Bikes 
-    vehicles.emplace_back(MotorBike("Yamaha YZ"));
-    vehicles.emplace_back(MotorBike("Kawasaki Hayabusa"));
-    vehicles.emplace_back(MotorBike("BMW R1200GS"));
-
-    return 0;
-
-}
-```
-
-
-
-
-
-
-// When marking a fun as virtual 
-
-We have on RAM another pointer to the function table. This is the vpointer. This is usually the 1st 64-bits on the address of the object.
-
-Also the static array - vtable is stored in ROM and stores all the addresses of the className::VirtualFunction1, className::VirtualFunction2 etc.
-
-vtable size ≈ N × 8 bytes
-
-Where:
-
-N = number of virtual function entries
-
-
-It goes to ROM because it is constant, shared, and known at link time.
-
-
-So a dynamic dispatch, goes to the vpointer and then searches the vtable for the function to jump to.
-
-This adds some overhead extra CPU instructions and RAM. ROM is perfect for shared constants.
-
-
-
-
-/*
-The implciation of addding virtual to  a function of a class is 
-that now the class contains a vptr and a vtable. The hidden pointer in a 64bit machine is 8 bytes, so the class
-is 8 bytes bigger now.
-
-Usually a class is 1 byte. 
-
-
-In C++, an empty class is 1 byte because the language requires every object to have a unique memory address.
-
-More on that, why? Later.
-
-If you have a static variable, this does not add to the class size.This goes to ROM. The vptr is in RAM.
-
-*/
-
-
-
-
-
-
-
-
-/*
-
-1️⃣ Calling a virtual function from a constructor or destructor
-class Base {
-public:
-    Base() { foo(); }        // virtual call in constructor
-    virtual ~Base() { foo(); }
-    virtual void foo() { std::cout << "Base\n"; }
-};
-
-class Derived : public Base {
-public:
-    void foo() override { std::cout << "Derived\n"; }
-};
-
-int main() {
-    Derived d;
-}
-
-
-Problem:
-
-When the Base constructor runs, the object is not yet a Derived, so virtual calls resolve to Base::foo(), not Derived::foo().
-
-Same in destructors: once the destructor of Base runs, the Derived part is gone.
-
-✅ Rule: Avoid calling virtual functions in constructors or destructors.
-
-2️⃣ Deleting a derived object through a base pointer without a virtual destructor
-class Base { };
-class Derived : public Base {
-    int* data = new int[10];
-public:
-    ~Derived() { delete[] data; }
-};
-
-int main() {
-    Base* b = new Derived();
-    delete b;  // UB! Base::~Base() is called, Derived::~Derived() is skipped
-}
-
-
-Problem:
-
-If the base class doesn’t have a virtual destructor, deleting via a base pointer won’t call the derived destructor, causing resource leaks or UB.
-
-✅ Rule: Always make base classes with virtual functions have a virtual destructor.
-
-3️⃣ Object slicing
-class Base {
-public:
-    int x;
-    virtual void foo() { std::cout << x; }
-};
-
-class Derived : public Base {
-public:
-    int y;
-    void foo() override { std::cout << x + y; }
-};
-
-int main() {
-    Derived d;
-    Base b = d;  // slicing: only Base part is copied
-    b.foo();     // calls Base::foo(), Derived part lost
-}
-
-
-Problem:
-
-Copying a derived object into a base object by value slices off the derived parts.
-
-Virtual function calls on the sliced object do not behave as expected.
-
-✅ Rule: Pass polymorphic objects by pointer or reference, not by value.
-
-
-
-*/
-
-
-
-// in almost all embedded C++ compilers, the vtable is placed in ROM (specifically the .rodata or .text section) because the table itself is constant and shared by every instance of that class.
-
-// However, each object instance in RAM carries a hidden pointer (the vptr) that points to that table in ROM.
-
-// 1. Where it lives (ROM vs. RAM)
-// vtable (The Table): Lives in ROM. It is a static array of addresses created at compile-time.
-
-// vptr (The Pointer): Lives in RAM (inside the object). This is what "connects" your specific object to the logic in ROM.
-
-
-// Structure,      Location,           Created,        Cost
-// vptr,           RAM,                Per Instance,   4 or 8 bytes per object created.
-// vtable,         Flash (ROM),        Per Class,      4 bytes per virtual function in the class.
-// Function Code,  Flash (ROM),        Per Function,   The actual machine instructions.
-
-
-// What happens during a function call?
-// When you write mySensor->read() the CPU performs these three steps which is why it's slower than a normal call
-
-// Dereference the Object: Load the address of the vtable from the object’s vptr (1 memory access).
-
-// Lookup the Address: Go to the specific index in the vtable (e.g., index 1 for read) to get the function address (1 memory access).
-
-// Jump: Perform a "Branch with Link" (BLX on ARM) to that address.
-
-
-
-
-
-// sizeof(Led) = 8 bytes (4 for vptr + 1 for pin + 3 for padding)
-
-
-// Component,      Size (32-bit),                  Notes
-// vptr,               4 Bytes,                    Added to the start or end of the object.
-// Alignment Padding,  1-3 Bytes,                  Added by the compiler to keep data aligned.
-// vtable,             ~4 Bytes(32-bit system) per function,      Stored in Flash (ROM).
-
-
-
-// The "Hidden" RAM Trap
-// While the vtable in ROM is small, the vptr in RAM is what usually surprises embedded developers. If you have a Point class and you make its methods virtual,
-//  every single Point object in your 2KB RAM buffer suddenly gets 4 bytes larger.
-
-
-
-
-// in almost all embedded C++ compilers, the vtable is placed in ROM (specifically the .rodata or .text section) because the table itself is constant and shared by every instance of that class.
-
-// However, each object instance in RAM carries a hidden pointer (the vptr) that points to that table in ROM.
-
-// 1. Where it lives (ROM vs. RAM)
-// vtable (The Table): Lives in ROM. It is a static array of addresses created at compile-time.
-
-// vptr (The Pointer): Lives in RAM (inside the object). This is what "connects" your specific object to the logic in ROM.
-
-
-// Structure,      Location,           Created,        Cost
-// vptr,           RAM,                Per Instance,   4 or 8 bytes per object created.
-// vtable,         Flash (ROM),        Per Class,      4 bytes per virtual function in the class.
-// Function Code,  Flash (ROM),        Per Function,   The actual machine instructions.
-
-
-// What happens during a function call?
-// When you write mySensor->read() the CPU performs these three steps which is why it's slower than a normal call
-
-// Dereference the Object: Load the address of the vtable from the object’s vptr (1 memory access).
-
-// Lookup the Address: Go to the specific index in the vtable (e.g., index 1 for read) to get the function address (1 memory access).
-
-// Jump: Perform a "Branch with Link" (BLX on ARM) to that address.
-
-
-
-
-
 // Non-virtual version
 class Led {
     uint8_t pin; // Size: 1 byte
-}; 
-// sizeof(Led) = 1 byte
+}; // sizeof(Led) = 1 byte
 
 // Virtual version
-class Led {
+class LedVirtual {
     uint8_t pin;
-    virtual void toggle(); // Adds vptr
-}; 
+    virtual void toggle(); 
+}; // sizeof(LedVirtual) = 8 bytes (4/8 bytes for vptr + 1 byte for pin + padding)
+```
 
-// sizeof(Led) = 8 bytes (4 for vptr + 1 for pin + 3 for padding)
+## The CPU Step Penalty
 
+When your code executes v->honk();, the CPU can no longer make a direct jump. Instead, it must complete three distinct operations:
 
+Dereference the Object: Load the address of the vtable from the object’s vptr (1st memory access).
 
-// Component,      Size (32-bit),                  Notes
-// vptr,               4 Bytes,                    Added to the start or end of the object.
-// Alignment Padding,  1-3 Bytes,                  Added by the compiler to keep data aligned.
-// vtable,             ~4 Bytes(32-bit system) per function,      Stored in Flash (ROM).
+Lookup the Address: Go to the specific index in the vtable to fetch the target function's address (2nd memory access).
 
+Indirect Jump: Perform an indirect branch instruction to that address.
 
-
-// The "Hidden" RAM Trap
-// While the vtable in ROM is small, the vptr in RAM is what usually surprises embedded developers. If you have a Point class and you make its methods virtual,
-//  every single Point object in your 2KB RAM buffer suddenly gets 4 bytes larger.
+Because the actual function target is unknown at compile time, the compiler cannot inline the function. This limits optimization, risks branch misprediction, and makes code execution latency less predictable—a massive problem for real-time or low-latency systems.
 
 
+The Modern Alternative: Value Semantics via std::variant
+If your polymorphic types are known at compile-time (which is true for the vast majority of cases), you can completely eliminate pointers, heap allocations, and vptrs by combining std::variant with std::visit.
 
+Here is the clean, high-performance alternative:
 
 ```cpp
-#include<vector>
-#include<memory>
-#include<variant>
+#include <iostream>
+#include <vector>
+#include <variant>
+#include <string>
 
-// https://www.youtube.com/watch?v=G9MxNwUoSt0&list=PLHTh1InhhwT47Xpx7Cn-bPw9Qygjr98rs
-
-
-
-
-class Shape{
-    virtual ~Shape() = default;
+// No base class, no virtual keywords, no inheritance required!
+class Car {
+    std::string name;
+public:
+    Car(std::string n) : name(std::move(n)) {}
+    void honk() const { std::cout << name << " goes Honk!\n"; }
+    void reverse() const { std::cout << name << " reverses.\n"; }
 };
 
-
-
-class Circle : public Shape {
-
-    ~Circle() = default;
+class MotorBike {
+    std::string name;
+public:
+    MotorBike(std::string n) : name(std::move(n)) {}
+    void honk() const { std::cout << name << " goes Beep!\n"; }
+    void reverse() const { std::cout << name << " cannot easily reverse.\n"; }
 };
-
-
-class Square : public Shape {
-
-    ~Square() = default;
-};
-
-
 
 int main() {
-    // THIS IS A BAD DESIGN - VIRTUAL DISPATCH ON THE POINTER AND INHERITANCE
+    // Define a variant that can hold either a Car OR a MotorBike
+    using VehicleVariant = std::variant<Car, MotorBike>;
+    std::vector<VehicleVariant> vehicles;
 
-    // MANY POINTERS - MEMORY IS FRAGMENTED 
-    using Shapes = std::vector<std::unique_ptr<Shape>>;
+    // NO POINTERS, NO HEAP ALLOCATIONS, ONLY FLAT VALUES!
+    vehicles.emplace_back(Car("Corvette C8"));
+    vehicles.emplace_back(Car("Ferrari F40"));
+    vehicles.emplace_back(MotorBike("Yamaha YZ"));
+    vehicles.emplace_back(MotorBike("BMW R1200GS"));
 
-    Shapes shapes;
-
-    // Creating some shapes
-
-    // ALSO MANUAL ALLOCATIONS!!!
-    shapes.emplace_back(std::make_unique<Circle>(2.0));
-    shapes.emplace_back(std::make_unique<Square>(2.0));
-    shapes.emplace_back(std::make_unique<Circle>(2.0));
-    shapes.emplace_back(std::make_unique<Square>(2.0));
+    // Use std::visit to handle compile-time or optimized branch dispatching
+    for (const auto& v : vehicles) {
+        std::visit([](const auto& vehicle) {
+            vehicle.honk();
+        }, v);
+    }
 
     return 0;
 }
-
-
-
 ```
+### Why This is Drastically Better
 
+Value semantics radically outperform classic OOP by keeping data tightly packed in contiguous memory, completely eliminating heap allocations and the hidden 8-byte `vptr` overhead. While OOP scatters pointers—destroying cache locality and blocking compiler inlining due to runtime evaluation—`std::variant` guarantees strictly safe, pointer-free code that the compiler can fully optimize.
 
+## Summary
+
+By embracing value semantics, you treat your classes like regular data values. You get rid of the messy management of heap pointers, avoid errors and gain performance.
+
+Next time you reach for a virtual keyword, ask yourself: Could this be a `std::variant` instead?
