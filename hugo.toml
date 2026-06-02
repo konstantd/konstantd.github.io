@@ -39,7 +39,7 @@ buildFuture = true
 
     [params.homeInfoParams]
         Title = "Hi there! 👋"
-        Content = "This is my technical blog, where I focus on C++, since it is what I am mostly like and using. I share my experiences from technical projects I have worked on, as well as the latest developments of C++. I will try to keep the articles short, purely technical and to the point without fluffy additions. I hope you find it useful! :)"
+        Content = "This is my technical blog, where I focus on C++, since it is what I mostly like and use. I share my experiences from technical projects I have worked on, as well as the latest developments of C++. I will try to keep the articles short, purely technical and to the point without fluffy additions. I hope you find it useful! :)"
         buttons = [
                 { name = "Subscribe", url = "/subscribe/" }
             ]
