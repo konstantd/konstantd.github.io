@@ -94,6 +94,32 @@ When you mark a function as virtual, the compiler shifts the responsibility of c
 
 **The vptr (Virtual Pointer)**: A hidden pointer injected into every instance of your object in RAM, pointing to its class vtable. On a 64-bit system, this adds a fixed 8-byte overhead to every single object.
 
+
+### The CPU Step Penalty
+
+So, typically when you do `v->honk()` the *vptr* of the instance *v* points to *vtable*, then *vtable* has the mem addresses of all functions of the corresponding *v*. Let's say *v* is a Car, then the *vtable* looks like this:
+
+
+| **Function**    | **Adress** |
+| -------- | ------- |
+| Car::honk()  | 0x12345    |
+| Car::reverse()  | 0x123456     |
+
+
+Then CPU should search the table, find the honk function (using an offset from the vtable) and do the indirect jump to 0x12345 and execute the function.
+
+So the distinct operations include:
+
+1) Dereferencing the Object: Load the address of the vtable from the object’s vptr.
+
+2) Lookup the Address: Go to the specific index in the vtable to fetch the target function's address (using an offset from the vtable)
+
+3) Indirect Jump: Perform an indirect branch instruction to that address to execute it.
+
+Because the actual function target is unknown at compile time, the compiler cannot inline the function. This limits optimization and makes code execution latency less predictable. This is quite bad for real-time or low-latency systems.
+
+
+
 ## The RAM Trap
 
 Consider a small embedded class like an LED control in a `32-bit` machine:
@@ -115,17 +141,6 @@ class LedVirtual {
 
 **Padding** comes in compilation so the objects are **4-byte alligned** (in 32-bit machine) and are stored in places in memory where they are accesible by multiplication of 4 bytes. Otherwise, CPU would need extra steps to find the objec. So, alignment takes place by default during compilation, just for performance for the CPU to access elements. 
 
-## The CPU Step Penalty
-
-When your code executes v->honk();, the CPU can no longer make a direct jump. Instead, it must complete three distinct operations:
-
-Dereference the Object: Load the address of the vtable from the object’s vptr (1st memory access).
-
-Lookup the Address: Go to the specific index in the vtable to fetch the target function's address (2nd memory access).
-
-Indirect Jump: Perform an indirect branch instruction to that address.
-
-Because the actual function target is unknown at compile time, the compiler cannot inline the function. This limits optimization, risks branch misprediction, and makes code execution latency less predictable. This is quite bad for real-time or low-latency systems.
 
 ## The Modern Alternative: Value Semantics via std::variant
 
