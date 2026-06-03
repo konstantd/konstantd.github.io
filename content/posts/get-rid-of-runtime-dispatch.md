@@ -2,6 +2,7 @@
 date = '2026-05-13T21:55:47+03:00'
 draft = false
 title = 'Literally Everything You Need to Know About the Cost of Runtime Dispatch And How to Avoid It'
+tags = ["intermediate-level", "alignment", "performance", "runtime-dispatch", "OOP", "variant"]
 +++
 
 
@@ -89,7 +90,7 @@ int main() {
 
 When you mark a function as virtual, the compiler shifts the responsibility of choosing the function from compile-time to runtime and now the object of the class has extra memory of a pointer. The hidden mechanisms:
 
-**The vtable (Virtual Table)**: A static array of function addresses generated per class. It is constant, shared across all instances, and typically placed by the compiler into ROM/Flash memory (the .rodata or .text sections).
+**The vtable (Virtual Table)**: A static array of function addresses generated per class. It is constant, shared across all instances, and typically placed by the compiler into **ROM/Flash memory (the .rodata or .text sections).**
 
 **The vptr (Virtual Pointer)**: A hidden pointer injected into every instance of your object in RAM, pointing to its class vtable. On a 64-bit system, this adds a fixed 8-byte overhead to every single object.
 
