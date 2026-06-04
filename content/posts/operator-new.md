@@ -71,3 +71,8 @@ Note that there are some more C++ internals underneath though, the C++ equivalen
 
 
 In a future more advanced article we can extend the **in-place construction** for a custom pool allocator.
+
+
+---
+
+{{< social_icons_extend_with_subscribe >}}

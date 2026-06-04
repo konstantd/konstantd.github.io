@@ -212,3 +212,9 @@ Value semantics radically outperform classic OOP by keeping data tightly packed 
 By embracing value semantics, you treat your classes like regular data values. You get rid of the messy management of heap pointers, avoid errors and gain performance.
 
 Next time you reach for a virtual keyword, ask yourself: Could this be a `std::variant` instead?
+
+
+
+---
+
+{{< social_icons_extend_with_subscribe >}}
