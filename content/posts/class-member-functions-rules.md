@@ -31,7 +31,7 @@ The above code looks like class `a` will be moved to class `b` and class `a` wil
 
 # Rule of 5 
 
-When we operate on classes `Rule of 5` means that if you implement one special member function either default or then you need to implement all of them.
+When we operate on classes `Rule of 5` means that if you implement one special member function (even declare it as default) then you need to implement all of them.
 
 1. destructor
 2. copy constructor
@@ -39,7 +39,7 @@ When we operate on classes `Rule of 5` means that if you implement one special m
 4. move constructor
 5. move assignment operator
 
-The compiler is trying to protect the resources of the class, especially the move operations that are more prone to error/data loss. It sees you have implemented one of the special member functions and says ok, then something more complicated is needed for the move operations (move ctor and move assignment operator), so it deactivates the `deafult` operations, since it assumes it does not know how to handle it, in order to protect the data of the class and uses the corresponding copy special member function just to ensure no data are lost.
+The compiler is trying to protect the resources of the class, especially the move operations that are more prone to error/data loss. It sees you have implemented one of the special member functions and says ok, then something more complicated is needed for the move operations (move ctor and move assignment operator), so it deactivates the `default` operations, since it assumes it does not know how to handle it, in order to protect the data of the class and uses the corresponding copy special member function just to ensure no data are lost.
 
 
 # Code Review 
@@ -78,7 +78,7 @@ And that saves some typing, right?
 Given what we said above, if we have a virtual destructor it breaks the move semantics of the class. When we read about `Rule of 5`, most people just mention the `virtual destructor` and omit that the same happens with all special member functions that we mentioned above, not just the destructor. It is important to remember the rule for all definitions, but why more focus is given on destructors? 
 
 
-The answer is that C++11 had the `Rule of 3`, which is the rule of 5 without the 2 extra move operations. Because managing a resource always required a custom destructor, the destructor became the universal signal that a class was doing something complex with memory.
+The answer is that before C++11, there was the `Rule of 3`, which is the rule of 5 without the 2 extra move operations. Because managing a resource always required a custom destructor, the destructor became the universal signal that a class was doing something complex with memory.
 
 If you need a virtual destructor (which you almost always do for base classes), you must explicitly tell the compiler to bring the move functions back. Polymorhism is used a lot, so many people might lose performance just by omitting this. That is the reason why more attention is given to the `virtual dtor` with the `Rule of 5`.
 
