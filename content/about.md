@@ -11,7 +11,7 @@ ShowShareButtons = false
 <img src="/images/profile_picture.jpg" align="right" width="250" style="margin-left: 20px; border-radius: 8px;">
 
 
-Hi there! 👋 I am Konstantinos Diamantis. I have an MSc. in Electrical & Computer Engineering from Aristotle University of Thessaloniki. I have more than 5 years of professional experience and currently, I work at CERN, and I have also been involved in different industries, such as avionics and freelance projects. I am specialized in debugging and optimizing large C/C++ codebases, numerical and Real-Time computations, with strong proficiency in the GCC toolchain, GDB, and performance tuning for high-efficiency software.
+Hi there! 👋 I am Konstantinos Diamantis. I have an MSc. in Electrical & Computer Engineering from Aristotle University of Thessaloniki. I have more than 5 years of professional experience and currently, I work at CERN, and I have also been involved in different industries, such as avionics and freelance consulting projects. I am specialized in debugging and optimizing large C/C++ codebases, with a focus on Systems Programming and strong proficiency in the GCC toolchain, GDB, and performance tuning for high-efficiency software.
 
 
 
@@ -99,9 +99,12 @@ Fieldscale is a company that focuses on the development of algorithms for comput
 
 ## 📚 Publications
 
-### **Data-Driven Modeling of Accelerator Magnets**
-*IEEE Transactions on Magnetics*, 2026  
+
+- **Online Performance Monitoring and Early Fault Detection for the B-Train Real-Time Systems at CERN** - 
+*International Particle Accelerator Conference (IPAC26)*
+
+- **Data-Driven Modeling of Accelerator Magnets** - *IEEE Transactions on Magnetics*, 2026  
 [DOI: 10.1109/TMAG.2026.3657972](https://ieeexplore.ieee.org/document/11363469)
 
-### **A Software Framework to Enable Model-Based Systems Engineering for Accelerator Magnets**
-*International Conference on the Computation of Electromagnetic Fields in Accelerator Magnets (COMPUMAG 2025)*
+- **A Software Framework to Enable Model-Based Systems Engineering for Accelerator Magnets** - *International Conference on the Computation of Electromagnetic Fields in Accelerator Magnets (COMPUMAG 2025)*
+
