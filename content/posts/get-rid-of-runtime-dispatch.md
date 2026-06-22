@@ -2,7 +2,7 @@
 date = '2026-05-13T21:55:47+03:00'
 draft = false
 title = 'Literally Everything You Need to Know About the Cost of Runtime Dispatch And How to Avoid It'
-tags = ["intermediate-level", "alignment", "performance", "runtime-dispatch", "OOP", "variant"]
+tags = ["mid-level", "alignment", "performance", "runtime-dispatch", "OOP", "variant"]
 +++
 
 
