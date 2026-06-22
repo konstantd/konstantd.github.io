@@ -2,11 +2,10 @@
 date = '2026-06-16T14:37:09+03:00'
 draft = false
 title = 'Rule of 5: It Is Not Just About the Destructor'
-tags = ["intermediate-level", "rule-of-5", "move-semantics", "polymorhism", "performance"]
+tags = ["mid-level", "rule-of-5", "move-semantics", "polymorphism", "performance"]
 +++
 
-
-For resource managing in classes, **do not think that move will always move**. It will falllback to copy if the object is not moveable. Or if the operation throws an exception it will fall back to copy as well, so **always mark** the move constructor as `noexcept` as we saw on the [previous blog about move semantics](https://konstantd.github.io/posts/move-ctor-no-except/).
+For resource managing in classes, **do not think that move will always move**. It will fallback to copy if the object is not moveable. Or if the operation throws an exception, it will fall back to copy as well, so **always mark** the move constructor as `noexcept` as we saw on the [previous blog about move semantics](https://konstantd.github.io/posts/move-ctor-no-except/).
 
 
 ``` cpp
@@ -80,7 +79,7 @@ Given what we said above, if we have a virtual destructor it breaks the move sem
 
 The answer is that before C++11, there was the `Rule of 3`, which is the rule of 5 without the 2 extra move operations. Because managing a resource always required a custom destructor, the destructor became the universal signal that a class was doing something complex with memory.
 
-If you need a virtual destructor (which you almost always do for base classes), you must explicitly tell the compiler to bring the move functions back. Polymorhism is used a lot, so many people might lose performance just by omitting this. That is the reason why more attention is given to the `virtual dtor` with the `Rule of 5`.
+If you need a virtual destructor (which you almost always do for base classes), you must explicitly tell the compiler to bring the move functions back. Polymorphism is used a lot, so many people might lose performance just by omitting this. That is the reason why more attention is given to the `virtual dtor` with the `Rule of 5`.
 
 For Base classes it is good habit to always define all of them (even marking them as default) like below:
 
